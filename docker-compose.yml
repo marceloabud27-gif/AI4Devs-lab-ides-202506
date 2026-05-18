@@ -1,12 +1,10 @@
-version: "3.1"
-
 services:
   db:
     image: postgres
     restart: always
     environment:
-      POSTGRES_PASSWORD: D1ymf8wyQEGthFR1E9xhCq
-      POSTGRES_USER: LTIdbUser
-      POSTGRES_DB: LTIdb
+      POSTGRES_PASSWORD: 514071
+      POSTGRES_USER: marcelo
+      POSTGRES_DB: marcelo_db
     ports:
       - 5432:5432
