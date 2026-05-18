@@ -25,6 +25,8 @@ test('renders recruiter dashboard', async () => {
   render(<App />);
   expect(screen.getByRole('heading', { name: /dashboard del reclutador/i })).toBeInTheDocument();
   expect(screen.getByRole('button', { name: /anadir candidato/i })).toBeInTheDocument();
-  await waitFor(() => expect(global.fetch).toHaveBeenCalledWith('http://localhost:3010/candidates'));
+  await waitFor(() =>
+    expect(global.fetch).toHaveBeenCalledWith(expect.stringMatching(/\/candidates$/))
+  );
   expect(await screen.findByText('ana@example.com')).toBeInTheDocument();
 });

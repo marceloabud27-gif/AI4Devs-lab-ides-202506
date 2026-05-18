@@ -15,6 +15,7 @@ const allowedCvTypes = [
   'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
 ];
 const maxCvSize = 5 * 1024 * 1024;
+const maxRequestBodySize = '8mb';
 
 type CandidatePayload = {
   firstName?: string;
@@ -32,7 +33,7 @@ type CandidatePayload = {
   };
 };
 
-app.use(express.json({ limit: '7mb' }));
+app.use(express.json({ limit: maxRequestBodySize }));
 app.use((req, res, next) => {
   res.header('Access-Control-Allow-Origin', 'http://localhost:3000');
   res.header('Vary', 'Origin');

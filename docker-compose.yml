@@ -3,8 +3,8 @@ services:
     image: postgres
     restart: always
     environment:
-      POSTGRES_PASSWORD: 514071
-      POSTGRES_USER: marcelo
-      POSTGRES_DB: marcelo_db
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-change_me}
+      POSTGRES_USER: ${DB_USER:-postgres}
+      POSTGRES_DB: ${DB_NAME:-ats_db}
     ports:
-      - 5432:5432
+      - "${DB_PORT:-5432}:5432"

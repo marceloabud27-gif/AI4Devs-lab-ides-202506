@@ -110,7 +110,22 @@ function App() {
   const [loadError, setLoadError] = useState('');
 
   const candidateCount = candidates.length;
-  const latestCandidate = useMemo(() => candidates[0], [candidates]);
+  const latestCandidate = useMemo(
+    () =>
+      candidates.reduce<Candidate | undefined>((latest, current) => {
+        if (!latest) return current;
+
+        const currentDate = Date.parse(current.createdAt);
+        const latestDate = Date.parse(latest.createdAt);
+
+        if (Number.isNaN(currentDate) || Number.isNaN(latestDate)) {
+          return current.id > latest.id ? current : latest;
+        }
+
+        return currentDate > latestDate ? current : latest;
+      }, undefined),
+    [candidates]
+  );
 
   useEffect(() => {
     fetch(`${apiUrl}/candidates`)
