@@ -1,12 +1,10 @@
-version: "3.1"
-
 services:
   db:
     image: postgres
     restart: always
     environment:
-      POSTGRES_PASSWORD: D1ymf8wyQEGthFR1E9xhCq
-      POSTGRES_USER: LTIdbUser
-      POSTGRES_DB: LTIdb
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-change_me}
+      POSTGRES_USER: ${DB_USER:-postgres}
+      POSTGRES_DB: ${DB_NAME:-ats_db}
     ports:
-      - 5432:5432
+      - "${DB_PORT:-5432}:5432"
