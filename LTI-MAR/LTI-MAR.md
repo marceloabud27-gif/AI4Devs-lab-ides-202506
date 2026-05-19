@@ -281,13 +281,23 @@ sequenceDiagram
 | JobRequirement | type | Enum | Must_have, nice_to_have |
 | JobRequirement | weight | Integer | Peso de evaluacion |
 | Candidate | id | UUID | Identificador unico |
+| Candidate | organization_id | UUID | Empresa propietaria del perfil de candidato |
 | Candidate | full_name | String | Nombre completo |
 | Candidate | email | String | Correo |
 | Candidate | phone | String | Telefono |
 | Candidate | location | String | Ubicacion |
 | Candidate | resume_url | String | URL del CV |
-| Candidate | consent_status | Enum | Pending, granted, revoked |
 | Candidate | created_at | DateTime | Fecha de creacion |
+| CandidateConsent | id | UUID | Identificador unico |
+| CandidateConsent | candidate_id | UUID | Candidato asociado |
+| CandidateConsent | organization_id | UUID | Empresa a la que aplica el consentimiento |
+| CandidateConsent | purpose | Enum | Recruiting, talent_pool, analytics, communications |
+| CandidateConsent | status | Enum | Pending, granted, revoked |
+| CandidateConsent | consented_at | DateTime | Fecha de aceptacion |
+| CandidateConsent | created_by | UUID | Usuario que registro el consentimiento |
+| CandidateConsent | created_at | DateTime | Fecha de creacion |
+| CandidateConsent | updated_at | DateTime | Fecha de ultima actualizacion |
+| CandidateConsent | revoked_at | DateTime | Fecha de revocacion |
 | Application | id | UUID | Identificador unico |
 | Application | candidate_id | UUID | Candidato asociado |
 | Application | job_opening_id | UUID | Vacante asociada |
@@ -348,20 +358,30 @@ sequenceDiagram
 
 ### Relaciones principales
 
-- Una Organization tiene muchos Users, Departments, JobOpenings, AutomationRules y Sources.
+- Una Organization tiene muchos Users, Departments, JobOpenings, Candidates, CandidateConsents, AutomationRules y Sources.
 - Un Department tiene muchas JobOpenings.
 - Una JobOpening pertenece a una Organization y puede tener muchos JobRequirements, PipelineStages y Applications.
-- Un Candidate puede tener muchas Applications.
+- Un Candidate pertenece a una Organization y puede tener muchas Applications dentro de esa organizacion.
+- Un CandidateConsent pertenece a un Candidate y a una Organization, y define permisos por proposito.
 - Una Application pertenece a un Candidate y a una JobOpening.
 - Una Application tiene una etapa actual, historial de etapas, entrevistas, feedback y comentarios.
 - Una Interview pertenece a una Application y puede tener muchos InterviewParticipants.
 - Un User puede actuar como reclutador, manager, entrevistador, autor de feedback o autor de comentarios.
+
+### Invariantes de integridad
+
+- `Application.current_stage_id` debe referenciar un `PipelineStage` cuyo `PipelineStage.job_opening_id` sea igual a `Application.job_opening_id`. Esta regla se implementa con clave foranea compuesta o trigger de validacion para evitar que una candidatura quede en una etapa de otra vacante.
+- No se permiten multiples candidaturas activas para el mismo par `Application.candidate_id` y `Application.job_opening_id`. Se propone un indice unico parcial sobre `(candidate_id, job_opening_id)` cuando `Application.status = 'Active'`.
+- Dentro de una vacante, las etapas del pipeline no deben duplicarse. Se proponen restricciones unicas sobre `PipelineStage(job_opening_id, position)` y `PipelineStage(job_opening_id, name)`.
+- Toda consulta de candidatos y consentimientos debe filtrar por `organization_id` para mantener aislamiento entre tenants.
 
 ```mermaid
 erDiagram
     ORGANIZATION ||--o{ USER : has
     ORGANIZATION ||--o{ DEPARTMENT : has
     ORGANIZATION ||--o{ JOB_OPENING : owns
+    ORGANIZATION ||--o{ CANDIDATE : owns
+    ORGANIZATION ||--o{ CANDIDATE_CONSENT : scopes
     ORGANIZATION ||--o{ AUTOMATION_RULE : configures
     ORGANIZATION ||--o{ SOURCE : has
     DEPARTMENT ||--o{ JOB_OPENING : groups
@@ -370,6 +390,7 @@ erDiagram
     JOB_OPENING ||--o{ PIPELINE_STAGE : contains
     JOB_OPENING ||--o{ APPLICATION : receives
     CANDIDATE ||--o{ APPLICATION : submits
+    CANDIDATE ||--o{ CANDIDATE_CONSENT : grants
     SOURCE ||--o{ APPLICATION : originates
     APPLICATION ||--o{ STAGE_HISTORY : tracks
     APPLICATION ||--o{ INTERVIEW : schedules
@@ -407,16 +428,30 @@ erDiagram
     }
     CANDIDATE {
         uuid id
+        uuid organization_id
         string full_name
         string email
         string phone
         string resume_url
-        enum consent_status
+        datetime created_at
+    }
+    CANDIDATE_CONSENT {
+        uuid id
+        uuid candidate_id
+        uuid organization_id
+        enum purpose
+        enum status
+        datetime consented_at
+        uuid created_by
+        datetime created_at
+        datetime updated_at
+        datetime revoked_at
     }
     APPLICATION {
         uuid id
         uuid candidate_id
         uuid job_opening_id
+        uuid source_id
         uuid current_stage_id
         enum status
         decimal ai_score
