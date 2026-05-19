@@ -1,0 +1,255 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+enum BiblicalTestament {
+  OLD
+  NEW
+}
+
+enum ExplanationLevel {
+  SIMPLE
+  STUDENT
+  ACADEMIC
+}
+
+enum ResourceKind {
+  ARTICLE
+  SERMON
+  BOOK
+  VIDEO
+  COMMENTARY
+  LINK
+}
+
+enum SourceLanguage {
+  HEBREW
+  ARAMAIC
+  GREEK
+  LATIN
+  SPANISH
+  ENGLISH
+}
+
+enum SourceScope {
+  OLD_TESTAMENT
+  NEW_TESTAMENT
+  WHOLE_BIBLE
+  LEXICON_HEBREW
+  LEXICON_GREEK
+}
+
+enum LicenseStatus {
+  PUBLIC_DOMAIN
+  COPYRIGHTED
+  OPEN_ACCESS
+  LICENSE_REQUIRED
+}
+
+model User {
+  id           String   @id @default(uuid())
+  name         String
+  email        String   @unique
+  passwordHash String
+  role         String   @default("student")
+  notes        Note[]
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model BiblicalBook {
+  id          String             @id @default(uuid())
+  name        String
+  abbreviation String            @unique
+  testament   BiblicalTestament
+  order       Int
+  genre       String
+  passages    Passage[]
+  createdAt   DateTime          @default(now())
+
+  @@unique([testament, order])
+}
+
+model Passage {
+  id              String                 @id @default(uuid())
+  reference       String                 @unique
+  title           String
+  bookId          String
+  book            BiblicalBook           @relation(fields: [bookId], references: [id])
+  chapterStart    Int
+  verseStart      Int
+  chapterEnd      Int?
+  verseEnd        Int?
+  summary         String
+  context         String
+  genreNote       String
+  structure       String[]
+  commonMistakes  String[]
+  chronologyLinks EventPassage[]
+  exegesisStudies ExegesisStudy[]
+  resources       PassageResource[]
+  glossaryLinks   PassageGlossaryTerm[]
+  notes           Note[]
+  verses          BibleVerse[]
+  createdAt       DateTime               @default(now())
+  updatedAt       DateTime               @updatedAt
+}
+
+model BibleVerse {
+  id          String        @id @default(uuid())
+  passageId   String?
+  passage     Passage?      @relation(fields: [passageId], references: [id], onDelete: SetNull)
+  reference   String        @unique
+  book        String
+  chapter     Int
+  verse       Int
+  text        String
+  version     String
+  testament   BiblicalTestament
+  keywords    String[]
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+
+  @@index([book])
+  @@index([version])
+}
+
+model ChronologicalEvent {
+  id          String         @id @default(uuid())
+  slug        String         @unique
+  title       String
+  stage       String
+  order       Int            @unique
+  summary     String
+  guideQuestion String
+  passages    EventPassage[]
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @updatedAt
+}
+
+model EventPassage {
+  eventId   String
+  passageId String
+  order     Int
+  event     ChronologicalEvent @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  passage   Passage            @relation(fields: [passageId], references: [id], onDelete: Cascade)
+
+  @@id([eventId, passageId])
+  @@unique([eventId, order])
+}
+
+model ExegesisStudy {
+  id                    String           @id @default(uuid())
+  passageId             String
+  passage               Passage          @relation(fields: [passageId], references: [id], onDelete: Cascade)
+  level                 ExplanationLevel
+  originalContext       String
+  literaryGenre         String
+  structureExplanation  String
+  textualCriticismNote  String?
+  linguisticNotes       Json
+  restrictedIntertext   Json
+  exegeticalSynthesis   String
+  tensions              String[]
+  simpleSummary         String
+  createdAt             DateTime         @default(now())
+  updatedAt             DateTime         @updatedAt
+}
+
+model GlossaryTerm {
+  id               String                @id @default(uuid())
+  term             String                @unique
+  simpleDefinition String
+  deeperDefinition String?
+  example          String?
+  aliases          String[]              @default([])
+  passageLinks     PassageGlossaryTerm[]
+  createdAt        DateTime              @default(now())
+  updatedAt        DateTime              @updatedAt
+}
+
+model PassageGlossaryTerm {
+  passageId      String
+  glossaryTermId String
+  passage        Passage      @relation(fields: [passageId], references: [id], onDelete: Cascade)
+  glossaryTerm   GlossaryTerm @relation(fields: [glossaryTermId], references: [id], onDelete: Cascade)
+
+  @@id([passageId, glossaryTermId])
+}
+
+model PassageResource {
+  id        String       @id @default(uuid())
+  passageId String
+  passage   Passage      @relation(fields: [passageId], references: [id], onDelete: Cascade)
+  author    String
+  title     String
+  kind      ResourceKind
+  url       String?
+  note      String
+  createdAt DateTime     @default(now())
+}
+
+model BiblicalTextSource {
+  id            String        @id @default(uuid())
+  name          String
+  abbreviation  String        @unique
+  language      SourceLanguage
+  scope         SourceScope
+  tradition     String
+  baseText      String
+  century       String
+  reliability   String
+  licenseStatus LicenseStatus
+  licenseNote   String
+  useInApp       String
+  priority      Int
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+}
+
+model LexiconSource {
+  id            String        @id @default(uuid())
+  name          String
+  abbreviation  String        @unique
+  language      SourceLanguage
+  scope         SourceScope
+  century       String
+  reliability   String
+  licenseStatus LicenseStatus
+  licenseNote   String
+  useInApp       String
+  priority      Int
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+}
+
+model PassageConnection {
+  id            String   @id @default(uuid())
+  fromReference String
+  toReference   String
+  reason        String
+  connectionType String
+  createdAt     DateTime @default(now())
+
+  @@index([fromReference])
+  @@index([toReference])
+}
+
+model Note {
+  id        String   @id @default(uuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  passageId String?
+  passage   Passage? @relation(fields: [passageId], references: [id], onDelete: SetNull)
+  title     String
+  body      String
+  tags      String[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
