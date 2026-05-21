@@ -805,6 +805,176 @@ function getBookHistory(book) {
   return history ? { book, ...history } : null;
 }
 
+const geoProfiles = {
+  antiguoOriente: {
+    region: 'Antiguo Cercano Oriente: Mesopotamia, Canaán y Egipto',
+    ancientFrame: 'Patriarcas, clanes, ciudades-estado, Egipto y tradiciones tempranas de Israel.',
+    currentCountries: 'Irak, Siria/Turquía, Israel, territorios palestinos y Egipto, según la escena del libro.',
+    mapLabel: 'Mesopotamia - Canaán - Egipto',
+    pin: { x: 47, y: 54 }
+  },
+  egiptoSinai: {
+    region: 'Egipto, Sinaí, desierto y frontera de Canaán',
+    ancientFrame: 'Egipto faraónico, campamentos de Israel, Sinaí y llanuras de Moab.',
+    currentCountries: 'Egipto, Israel, territorios palestinos, Jordania y zonas desérticas cercanas.',
+    mapLabel: 'Egipto - Sinaí - Moab',
+    pin: { x: 43, y: 65 }
+  },
+  israelJuda: {
+    region: 'Canaán, Israel, Judá y Jerusalén',
+    ancientFrame: 'Tribus de Israel, monarquía unida, reino del norte, Judá y dominio de imperios vecinos.',
+    currentCountries: 'Israel, territorios palestinos y Jordania, según el episodio.',
+    mapLabel: 'Israel / Judá',
+    pin: { x: 54, y: 55 }
+  },
+  moabBelen: {
+    region: 'Moab y Belén',
+    ancientFrame: 'Moab al este del Jordán y Judá alrededor de Belén.',
+    currentCountries: 'Jordania, Israel y territorios palestinos.',
+    mapLabel: 'Moab - Belén',
+    pin: { x: 56, y: 58 }
+  },
+  exilioPersia: {
+    region: 'Babilonia, Persia, Susa y Jerusalén',
+    ancientFrame: 'Imperios babilónico y persa, diáspora judía y retorno postexílico.',
+    currentCountries: 'Irak, Irán, Israel y territorios palestinos.',
+    mapLabel: 'Babilonia / Persia',
+    pin: { x: 70, y: 50 }
+  },
+  sabiduriaIsrael: {
+    region: 'Israel y Judá como mundo sapiencial, poético y cultual',
+    ancientFrame: 'Templo, corte, familia, sabios, culto y memoria nacional de Israel.',
+    currentCountries: 'Principalmente Israel y territorios palestinos.',
+    mapLabel: 'Israel / Judá',
+    pin: { x: 54, y: 55 }
+  },
+  profetasIsraelJuda: {
+    region: 'Israel, Judá, Jerusalén y naciones vecinas',
+    ancientFrame: 'Reinos de Israel y Judá bajo presión de Asiria, Babilonia y Persia.',
+    currentCountries: 'Israel, territorios palestinos, Jordania, Siria, Irak e Irán, según el profeta.',
+    mapLabel: 'Israel / Judá y grandes imperios',
+    pin: { x: 55, y: 54 }
+  },
+  asiaMenor: {
+    region: 'Asia Menor occidental y mundo del Egeo',
+    ancientFrame: 'Provincia romana de Asia, ciudades grecorromanas, culto imperial y vida urbana.',
+    currentCountries: 'Principalmente Turquía occidental; Patmos pertenece hoy a Grecia.',
+    mapLabel: 'Asia Menor',
+    pin: { x: 45, y: 38 }
+  },
+  romaItalia: {
+    region: 'Roma y la península itálica',
+    ancientFrame: 'Capital del Imperio romano, comunidades judías de la diáspora e iglesias domésticas.',
+    currentCountries: 'Italia.',
+    mapLabel: 'Roma',
+    pin: { x: 28, y: 36 }
+  },
+  greciaMacedonia: {
+    region: 'Grecia, Macedonia y Acaya',
+    ancientFrame: 'Colonias y ciudades grecorromanas bajo Roma, comercio, patronazgo y honor público.',
+    currentCountries: 'Grecia y Macedonia del Norte, según el libro.',
+    mapLabel: 'Grecia / Macedonia',
+    pin: { x: 38, y: 43 }
+  },
+  siriaPalestina: {
+    region: 'Judea, Galilea, Siria y Antioquía',
+    ancientFrame: 'Judaísmo del Segundo Templo bajo Roma, sinagogas, Templo, Herodes y prefectos romanos.',
+    currentCountries: 'Israel, territorios palestinos, Siria, Líbano y Turquía meridional, según la hipótesis.',
+    mapLabel: 'Judea / Siria',
+    pin: { x: 55, y: 50 }
+  },
+  creta: {
+    region: 'Creta',
+    ancientFrame: 'Isla mediterránea bajo dominio romano, con comunidades urbanas y rurales.',
+    currentCountries: 'Grecia.',
+    mapLabel: 'Creta',
+    pin: { x: 42, y: 50 }
+  },
+  desconocidoMediterraneo: {
+    region: 'Mediterráneo oriental o diáspora cristiana temprana',
+    ancientFrame: 'Ubicación debatida; mundo judío-cristiano y grecorromano del siglo I.',
+    currentCountries: 'No se puede fijar un país actual único con seguridad.',
+    mapLabel: 'Ubicación debatida',
+    pin: { x: 48, y: 45 }
+  }
+};
+
+const bookGeoProfileKeys = {
+  Genesis: 'antiguoOriente',
+  Éxodo: 'egiptoSinai',
+  Levítico: 'egiptoSinai',
+  Números: 'egiptoSinai',
+  Deuteronomio: 'egiptoSinai',
+  Josué: 'israelJuda',
+  Jueces: 'israelJuda',
+  Rut: 'moabBelen',
+  '1 Samuel': 'israelJuda',
+  '2 Samuel': 'israelJuda',
+  '1 Reyes': 'israelJuda',
+  '2 Reyes': 'israelJuda',
+  '1 Crónicas': 'israelJuda',
+  '2 Crónicas': 'israelJuda',
+  Esdras: 'exilioPersia',
+  Nehemías: 'exilioPersia',
+  Ester: 'exilioPersia',
+  Job: 'desconocidoMediterraneo',
+  Salmos: 'sabiduriaIsrael',
+  Proverbios: 'sabiduriaIsrael',
+  Eclesiastés: 'sabiduriaIsrael',
+  Cantares: 'sabiduriaIsrael',
+  Isaías: 'profetasIsraelJuda',
+  Jeremías: 'profetasIsraelJuda',
+  Lamentaciones: 'israelJuda',
+  Ezequiel: 'exilioPersia',
+  Daniel: 'exilioPersia',
+  Oseas: 'profetasIsraelJuda',
+  Joel: 'profetasIsraelJuda',
+  Amós: 'profetasIsraelJuda',
+  Abdías: 'profetasIsraelJuda',
+  Jonás: 'profetasIsraelJuda',
+  Miqueas: 'profetasIsraelJuda',
+  Nahúm: 'profetasIsraelJuda',
+  Habacuc: 'profetasIsraelJuda',
+  Sofonías: 'profetasIsraelJuda',
+  Hageo: 'exilioPersia',
+  Zacarías: 'exilioPersia',
+  Malaquías: 'exilioPersia',
+  Mateo: 'siriaPalestina',
+  Marcos: 'romaItalia',
+  Lucas: 'desconocidoMediterraneo',
+  Juan: 'asiaMenor',
+  Hechos: 'siriaPalestina',
+  Romanos: 'romaItalia',
+  '1 Corintios': 'greciaMacedonia',
+  '2 Corintios': 'greciaMacedonia',
+  Gálatas: 'asiaMenor',
+  Efesios: 'asiaMenor',
+  Filipenses: 'greciaMacedonia',
+  Colosenses: 'asiaMenor',
+  '1 Tesalonicenses': 'greciaMacedonia',
+  '2 Tesalonicenses': 'greciaMacedonia',
+  '1 Timoteo': 'asiaMenor',
+  '2 Timoteo': 'romaItalia',
+  Tito: 'creta',
+  Filemón: 'asiaMenor',
+  Hebreos: 'desconocidoMediterraneo',
+  Santiago: 'siriaPalestina',
+  '1 Pedro': 'romaItalia',
+  '2 Pedro': 'desconocidoMediterraneo',
+  '1 Juan': 'asiaMenor',
+  '2 Juan': 'asiaMenor',
+  '3 Juan': 'asiaMenor',
+  Judas: 'desconocidoMediterraneo',
+  Apocalipsis: 'asiaMenor'
+};
+
+function getBookGeo(history) {
+  if (!history?.book) return null;
+  const key = bookGeoProfileKeys[history.book];
+  const profile = key ? geoProfiles[key] : null;
+  return profile ? { book: history.book, ...profile } : null;
+}
+
 function detectInputKind(value) {
   const cleaned = value.trim();
   if (!cleaned) return { label: 'Esperando consulta', helper: 'Escribí una palabra, un versículo o pegá un texto.' };
@@ -1714,8 +1884,12 @@ export default function App() {
 }
 
 function BookHistoryContext({ history }) {
+  const geography = getBookGeo(history);
+
   return (
     <div className="mt-6 grid gap-4 border-t border-[#dbe3d8] pt-5">
+      {geography && <BookGeoMap geography={geography} />}
+
       <article className="rounded-lg border border-[#dbe3d8] bg-[#fbfcfa] p-5">
         <h3 className="mb-3 text-xl font-black text-ink">Historia de composición</h3>
         <p className="leading-8 text-muted">{history.history}</p>
@@ -1780,5 +1954,56 @@ function BookHistoryContext({ history }) {
         </article>
       )}
     </div>
+  );
+}
+
+function BookGeoMap({ geography }) {
+  const { pin } = geography;
+
+  return (
+    <article className="overflow-hidden rounded-lg border border-[#dbe3d8] bg-white">
+      <div className="grid gap-0 lg:grid-cols-[minmax(0,1fr)_360px]">
+        <div className="p-5">
+          <Pill tone="gold">Mapa orientativo</Pill>
+          <h3 className="mt-3 text-2xl font-black text-ink">Ubicación histórica de {geography.book}</h3>
+          <p className="mt-3 leading-8 text-muted">
+            Este mapa no marca fronteras modernas exactas; ubica la región aproximada para leer el libro en su mundo antiguo.
+          </p>
+
+          <div className="mt-5 grid gap-3 md:grid-cols-3">
+            <div className="rounded-lg border border-[#dbe3d8] bg-[#fbfcfa] p-4">
+              <strong className="block text-moss-800">Región antigua</strong>
+              <p className="mt-2 leading-7 text-muted">{geography.region}</p>
+            </div>
+            <div className="rounded-lg border border-[#dbe3d8] bg-[#fbfcfa] p-4">
+              <strong className="block text-moss-800">Marco político</strong>
+              <p className="mt-2 leading-7 text-muted">{geography.ancientFrame}</p>
+            </div>
+            <div className="rounded-lg border border-[#dbe3d8] bg-[#fbfcfa] p-4">
+              <strong className="block text-moss-800">País actual aproximado</strong>
+              <p className="mt-2 leading-7 text-muted">{geography.currentCountries}</p>
+            </div>
+          </div>
+        </div>
+
+        <div className="relative min-h-72 border-t border-[#dbe3d8] bg-[#eef3e9] lg:border-l lg:border-t-0">
+          <svg className="absolute inset-0 h-full w-full" viewBox="0 0 100 72" role="img" aria-label={`Mapa orientativo de ${geography.mapLabel}`}>
+            <rect width="100" height="72" fill="#eef3e9" />
+            <path d="M4 19 C14 14, 20 16, 28 21 C34 25, 40 25, 49 21 C59 16, 70 17, 79 22 C88 27, 92 35, 96 45 L96 72 L4 72 Z" fill="#d9e2d0" />
+            <path d="M20 6 C28 3, 38 5, 45 10 C52 15, 62 14, 70 11 C76 8, 86 8, 97 14 L97 28 C85 25, 74 26, 63 30 C51 34, 39 34, 29 30 C20 26, 11 27, 3 32 L3 14 C8 11, 14 8, 20 6 Z" fill="#c7d5c0" />
+            <path d="M16 42 C23 39, 31 40, 37 45 C43 50, 50 52, 59 49 C67 46, 77 47, 86 53 L86 72 L16 72 Z" fill="#b6c7ad" />
+            <path d="M0 0 H100 V72 H0 Z" fill="none" stroke="#9fb096" strokeWidth="0.5" />
+            <circle cx={pin.x} cy={pin.y} r="6.5" fill="#2f7d57" opacity="0.16" />
+            <circle cx={pin.x} cy={pin.y} r="2.8" fill="#2f7d57" />
+            <path d={`M${pin.x} ${pin.y - 9} C${pin.x - 4} ${pin.y - 9}, ${pin.x - 7} ${pin.y - 6}, ${pin.x - 7} ${pin.y - 2} C${pin.x - 7} ${pin.y + 4}, ${pin.x} ${pin.y + 10}, ${pin.x} ${pin.y + 10} C${pin.x} ${pin.y + 10}, ${pin.x + 7} ${pin.y + 4}, ${pin.x + 7} ${pin.y - 2} C${pin.x + 7} ${pin.y - 6}, ${pin.x + 4} ${pin.y - 9}, ${pin.x} ${pin.y - 9} Z`} fill="#f0c95a" stroke="#173527" strokeWidth="1" />
+            <circle cx={pin.x} cy={pin.y - 2} r="2.3" fill="#173527" />
+          </svg>
+          <div className="absolute bottom-4 left-4 right-4 rounded-lg border border-white/70 bg-white/90 p-3 shadow-soft">
+            <strong className="block text-ink">{geography.mapLabel}</strong>
+            <p className="mt-1 text-sm leading-6 text-muted">Referencia visual aproximada para acompañar el marco histórico.</p>
+          </div>
+        </div>
+      </div>
+    </article>
   );
 }
