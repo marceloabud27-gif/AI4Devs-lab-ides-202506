@@ -498,12 +498,47 @@ function chapterDepthProfile(book, chapter) {
       caution: 'No saltar Romanos 16 como si fuera solo lista de nombres. Muestra redes reales de misión, mujeres y hombres colaboradores, casas-iglesia y unidad comunitaria.',
       synthesis: 'La conclusión cruda es que el evangelio de Romanos no queda en teoría: aparece encarnado en comunidades, colaboradores, hospitalidad, vigilancia doctrinal y misión entre las naciones.'
     },
+    'efesios 1': {
+      unit: 'Efesios 1:1-2 saludo; 1:3-14 bendición extensa por elección, adopción, redención, herencia y sello del Espíritu; 1:15-23 oración para comprender esperanza, herencia y poder de Dios en Cristo.',
+      keyTerms: 'bendición, elección, adopción, redención, perdón, misterio, herencia, sello, Espíritu, plenitud.',
+      intertext: 'El lenguaje de elección, adopción, herencia y redención viene del mundo de Israel, éxodo, familia y promesa. La exaltación de Cristo sobre poderes prepara el tema de potestades en la carta.',
+      caution: 'No leer Efesios 1 como lista fría de conceptos doctrinales. Es una bendición litúrgica que ubica la identidad de la iglesia en la obra de Dios en Cristo.',
+      synthesis: 'La conclusión cruda es que la identidad cristiana nace de la iniciativa de Dios: el pueblo es bendecido, redimido, sellado y orientado hacia la plenitud de Cristo.'
+    },
+    'efesios 2': {
+      unit: 'Efesios 2:1-10 muerte espiritual, gracia y nueva creación; 2:11-22 gentiles alejados, reconciliación con Israel y formación de un solo pueblo como templo santo.',
+      keyTerms: 'muertos, delitos, gracia, fe, obras, hechura, gentiles, pared, paz, reconciliación, templo.',
+      intertext: 'El trasfondo incluye creación, éxodo, templo, ciudadanía de Israel y promesas pactales. La imagen del templo santo reubica la presencia de Dios en una comunidad reconciliada.',
+      caution: 'No aislar Efesios 2:8-9 de 2:10 ni de 2:11-22. La salvación por gracia produce una nueva humanidad reconciliada, no solo una experiencia individual.',
+      synthesis: 'La conclusión cruda es que Dios salva por gracia a personas muertas en pecado y las incorpora a una comunidad nueva donde judíos y gentiles son reconciliados en Cristo.'
+    },
+    'efesios 3': {
+      unit: 'Efesios 3:1-13 misterio revelado a Pablo: los gentiles son coherederos; 3:14-21 oración para ser fortalecidos, comprender el amor de Cristo y participar de la plenitud de Dios.',
+      keyTerms: 'misterio, revelación, gentiles, coherederos, evangelio, administración, multiforme sabiduría, amor, plenitud.',
+      intertext: 'El misterio no significa algo oscuro, sino un propósito antes escondido y ahora revelado: la incorporación de gentiles al mismo pueblo prometido. La oración retoma lenguaje de arraigo, amor y plenitud.',
+      caution: 'No leer “misterio” como código esotérico. En Efesios es la revelación histórica de que gentiles participan plenamente en Cristo.',
+      synthesis: 'La conclusión cruda es que el plan de Dios une a gentiles y judíos en Cristo y muestra su sabiduría mediante la iglesia, no mediante privilegio étnico o poder humano.'
+    },
     'efesios 4': {
       unit: 'Efesios 4:1-6 llamado a vivir dignamente y guardar la unidad; 4:7-16 dones para madurez del cuerpo; 4:17-24 abandono de la vida vieja; 4:25-32 ética concreta de verdad, ira, trabajo, palabra y perdón.',
       keyTerms: 'andar, vocación, unidad, cuerpo, dones, madurez, viejo hombre, nuevo hombre, verdad, perdón.',
       intertext: 'Salmo 68 aparece detrás de Efesios 4:8. La imagen del cuerpo conecta con la unidad judío-gentil ya expuesta en Efesios 2.',
       caution: 'No convertir Efesios 4 en moralismo aislado. La ética del capítulo sale de Efesios 1-3: gracia, reconciliación y nueva humanidad en Cristo.',
       synthesis: 'La conclusión cruda es que la iglesia debe vivir como un solo cuerpo maduro: la doctrina de la reconciliación se verifica en unidad, palabra limpia, vida renovada y perdón concreto.'
+    },
+    'efesios 5': {
+      unit: 'Efesios 5:1-14 imitar a Dios y andar en amor/luz; 5:15-21 andar sabiamente, llenura del Espíritu y vida comunitaria; 5:22-33 matrimonio leído desde Cristo y la iglesia.',
+      keyTerms: 'imitar, amor, luz, tinieblas, sabiduría, Espíritu, someterse, marido, esposa, Cristo, iglesia.',
+      intertext: 'El contraste luz/tinieblas es común en tradición bíblica y judía. Génesis 2:24 es citado para explicar el matrimonio dentro del argumento sobre Cristo y la iglesia.',
+      caution: 'No leer Efesios 5:22-33 aislado de 5:21 ni del modelo de Cristo que se entrega. El texto no autoriza dominio egoísta; reordena la casa bajo amor sacrificial.',
+      synthesis: 'La conclusión cruda es que la nueva humanidad vive como luz en medio de una cultura oscura, y aun las relaciones domésticas deben ser reinterpretadas desde la entrega de Cristo.'
+    },
+    'efesios 6': {
+      unit: 'Efesios 6:1-9 hijos, padres, esclavos y amos bajo el señorío de Cristo; 6:10-20 armadura de Dios y resistencia contra poderes; 6:21-24 cierre y paz.',
+      keyTerms: 'obedecer, padres, esclavos, amos, Señor, armadura, potestades, verdad, justicia, evangelio, fe, Espíritu.',
+      intertext: 'La armadura toma lenguaje de Isaías sobre Dios como guerrero justo y lo aplica a la resistencia de la iglesia. El conflicto no se reduce a personas, sino a poderes espirituales y estructuras de mal.',
+      caution: 'No usar Efesios 6 para romantizar esclavitud ni para convertir la vida cristiana en espectáculo de guerra espiritual. Pablo habla dentro de casas romanas reales y llama a vivir bajo el señorío de Cristo.',
+      synthesis: 'La conclusión cruda es que la vida nueva llega hasta la casa, el trabajo y la resistencia espiritual: la iglesia se mantiene firme no por fuerza humana, sino por la verdad, la justicia, la fe y la palabra de Dios.'
     },
     'juan 3': {
       unit: 'Juan 3:1-12 diálogo con Nicodemo sobre nuevo nacimiento; 3:13-21 revelación del Hijo y respuesta de fe o rechazo; 3:22-36 testimonio final de Juan el Bautista.',
