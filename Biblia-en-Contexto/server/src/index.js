@@ -353,6 +353,32 @@ function genreForBook(book, testament) {
     : 'texto del Antiguo Testamento: debe leerse dentro de la historia de Israel, pacto, culto, tierra, sabiduría o profecía según el libro.';
 }
 
+function bookArgumentContext(book, chapter) {
+  const normalizedBook = normalizeTerm(book);
+
+  if (normalizedBook === 'efesios') {
+    if (chapter === 4) {
+      return 'Dentro de la carta, Efesios 4 abre la sección práctica después de Efesios 1-3. Primero la carta explica la gracia de Dios, la reconciliación de judíos y gentiles y la nueva identidad del pueblo en Cristo. Luego Efesios 4 pregunta cómo debe vivir esa comunidad: con unidad, madurez, abandono de la vida vieja y una conducta coherente con la nueva humanidad.';
+    }
+
+    return 'En Efesios, los capítulos 1-3 presentan la identidad del creyente y de la iglesia en Cristo; los capítulos 4-6 muestran cómo esa identidad se vive en comunidad, familia, trabajo y resistencia espiritual.';
+  }
+
+  if (normalizedBook === 'romanos') {
+    return 'En Romanos, Pablo construye un argumento amplio sobre la justicia de Dios, el pecado, la gracia, la fe, Israel, los gentiles y la vida transformada. Cada capítulo debe leerse como parte de esa línea argumental, no como colección de frases aisladas.';
+  }
+
+  if (normalizedBook === 'mateo') {
+    return 'En Mateo, cada pasaje debe leerse dentro de la presentación de Jesús como Mesías davídico, maestro autorizado y cumplimiento de las Escrituras de Israel.';
+  }
+
+  if (normalizedBook === 'juan') {
+    return 'En Juan, cada pasaje debe leerse dentro del propósito de mostrar la identidad de Jesús mediante señales, discursos, testimonio, conflicto y revelación de vida.';
+  }
+
+  return `La lectura debe ubicar ${book} dentro del argumento completo del libro antes de sacar conclusiones del pasaje.`;
+}
+
 function passageSections(reference, verses) {
   const testament = verses.some((verse) => verse.testament === 'NEW') ? 'Nuevo Testamento' : 'Antiguo Testamento';
   const sample = verses[0];
@@ -366,7 +392,7 @@ function passageSections(reference, verses) {
   return [
     {
       title: 'Contexto',
-      body: `${scope} está dentro de ${sample.book} ${sample.chapter}, en el ${testament}. Primero se lee el capítulo completo: qué viene antes, qué problema o tema se está tratando y cómo continúa después. En esta consulta, el texto visible dice en resumen: "${textPreview}${joinedClearText(verses).length > 420 ? '...' : ''}". Ese marco evita usar el versículo como frase suelta.`
+      body: `${scope} está dentro de ${sample.book} ${sample.chapter}, en el ${testament}. Primero se lee el capítulo completo: qué viene antes, qué problema o tema se está tratando y cómo continúa después. ${bookArgumentContext(sample.book, sample.chapter)} En esta consulta, el texto visible dice en resumen: "${textPreview}${joinedClearText(verses).length > 420 ? '...' : ''}". Ese marco evita usar el versículo como frase suelta.`
     },
     {
       title: 'Género y estructura',
@@ -382,7 +408,7 @@ function passageSections(reference, verses) {
     },
     {
       title: 'Síntesis exegética',
-      body: `La conclusión responsable de ${scope} debe salir del texto, del capítulo y del género literario. En términos simples: primero se escucha lo que el pasaje afirma en su mundo original; después se reconocen tensiones doctrinales o históricas sin resolverlas a la fuerza; recién al final se piensa una aplicación responsable.`
+      body: `La conclusión responsable de ${scope} debe salir del texto, del capítulo, del género literario y del argumento completo de ${sample.book}. En términos simples: primero se escucha lo que el pasaje afirma en su mundo original; después se reconoce cómo funciona dentro del libro; recién al final se piensa una aplicación responsable sin forzar una doctrina externa sobre el texto.`
     }
   ];
 }
@@ -512,7 +538,16 @@ function canonicalBookName(rawBook) {
 }
 
 function parseReferenceInput(input) {
-  const cleaned = input.trim().replace(/\s+/g, ' ');
+  const cleaned = input
+    .trim()
+    .replace(/\s+/g, ' ')
+    .replace(/\bcap[ií]tulo\b/gi, '')
+    .replace(/\bvers[ií]culo\b/gi, ':')
+    .replace(/\bvers[.]?\b/gi, ':')
+    .replace(/\s+:\s+/g, ':')
+    .replace(/\s*:\s*/g, ':')
+    .replace(/\s+al\s+/gi, '-')
+    .replace(/\s+/g, ' ');
   const match = cleaned.match(/^(.+?)\s+(\d+)(?::(\d+)(?:\s*-\s*(\d+))?)?$/i);
   if (!match) return null;
 
@@ -979,7 +1014,10 @@ const analyzeSchema = z.object({
 });
 
 function looksLikeReference(input) {
-  return /\d+:\d+/.test(input) || /^[1-3]?\s*[A-Za-zÁÉÍÓÚÜÑáéíóúüñ]+\s+\d+/.test(input.trim());
+  const normalized = input.trim().replace(/\s+/g, ' ');
+  return /\d+:\d+/.test(normalized)
+    || /\bcap[ií]tulo\s+\d+/i.test(normalized)
+    || /^[1-3]?\s*[A-Za-zÁÉÍÓÚÜÑáéíóúüñ]+\s+\d+/.test(normalized);
 }
 
 function textStudy(input) {

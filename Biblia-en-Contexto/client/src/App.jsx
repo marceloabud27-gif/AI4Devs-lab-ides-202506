@@ -1,5 +1,5 @@
 ﻿import React, { useEffect, useState } from 'react';
-import { BookOpen, Check, Clipboard, Eye, History, Library, Loader2, Search, Sparkles, Star, Wand2 } from 'lucide-react';
+import { BookOpen, Check, Clipboard, Eye, History, Loader2, Search, Sparkles, Star, Wand2 } from 'lucide-react';
 import { analyzeInput } from './api.js';
 
 const examples = ['Romanos 8:29', 'Juan 3:16', 'presciencia', 'gracia'];
@@ -208,10 +208,15 @@ const bookHistoryDetails = {
     history: 'Gálatas surge de una crisis de identidad. La pregunta central no es religión privada, sino quién pertenece al pueblo de Dios y bajo qué condiciones. Pablo argumenta desde su llamado, Abraham, la promesa, la Ley, el Espíritu y la cruz para proteger la libertad de los gentiles en Cristo.'
   },
   Efesios: {
-    place: 'Tradicionalmente asociada con Pablo en prisión; pudo circular en Éfeso y otras iglesias de Asia Menor.',
+    era: 'Probablemente década del 60 d.C., si se mantiene la atribución paulina desde prisión. Algunos estudiosos proponen una fecha posterior dentro de la tradición paulina; la app lo presenta como dato probable, no como certeza absoluta.',
+    place: 'Tradicionalmente asociada con Pablo en prisión, posiblemente Roma. La carta pudo circular en Éfeso y otras iglesias de Asia Menor, por eso su tono es más amplio que una carta dirigida a un solo problema local.',
     audience: 'Creyentes mayormente gentiles, junto con judíos cristianos, en comunidades urbanas de Asia Menor.',
     purpose: 'Explicar la nueva identidad del pueblo de Dios en Cristo: judíos y gentiles reconciliados en un solo cuerpo, viviendo una nueva humanidad.',
-    history: 'Éfeso era una ciudad importante de Asia Menor, con culto a Artemisa, comercio, prestigio urbano y prácticas religiosas diversas. La carta no se concentra en una crisis local específica, sino en identidad, unidad, gracia, poderes espirituales, vida comunitaria, familia y resistencia. Su historia ayuda a leer “templo”, “cuerpo”, “misterio” y “poderes” como lenguaje comunitario y cósmico.'
+    social: 'Éfeso era una ciudad urbana, comercial y religiosa. La vida social estaba marcada por honor público, familias extendidas, esclavitud doméstica, patronazgo, gremios, relaciones de poder y presión por pertenecer a la vida cívica de la ciudad.',
+    cultural: 'La ciudad era famosa por el templo de Artemisa y por prácticas religiosas, mágicas y devocionales. Ese ambiente ayuda a entender el lenguaje de Efesios sobre poderes, potestades, vida nueva, pureza, luz, familia y resistencia espiritual.',
+    political: 'Éfeso estaba dentro del orden imperial romano. La ciudadanía, el prestigio urbano, el culto imperial y la estabilidad pública importaban mucho. Por eso la carta no habla solo de vida privada: presenta una comunidad alternativa cuya lealtad principal está en Cristo.',
+    generalReading: 'En Efesios, los capítulos 1-3 presentan la identidad y obra de Dios en Cristo: elección, gracia, reconciliación y unión de judíos y gentiles. Los capítulos 4-6 aplican esa identidad a la vida concreta. Por eso Efesios 4 debe leerse como el paso de la doctrina a la práctica: vivir dignamente, guardar la unidad, madurar como cuerpo, abandonar la vida vieja y caminar como nueva humanidad.',
+    history: 'Efesios debe leerse como una carta de identidad comunitaria. No se concentra en un conflicto puntual, sino en formar una comunidad que entienda quién es en Cristo y cómo debe vivir dentro de una ciudad poderosa, religiosa y socialmente estratificada. Su historia ayuda a leer “templo”, “cuerpo”, “misterio”, “unidad”, “poderes” y “andar” como lenguaje comunitario, social y espiritual.'
   },
   Filipenses: {
     place: 'Escrita desde prisión, probablemente Roma, aunque Éfeso o Cesarea también son propuestas.',
@@ -326,7 +331,7 @@ function getBookHistory(book) {
 function detectInputKind(value) {
   const cleaned = value.trim();
   if (!cleaned) return { label: 'Esperando consulta', helper: 'Escribí una palabra, un versículo o pegá un texto.' };
-  if (/\d+:\d+/.test(cleaned) || /^[1-3]?\s*[A-Za-zÁÉÍÓÚÜÑáéíóúüñ]+\s+\d+/.test(cleaned)) {
+  if (/\d+:\d+/.test(cleaned) || /\bcap[ií]tulo\s+\d+/i.test(cleaned) || /^[1-3]?\s*[A-Za-zÁÉÍÓÚÜÑáéíóúüñ]+\s+\d+/.test(cleaned)) {
     return { label: 'Detecté un pasaje', helper: 'Voy a mostrar primero el texto bíblico y después el análisis.' };
   }
   if (cleaned.split(/\s+/).filter(Boolean).length <= 3) {
@@ -819,7 +824,6 @@ export default function App() {
   const [simpleMode, setSimpleMode] = useState(false);
   const [readingMode, setReadingMode] = useState(false);
   const [copyStatus, setCopyStatus] = useState('');
-  const [showHistoricalContext, setShowHistoricalContext] = useState(false);
   const [studyView, setStudyView] = useState('completo');
   const [favoriteStatus, setFavoriteStatus] = useState('');
   const [history, setHistory] = useState(() => {
@@ -847,11 +851,9 @@ export default function App() {
 
   const inputKind = detectInputKind(input);
   const detectedBook = detectBook(input);
-  const historicalContext = getBookHistoricalContext(input);
   const bookHistory = getBookHistory(detectedBook);
   const canShowHistoricalContext = Boolean(bookHistory);
-  const showFullStudy = studyView === 'completo' || (studyView === 'historia' && canShowHistoricalContext);
-  const showHistoryStudy = studyView === 'historia' && canShowHistoricalContext;
+  const showFullStudy = studyView === 'completo';
 
   async function handleAnalyze(event) {
     event.preventDefault();
@@ -1046,30 +1048,6 @@ export default function App() {
         {status && <p className="mt-3 text-sm text-muted">{status}</p>}
       </form>
 
-      {canShowHistoricalContext && (
-      <section className="rounded-lg border border-[#dbe3d8] bg-white p-5 shadow-soft md:p-6">
-        <div className="flex flex-wrap items-start justify-between gap-4">
-          <div className="max-w-3xl">
-            <Pill tone="gold">Marco histórico</Pill>
-            <h2 className="mt-3 text-2xl font-black leading-tight text-ink md:text-3xl">Historia de {bookHistory.book}</h2>
-            <p className="mt-2 leading-8 text-muted">
-              {bookHistory.history}
-            </p>
-          </div>
-          <button
-            className="inline-flex min-h-11 items-center gap-2 rounded-lg border border-[#dbe3d8] bg-[#fbfcfa] px-4 font-extrabold text-moss-800 transition hover:border-moss-600 hover:bg-moss-50"
-            type="button"
-            onClick={() => setShowHistoricalContext((value) => !value)}
-          >
-            <Library size={18} />
-            {showHistoricalContext ? 'Ocultar contexto' : 'Abrir contexto histórico'}
-          </button>
-        </div>
-
-        {showHistoricalContext && <BookHistoryContext history={bookHistory} />}
-      </section>
-      )}
-
       {loading && (
         <section className="grid gap-3 rounded-lg border border-[#dbe3d8] bg-white p-4 shadow-soft md:grid-cols-4" aria-label="Progreso del análisis">
           {loadingSteps.map((step, index) => (
@@ -1090,6 +1068,9 @@ export default function App() {
             <nav className="grid gap-1">
               <a className="border-b border-[#e8ede4] py-2 text-sm leading-5 text-muted hover:text-moss-800" href="#resumen">Resumen</a>
               {result.verses?.length > 0 && <a className="border-b border-[#e8ede4] py-2 text-sm leading-5 text-muted hover:text-moss-800" href="#texto">Texto b&iacute;blico</a>}
+              {!simpleMode && canShowHistoricalContext && result.mode !== 'word' && (
+                <a className="border-b border-[#e8ede4] py-2 text-sm leading-5 text-muted hover:text-moss-800" href="#marco-historico">Marco histórico</a>
+              )}
               {!simpleMode && result.sections?.map((section) => (
                 <a className="border-b border-[#e8ede4] py-2 text-sm leading-5 text-muted hover:text-moss-800" key={section.title} href={`#${sectionId(section.title)}`}>
                   {section.title}
@@ -1106,8 +1087,7 @@ export default function App() {
               <div className="mt-4 grid overflow-hidden rounded-lg border border-[#dbe3d8] bg-white sm:inline-flex">
                 {[
                   ['resumen', 'Resumen'],
-                  ['completo', 'Estudio completo'],
-                  ...(canShowHistoricalContext ? [['historia', 'Marco histórico']] : [])
+                  ['completo', 'Estudio completo']
                 ].map(([view, label]) => (
                   <button
                     key={view}
@@ -1182,6 +1162,14 @@ export default function App() {
               </article>
             )}
 
+            {!simpleMode && showFullStudy && canShowHistoricalContext && result.mode !== 'word' && (
+              <article className="rounded-lg border border-[#dbe3d8] bg-white p-5" id="marco-historico">
+                <Pill tone="gold">Marco histórico</Pill>
+                <h3 className="mt-3 text-2xl font-black text-ink">Historia de {bookHistory.book}</h3>
+                <BookHistoryContext history={bookHistory} />
+              </article>
+            )}
+
             {result.sections?.length > 0 && !simpleMode && showFullStudy && (
               <div className="grid gap-3">
                 {result.sections.map((section) => (
@@ -1191,16 +1179,6 @@ export default function App() {
                   </article>
                 ))}
               </div>
-            )}
-
-            {!simpleMode && showHistoryStudy && (
-              <article className="rounded-lg border border-[#dbe3d8] bg-white p-5">
-                <div className="mb-4">
-                  <Pill tone="gold">Marco histórico</Pill>
-                  <h3 className="mt-3 text-2xl font-black text-ink">Historia de {bookHistory.book}</h3>
-                </div>
-                <BookHistoryContext history={bookHistory} />
-              </article>
             )}
 
           </div>
@@ -1226,7 +1204,14 @@ function BookHistoryContext({ history }) {
         <p className="leading-8 text-muted">{history.history}</p>
       </article>
 
-      <div className="grid gap-3 lg:grid-cols-3">
+      <div className="grid gap-3 lg:grid-cols-2">
+        {history.era && (
+          <article className="rounded-lg border border-[#dbe3d8] bg-white p-4">
+            <strong className="block text-moss-800">Época aproximada</strong>
+            <p className="mt-2 leading-7 text-muted">{history.era}</p>
+          </article>
+        )}
+
         <article className="rounded-lg border border-[#dbe3d8] bg-white p-4">
           <strong className="block text-moss-800">Dónde se escribió</strong>
           <p className="mt-2 leading-7 text-muted">{history.place}</p>
@@ -1241,7 +1226,35 @@ function BookHistoryContext({ history }) {
           <strong className="block text-moss-800">Para qué público y propósito</strong>
           <p className="mt-2 leading-7 text-muted">{history.purpose}</p>
         </article>
+
+        {history.social && (
+          <article className="rounded-lg border border-[#dbe3d8] bg-white p-4">
+            <strong className="block text-moss-800">Contexto social</strong>
+            <p className="mt-2 leading-7 text-muted">{history.social}</p>
+          </article>
+        )}
+
+        {history.cultural && (
+          <article className="rounded-lg border border-[#dbe3d8] bg-white p-4">
+            <strong className="block text-moss-800">Contexto cultural</strong>
+            <p className="mt-2 leading-7 text-muted">{history.cultural}</p>
+          </article>
+        )}
+
+        {history.political && (
+          <article className="rounded-lg border border-[#dbe3d8] bg-white p-4">
+            <strong className="block text-moss-800">Contexto político</strong>
+            <p className="mt-2 leading-7 text-muted">{history.political}</p>
+          </article>
+        )}
       </div>
+
+      {history.generalReading && (
+        <article className="rounded-lg border border-moss-100 bg-moss-50 p-5">
+          <strong className="block text-moss-800">Lectura dentro del argumento del libro</strong>
+          <p className="mt-2 leading-8 text-muted">{history.generalReading}</p>
+        </article>
+      )}
     </div>
   );
 }
