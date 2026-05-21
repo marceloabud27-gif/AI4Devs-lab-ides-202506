@@ -675,9 +675,11 @@ export default function App() {
   }, [favorites]);
 
   const inputKind = detectInputKind(input);
+  const detectedBook = detectBook(input);
   const historicalContext = getBookHistoricalContext(input);
-  const showFullStudy = studyView === 'completo' || studyView === 'historia';
-  const showHistoryStudy = studyView === 'historia';
+  const canShowHistoricalContext = Boolean(detectedBook);
+  const showFullStudy = studyView === 'completo' || (studyView === 'historia' && canShowHistoricalContext);
+  const showHistoryStudy = studyView === 'historia' && canShowHistoricalContext;
   const simpleTerms = result ? termsForResult(result) : [];
   const classStudy = result ? classMode(result, historicalContext) : null;
 
@@ -874,6 +876,7 @@ export default function App() {
         {status && <p className="mt-3 text-sm text-muted">{status}</p>}
       </form>
 
+      {canShowHistoricalContext && (
       <section className="rounded-lg border border-[#dbe3d8] bg-white p-5 shadow-soft md:p-6">
         <div className="flex flex-wrap items-start justify-between gap-4">
           <div className="max-w-3xl">
@@ -895,6 +898,7 @@ export default function App() {
 
         {showHistoricalContext && <SecondTempleContext bookContext={historicalContext} query={input} />}
       </section>
+      )}
 
       {loading && (
         <section className="grid gap-3 rounded-lg border border-[#dbe3d8] bg-white p-4 shadow-soft md:grid-cols-4" aria-label="Progreso del análisis">
@@ -936,7 +940,7 @@ export default function App() {
                 {[
                   ['resumen', 'Resumen'],
                   ['completo', 'Estudio completo'],
-                  ['historia', 'Historia de interpretación']
+                  ...(canShowHistoricalContext ? [['historia', 'Historia de interpretación']] : [])
                 ].map(([view, label]) => (
                   <button
                     key={view}
@@ -1084,31 +1088,10 @@ export default function App() {
             )}
 
             {!simpleMode && showFullStudy && (
-              <div className="grid gap-3 lg:grid-cols-3" id="cuidados">
-                <InsightCard title="Comparación textual" items={result.translationNotes} />
+              <div className="grid gap-3 lg:grid-cols-2" id="cuidados">
                 <InsightCard title="Cuidados hermenéuticos" items={result.warnings} />
                 <InsightCard title="Errores comunes a evitar" items={result.commonMistakes} />
               </div>
-            )}
-
-            {!simpleMode && showFullStudy && (
-              <article className="rounded-lg border border-[#dbe3d8] bg-white p-5">
-                <h3 className="mb-2 text-lg font-black text-ink">Fuentes y transparencia</h3>
-                <div className="grid gap-3 md:grid-cols-3">
-                  <div className="rounded-lg border border-[#dbe3d8] bg-[#fbfcfa] p-4">
-                    <strong className="block text-moss-800">Texto local</strong>
-                    <p className="mt-1 leading-7 text-muted">RVA1909, libre para búsquedas y lectura base.</p>
-                  </div>
-                  <div className="rounded-lg border border-[#dbe3d8] bg-[#fbfcfa] p-4">
-                    <strong className="block text-moss-800">Comparación ideal</strong>
-                    <p className="mt-1 leading-7 text-muted">LBLA/NBLA quedan preparadas para proveedor autorizado.</p>
-                  </div>
-                  <div className="rounded-lg border border-[#dbe3d8] bg-[#fbfcfa] p-4">
-                    <strong className="block text-moss-800">Léxicos recomendados</strong>
-                    <p className="mt-1 leading-7 text-muted">HALOT y BDAG como referencia académica cuando haya licencia.</p>
-                  </div>
-                </div>
-              </article>
             )}
 
             {!simpleMode && showFullStudy && classStudy && (
