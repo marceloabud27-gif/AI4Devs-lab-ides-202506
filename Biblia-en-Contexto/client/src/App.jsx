@@ -680,8 +680,6 @@ export default function App() {
   const canShowHistoricalContext = Boolean(detectedBook);
   const showFullStudy = studyView === 'completo' || (studyView === 'historia' && canShowHistoricalContext);
   const showHistoryStudy = studyView === 'historia' && canShowHistoricalContext;
-  const simpleTerms = result ? termsForResult(result) : [];
-  const classStudy = result ? classMode(result, historicalContext) : null;
 
   async function handleAnalyze(event) {
     event.preventDefault();
@@ -920,14 +918,11 @@ export default function App() {
             <nav className="grid gap-1">
               <a className="border-b border-[#e8ede4] py-2 text-sm leading-5 text-muted hover:text-moss-800" href="#resumen">Resumen</a>
               {result.verses?.length > 0 && <a className="border-b border-[#e8ede4] py-2 text-sm leading-5 text-muted hover:text-moss-800" href="#texto">Texto b&iacute;blico</a>}
-              {!simpleMode && result.reasoningLayers?.length > 0 && <a className="border-b border-[#e8ede4] py-2 text-sm leading-5 text-muted hover:text-moss-800" href="#metodo">Método</a>}
               {!simpleMode && result.sections?.map((section) => (
                 <a className="border-b border-[#e8ede4] py-2 text-sm leading-5 text-muted hover:text-moss-800" key={section.title} href={`#${sectionId(section.title)}`}>
                   {section.title}
                 </a>
               ))}
-              {!simpleMode && result.certaintyRows?.length > 0 && <a className="border-b border-[#e8ede4] py-2 text-sm leading-5 text-muted hover:text-moss-800" href="#certeza">Certeza</a>}
-              {!simpleMode && <a className="border-b border-[#e8ede4] py-2 text-sm leading-5 text-muted hover:text-moss-800" href="#cuidados">Cuidados</a>}
             </nav>
           </aside>
 
@@ -1015,21 +1010,6 @@ export default function App() {
               </article>
             )}
 
-            {!simpleMode && showFullStudy && (
-              <article className="rounded-lg border border-[#dbe3d8] bg-white p-5">
-                <h3 className="mb-3 text-xl font-black text-ink">Guía paso a paso para estudiar</h3>
-                <div className="grid gap-3 md:grid-cols-2 lg:grid-cols-3">
-                  {studyGuideSteps(result, historicalContext).map(([title, body], index) => (
-                    <div className="rounded-lg border border-[#dbe3d8] bg-[#fbfcfa] p-4" key={title}>
-                      <span className="grid size-8 place-items-center rounded-full bg-moss-600 text-sm font-extrabold text-white">{index + 1}</span>
-                      <strong className="mt-3 block text-moss-800">{title}</strong>
-                      <p className="mt-2 leading-7 text-muted">{body}</p>
-                    </div>
-                  ))}
-                </div>
-              </article>
-            )}
-
             {result.sections?.length > 0 && !simpleMode && showFullStudy && (
               <div className="grid gap-3">
                 {result.sections.map((section) => (
@@ -1039,84 +1019,6 @@ export default function App() {
                   </article>
                 ))}
               </div>
-            )}
-
-            {result.reasoningLayers?.length > 0 && !simpleMode && showFullStudy && (
-              <article className="rounded-lg border border-[#dbe3d8] bg-[#fbfcfa] p-5" id="metodo">
-                <h3 className="mb-3 text-lg font-black text-ink">Observación, interpretación y síntesis</h3>
-                <div className="grid gap-3 md:grid-cols-3">
-                  {result.reasoningLayers.map((item) => (
-                    <div className="rounded-lg border border-[#dbe3d8] bg-white p-4" key={item.label}>
-                      <strong className="mb-2 block text-moss-800">{item.label}</strong>
-                      <p className="leading-7 text-muted">{item.body}</p>
-                    </div>
-                  ))}
-                </div>
-              </article>
-            )}
-
-            {!simpleMode && showFullStudy && simpleTerms.length > 0 && (
-              <article className="rounded-lg border border-[#dbe3d8] bg-white p-5">
-                <h3 className="mb-3 text-xl font-black text-ink">No entiendo esta palabra</h3>
-                <div className="grid gap-3 md:grid-cols-2 lg:grid-cols-3">
-                  {simpleTerms.map((item) => (
-                    <div className="rounded-lg border border-moss-100 bg-moss-50 p-4" key={item.term}>
-                      <strong className="capitalize text-moss-800">{item.term}</strong>
-                      <p className="mt-2 leading-7 text-muted">{item.definition}</p>
-                    </div>
-                  ))}
-                </div>
-              </article>
-            )}
-
-            {result.certaintyRows?.length > 0 && !simpleMode && showFullStudy && (
-              <article className="rounded-lg border border-[#dbe3d8] bg-[#fbfcfa] p-5" id="certeza">
-                <h3 className="mb-3 text-lg font-black text-ink">Nivel de certeza</h3>
-                <div className="grid overflow-hidden rounded-lg border border-[#dbe3d8] bg-white md:grid-cols-[180px_minmax(0,1fr)_130px]">
-                  <div className="bg-moss-50 p-3 text-xs font-extrabold uppercase text-moss-800">Tipo</div>
-                  <div className="bg-moss-50 p-3 text-xs font-extrabold uppercase text-moss-800">Afirmación</div>
-                  <div className="bg-moss-50 p-3 text-xs font-extrabold uppercase text-moss-800">Certeza</div>
-                  {result.certaintyRows.map((row) => (
-                    <React.Fragment key={`${row.kind}-${row.claim}`}>
-                      <span className="border-t border-[#dbe3d8] p-3 text-sm leading-6 text-muted">{row.kind}</span>
-                      <span className="border-t border-[#dbe3d8] p-3 text-sm leading-6 text-muted">{row.claim}</span>
-                      <span className="border-t border-[#dbe3d8] p-3 text-sm leading-6 text-muted">{row.confidence}</span>
-                    </React.Fragment>
-                  ))}
-                </div>
-              </article>
-            )}
-
-            {!simpleMode && showFullStudy && (
-              <div className="grid gap-3 lg:grid-cols-2" id="cuidados">
-                <InsightCard title="Cuidados hermenéuticos" items={result.warnings} />
-                <InsightCard title="Errores comunes a evitar" items={result.commonMistakes} />
-              </div>
-            )}
-
-            {!simpleMode && showFullStudy && classStudy && (
-              <article className="rounded-lg border border-moss-100 bg-moss-50 p-5">
-                <Pill tone="gold">Modo clase bíblica</Pill>
-                <h3 className="mt-3 text-xl font-black text-ink">Preparado para enseñar o compartir</h3>
-                <div className="mt-4 grid gap-3 lg:grid-cols-3">
-                  <div className="rounded-lg border border-[#dbe3d8] bg-white p-4">
-                    <strong className="block text-moss-800">Objetivo</strong>
-                    <p className="mt-2 leading-7 text-muted">{classStudy.objective}</p>
-                  </div>
-                  <div className="rounded-lg border border-[#dbe3d8] bg-white p-4">
-                    <strong className="block text-moss-800">Preguntas para grupo</strong>
-                    <ul className="mt-2 grid gap-2 pl-5 text-muted">
-                      {classStudy.questions.map((question) => <li className="leading-7" key={question}>{question}</li>)}
-                    </ul>
-                  </div>
-                  <div className="rounded-lg border border-[#dbe3d8] bg-white p-4">
-                    <strong className="block text-moss-800">Bosquejo simple</strong>
-                    <ol className="mt-2 grid gap-2 pl-5 text-muted">
-                      {classStudy.outline.map((step) => <li className="leading-7" key={step}>{step}</li>)}
-                    </ol>
-                  </div>
-                </div>
-              </article>
             )}
 
             {!simpleMode && showHistoryStudy && (
@@ -1137,30 +1039,10 @@ export default function App() {
         <section className="grid min-h-60 justify-items-center rounded-lg border border-[#dbe3d8] bg-white p-6 text-center text-muted shadow-soft">
           <Search size={22} />
           <h2 className="mt-3 text-2xl font-black text-ink">Vista previa del estudio</h2>
-          <div className="mt-3 flex flex-wrap justify-center gap-2">
-            {['Contexto original', 'Género y estructura', 'Léxico sencillo', 'Cuidados hermenéuticos'].map((item) => (
-              <span className="rounded-full border border-[#dbe3d8] bg-[#fbfcfa] px-3 py-2 text-sm font-bold text-moss-800" key={item}>
-                {item}
-              </span>
-            ))}
-          </div>
-          <p className="mt-3">La respuesta aparecerá acá, con formato limpio para leer y estudiar.</p>
+          <p className="mt-3 max-w-2xl">Escribí un libro, pasaje, palabra o texto. La respuesta aparecerá acá solamente con secciones que respondan a esa búsqueda.</p>
         </section>
       )}
     </main>
-  );
-}
-
-function InsightCard({ title, items = [] }) {
-  return (
-    <article className="rounded-lg border border-[#dbe3d8] bg-[#fbfcfa] p-5">
-      <h3 className="mb-2 text-lg font-black text-ink">{title}</h3>
-      <ul className="m-0 grid gap-2 pl-5">
-        {items.map((item) => (
-          <li className="leading-7 text-muted" key={item}>{item}</li>
-        ))}
-      </ul>
-    </article>
   );
 }
 
