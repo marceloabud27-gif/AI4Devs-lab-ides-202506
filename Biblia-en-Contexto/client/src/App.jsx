@@ -922,7 +922,6 @@ export default function App() {
                   {section.title}
                 </a>
               ))}
-              {!simpleMode && result.lexicalRows?.length > 0 && <a className="border-b border-[#e8ede4] py-2 text-sm leading-5 text-muted hover:text-moss-800" href="#lexico">Léxico</a>}
               {!simpleMode && result.certaintyRows?.length > 0 && <a className="border-b border-[#e8ede4] py-2 text-sm leading-5 text-muted hover:text-moss-800" href="#certeza">Certeza</a>}
               {!simpleMode && <a className="border-b border-[#e8ede4] py-2 text-sm leading-5 text-muted hover:text-moss-800" href="#cuidados">Cuidados</a>}
             </nav>
@@ -1013,27 +1012,6 @@ export default function App() {
             )}
 
             {!simpleMode && showFullStudy && (
-              <article className="rounded-lg border border-moss-100 bg-moss-50 p-5">
-                <Pill>Contexto del libro</Pill>
-                <h3 className="mt-3 text-xl font-black text-ink">Cómo {historicalContext.book} orienta este análisis</h3>
-                <div className="mt-3 grid gap-3 md:grid-cols-3">
-                  <div className="rounded-lg border border-[#dbe3d8] bg-white p-4">
-                    <strong className="block text-moss-800">Situación histórica</strong>
-                    <p className="mt-2 leading-7 text-muted">{historicalContext.setting}</p>
-                  </div>
-                  <div className="rounded-lg border border-[#dbe3d8] bg-white p-4">
-                    <strong className="block text-moss-800">Claves culturales</strong>
-                    <p className="mt-2 leading-7 text-muted">{historicalContext.culture}</p>
-                  </div>
-                  <div className="rounded-lg border border-[#dbe3d8] bg-white p-4">
-                    <strong className="block text-moss-800">Fuentes útiles</strong>
-                    <p className="mt-2 leading-7 text-muted">{historicalContext.sources}</p>
-                  </div>
-                </div>
-              </article>
-            )}
-
-            {!simpleMode && showFullStudy && (
               <article className="rounded-lg border border-[#dbe3d8] bg-white p-5">
                 <h3 className="mb-3 text-xl font-black text-ink">Guía paso a paso para estudiar</h3>
                 <div className="grid gap-3 md:grid-cols-2 lg:grid-cols-3">
@@ -1073,34 +1051,6 @@ export default function App() {
               </article>
             )}
 
-            {result.lexicalRows?.length > 0 && !simpleMode && showFullStudy && (
-              <article className="rounded-lg border border-[#dbe3d8] bg-[#fbfcfa] p-5" id="lexico">
-                <h3 className="mb-3 text-lg font-black text-ink">Léxico en lenguaje sencillo</h3>
-                <div className="grid overflow-hidden rounded-lg border border-[#dbe3d8] bg-white md:grid-cols-4">
-                  <div className="bg-moss-50 p-3 text-xs font-extrabold uppercase text-moss-800">Lema</div>
-                  <div className="bg-moss-50 p-3 text-xs font-extrabold uppercase text-moss-800">Significado</div>
-                  <div className="bg-moss-50 p-3 text-xs font-extrabold uppercase text-moss-800">Uso contextual</div>
-                  <div className="bg-moss-50 p-3 text-xs font-extrabold uppercase text-moss-800">Sintaxis</div>
-                  {result.lexicalRows.map((row) => (
-                    <React.Fragment key={`${row.lemma}-${row.contextualUse}`}>
-                      <span className="border-t border-[#dbe3d8] p-3 text-sm leading-6 text-muted">{row.lemma}</span>
-                      <span className="border-t border-[#dbe3d8] p-3 text-sm leading-6 text-muted">{row.semantics}</span>
-                      <span className="border-t border-[#dbe3d8] p-3 text-sm leading-6 text-muted">{row.contextualUse}</span>
-                      <span className="border-t border-[#dbe3d8] p-3 text-sm leading-6 text-muted">{row.syntax}</span>
-                    </React.Fragment>
-                  ))}
-                </div>
-                <div className="mt-4 grid gap-3 md:grid-cols-2">
-                  {result.lexicalRows.slice(0, 4).map((row) => (
-                    <div className="rounded-lg border border-moss-100 bg-moss-50 p-4" key={`simple-${row.lemma}-${row.contextualUse}`}>
-                      <strong className="mb-1 block text-moss-800">En palabras simples: {row.lemma}</strong>
-                      <p className="leading-7 text-muted">{row.semantics} En este estudio se entiende por su uso en la frase, no por una definición aislada.</p>
-                    </div>
-                  ))}
-                </div>
-              </article>
-            )}
-
             {!simpleMode && showFullStudy && simpleTerms.length > 0 && (
               <article className="rounded-lg border border-[#dbe3d8] bg-white p-5">
                 <h3 className="mb-3 text-xl font-black text-ink">No entiendo esta palabra</h3>
@@ -1109,20 +1059,6 @@ export default function App() {
                     <div className="rounded-lg border border-moss-100 bg-moss-50 p-4" key={item.term}>
                       <strong className="capitalize text-moss-800">{item.term}</strong>
                       <p className="mt-2 leading-7 text-muted">{item.definition}</p>
-                    </div>
-                  ))}
-                </div>
-              </article>
-            )}
-
-            {!simpleMode && showFullStudy && (
-              <article className="rounded-lg border border-[#dbe3d8] bg-[#fbfcfa] p-5">
-                <h3 className="mb-3 text-xl font-black text-ink">Comparador de interpretaciones</h3>
-                <div className="grid gap-3 md:grid-cols-2">
-                  {interpretationViews(result, historicalContext).map((view) => (
-                    <div className="rounded-lg border border-[#dbe3d8] bg-white p-4" key={view.title}>
-                      <strong className="block text-moss-800">{view.title}</strong>
-                      <p className="mt-2 leading-7 text-muted">{view.body}</p>
                     </div>
                   ))}
                 </div>
@@ -1254,25 +1190,6 @@ function SecondTempleContext({ bookContext, query }) {
 
   return (
     <div className="mt-6 grid gap-5 border-t border-[#dbe3d8] pt-5">
-      <article className="rounded-lg border border-moss-100 bg-moss-50 p-5">
-        <Pill>Libro detectado</Pill>
-        <h3 className="mt-3 text-2xl font-black leading-tight text-ink">{bookContext.book}</h3>
-        <div className="mt-4 grid gap-3 lg:grid-cols-3">
-          <div className="rounded-lg border border-[#dbe3d8] bg-white p-4">
-            <strong className="block text-moss-800">Situación histórica</strong>
-            <p className="mt-2 leading-7 text-muted">{bookContext.setting}</p>
-          </div>
-          <div className="rounded-lg border border-[#dbe3d8] bg-white p-4">
-            <strong className="block text-moss-800">Claves culturales</strong>
-            <p className="mt-2 leading-7 text-muted">{bookContext.culture}</p>
-          </div>
-          <div className="rounded-lg border border-[#dbe3d8] bg-white p-4">
-            <strong className="block text-moss-800">Fuentes útiles</strong>
-            <p className="mt-2 leading-7 text-muted">{bookContext.sources}</p>
-          </div>
-        </div>
-      </article>
-
       <div className="grid gap-3 lg:grid-cols-2">
         <article className="rounded-lg border border-[#dbe3d8] bg-[#fbfcfa] p-5">
           <h3 className="mb-3 text-xl font-black text-ink">1. Cosmovisión y creencias judías en {bookContext.book}</h3>
