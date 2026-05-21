@@ -540,12 +540,152 @@ function chapterDepthProfile(book, chapter) {
       caution: 'No usar Efesios 6 para romantizar esclavitud ni para convertir la vida cristiana en espectáculo de guerra espiritual. Pablo habla dentro de casas romanas reales y llama a vivir bajo el señorío de Cristo.',
       synthesis: 'La conclusión cruda es que la vida nueva llega hasta la casa, el trabajo y la resistencia espiritual: la iglesia se mantiene firme no por fuerza humana, sino por la verdad, la justicia, la fe y la palabra de Dios.'
     },
+    'juan 1': {
+      unit: 'Juan 1:1-18 prólogo sobre el Verbo, creación, luz, encarnación y revelación del Padre; 1:19-34 testimonio de Juan el Bautista; 1:35-51 primeros discípulos y títulos cristológicos.',
+      keyTerms: 'Verbo, Dios, vida, luz, tinieblas, carne, gloria, gracia, verdad, Cordero de Dios, Mesías.',
+      intertext: 'Génesis 1 está detrás de "en el principio". Éxodo 33-34 ilumina gloria, gracia y verdad. El Cordero de Dios evoca sacrificio, Pascua y lenguaje de remoción del pecado.',
+      caution: 'No leer el prólogo como filosofía abstracta separada de la historia. Juan afirma que el Verbo eterno se hizo carne y fue testificado en hechos concretos.',
+      synthesis: 'La conclusión cruda es que Juan presenta a Jesús como revelación definitiva de Dios: creador, vida, luz y presencia divina encarnada entre su pueblo.'
+    },
+    'juan 2': {
+      unit: 'Juan 2:1-12 señal del agua convertida en vino en Caná; 2:13-25 purificación del templo y anuncio del templo de su cuerpo.',
+      keyTerms: 'señal, gloria, creer, bodas, vino, hora, templo, cuerpo, resurrección.',
+      intertext: 'Las bodas y el vino conectan con imágenes proféticas de restauración. El templo remite al centro cultual de Israel, pero Jesús reorienta la presencia de Dios hacia su propia persona.',
+      caution: 'No reducir Caná a un milagro social ni la purificación del templo a enojo moral. Ambas escenas revelan reemplazo y cumplimiento en Jesús.',
+      synthesis: 'La conclusión cruda es que Jesús inaugura una nueva etapa: revela gloria y desplaza el centro de encuentro con Dios desde el templo hacia sí mismo.'
+    },
     'juan 3': {
       unit: 'Juan 3:1-12 diálogo con Nicodemo sobre nuevo nacimiento; 3:13-21 revelación del Hijo y respuesta de fe o rechazo; 3:22-36 testimonio final de Juan el Bautista.',
       keyTerms: 'nacer de arriba, Espíritu, reino, Hijo del Hombre, creer, vida eterna, luz, juicio, testimonio.',
       intertext: 'Números 21 está detrás de la serpiente levantada. Ezequiel 36 ayuda a entender agua y Espíritu como renovación prometida.',
       caution: 'No reducir Juan 3 a una frase devocional aislada. El capítulo contrapone autoridad religiosa, necesidad de nuevo nacimiento y revelación del Hijo.',
       synthesis: 'La conclusión cruda es que la entrada al reino no depende de estatus religioso, sino de una obra de Dios que exige respuesta ante la luz revelada en el Hijo.'
+    },
+    'juan 4': {
+      unit: 'Juan 4:1-42 Jesús y la mujer samaritana; 4:43-54 segunda señal en Galilea con el hijo del oficial.',
+      keyTerms: 'Samaría, agua viva, adoración, espíritu, verdad, Mesías, cosecha, creer, señal.',
+      intertext: 'El pozo evoca escenas patriarcales de encuentro. La tensión judíos-samaritanos viene de historia de culto, territorio y pureza. La adoración ya no queda atada a Gerizim o Jerusalén.',
+      caution: 'No leer la escena solo como conversación moral individual. Juan trata identidad mesiánica, frontera étnica, culto verdadero y misión.',
+      synthesis: 'La conclusión cruda es que Jesús cruza fronteras religiosas y sociales para revelar que el culto verdadero nace de la revelación de Dios y alcanza aun a los marginados.'
+    },
+    'juan 5': {
+      unit: 'Juan 5:1-18 sanidad en Betesda y conflicto por sábado; 5:19-47 discurso sobre autoridad del Hijo, vida, juicio y testigos.',
+      keyTerms: 'sábado, sanar, Padre, Hijo, vida, juicio, testimonio, Escrituras, Moisés.',
+      intertext: 'El sábado remite a creación y pacto. Moisés y las Escrituras funcionan como testigos que apuntan a Jesús, no como rivales de su autoridad.',
+      caution: 'No tratar el conflicto como simple discusión legalista. El centro es la autoridad divina de Jesús para dar vida y ejecutar juicio.',
+      synthesis: 'La conclusión cruda es que Jesús reclama una relación única con el Padre: su obra de vida y juicio exige escuchar su voz y revisar cómo se leen las Escrituras.'
+    },
+    'juan 6': {
+      unit: 'Juan 6:1-15 alimentación de los cinco mil; 6:16-21 Jesús sobre el mar; 6:22-59 discurso del pan de vida; 6:60-71 crisis de discípulos.',
+      keyTerms: 'pan, señal, maná, vida, carne, sangre, creer, venir, permanecer, palabras de vida.',
+      intertext: 'Éxodo 16 y el maná son el trasfondo principal. La Pascua cercana intensifica el lenguaje de provisión, liberación y vida.',
+      caution: 'No reducir el pan de vida a metáfora general de ayuda espiritual. Juan lo conecta con creer, recibir vida y participar de Jesús mismo.',
+      synthesis: 'La conclusión cruda es que Jesús no solo da pan: se presenta como el pan verdadero que desciende del cielo y provoca una división entre fe superficial y adhesión real.'
+    },
+    'juan 7': {
+      unit: 'Juan 7:1-13 tensión familiar y viaje a la fiesta; 7:14-36 enseñanza pública y debate sobre origen de Jesús; 7:37-52 promesa de agua viva y división.',
+      keyTerms: 'fiesta, hora, enseñanza, enviado, origen, agua viva, Espíritu, división.',
+      intertext: 'La fiesta de Tabernáculos, con agua y memoria del desierto, ilumina la promesa de ríos de agua viva y expectativa escatológica.',
+      caution: 'No leer el capítulo sin la fiesta. El marco litúrgico explica por qué agua, origen, presencia y Espíritu son temas centrales.',
+      synthesis: 'La conclusión cruda es que Jesús se revela en medio de una fiesta de memoria y esperanza, afirmando que la verdadera provisión del Espíritu viene por medio de él.'
+    },
+    'juan 8': {
+      unit: 'Juan 8:12-30 Jesús como luz del mundo y enviado del Padre; 8:31-59 verdad, libertad, descendencia de Abraham y "antes que Abraham fuese, yo soy".',
+      keyTerms: 'luz, mundo, testimonio, verdad, libertad, pecado, Abraham, Padre, yo soy.',
+      intertext: 'La luz conecta con creación, éxodo y esperanza profética. Abraham se vuelve eje del debate sobre descendencia física y verdadera fidelidad.',
+      caution: 'No usar Juan 8 para desprecio antijudío. Es una disputa intrajudía del siglo I sobre identidad, autoridad y respuesta a Jesús.',
+      synthesis: 'La conclusión cruda es que Jesús afirma una autoridad anterior y superior a Abraham; la verdadera libertad depende de permanecer en su palabra.'
+    },
+    'juan 9': {
+      unit: 'Juan 9:1-12 sanidad del ciego de nacimiento; 9:13-34 interrogatorio y expulsión; 9:35-41 revelación del Hijo del Hombre y ceguera espiritual.',
+      keyTerms: 'ciego, obras de Dios, sábado, lavar, ver, pecado, expulsión, Hijo del Hombre.',
+      intertext: 'La apertura de ojos remite a señales proféticas de restauración. El sábado vuelve a funcionar como campo de disputa sobre identidad y autoridad de Jesús.',
+      caution: 'No leer la ceguera como castigo automático por pecado. El mismo texto rechaza esa explicación simplista al inicio.',
+      synthesis: 'La conclusión cruda es que el signo físico expone una inversión: el ciego llega a ver quién es Jesús, mientras autoridades seguras de ver quedan ciegas.'
+    },
+    'juan 10': {
+      unit: 'Juan 10:1-21 pastor, puerta, ovejas y vida abundante; 10:22-42 fiesta de Dedicación, unidad con el Padre y nueva división.',
+      keyTerms: 'pastor, ovejas, puerta, vida, ladrón, conocer, dar la vida, Padre, uno.',
+      intertext: 'Ezequiel 34 es clave: Dios denuncia malos pastores y promete pastorear a su pueblo. Juan aplica esa expectativa a Jesús.',
+      caution: 'No leer "vida abundante" como prosperidad material. En el capítulo significa vida bajo el cuidado del Pastor que entrega su vida.',
+      synthesis: 'La conclusión cruda es que Jesús se presenta como el pastor prometido que conoce, protege y reúne a sus ovejas mediante su propia muerte.'
+    },
+    'juan 11': {
+      unit: 'Juan 11:1-16 muerte de Lázaro; 11:17-44 Jesús como resurrección y vida; 11:45-57 decisión oficial de matar a Jesús.',
+      keyTerms: 'Lázaro, amar, dormir, resurrección, vida, creer, llorar, gloria, muerte.',
+      intertext: 'La esperanza de resurrección ya existía en sectores judíos del Segundo Templo. Juan la concentra en la persona de Jesús, no solo en un evento futuro.',
+      caution: 'No convertir Juan 11 en simple consuelo funerario. La señal precipita la muerte de Jesús y revela su autoridad sobre la muerte.',
+      synthesis: 'La conclusión cruda es que Jesús enfrenta la muerte con dolor real y autoridad real: la vida que ofrece provoca fe, oposición y camino hacia la cruz.'
+    },
+    'juan 12': {
+      unit: 'Juan 12:1-11 unción en Betania; 12:12-19 entrada en Jerusalén; 12:20-36 llegada de la hora; 12:37-50 incredulidad y resumen del ministerio público.',
+      keyTerms: 'unción, rey, hora, glorificar, grano de trigo, mundo, luz, creer, juicio.',
+      intertext: 'Zacarías 9 está detrás de la entrada del rey humilde. Isaías 6 y 53 ayudan a interpretar incredulidad y gloria en sufrimiento.',
+      caution: 'No leer la entrada triunfal como triunfo político normal. Juan la conecta con la hora de muerte y glorificación.',
+      synthesis: 'La conclusión cruda es que la gloria de Jesús se revela paradójicamente en muerte: como grano que cae, su entrega abre fruto y juicio sobre el mundo.'
+    },
+    'juan 13': {
+      unit: 'Juan 13:1-20 lavamiento de pies; 13:21-30 anuncio de traición; 13:31-38 nuevo mandamiento y anuncio de negación de Pedro.',
+      keyTerms: 'hora, amar hasta el fin, lavar, siervo, traición, gloria, mandamiento nuevo, amar.',
+      intertext: 'El lavado evoca purificación y servicio humilde. El amor hasta el fin introduce los discursos de despedida y anticipa la cruz.',
+      caution: 'No reducir el lavamiento a ejemplo genérico de humildad. Es señal de la manera en que Jesús purifica y redefine autoridad por servicio.',
+      synthesis: 'La conclusión cruda es que la comunidad de Jesús debe entender poder, limpieza y amor desde el Señor que se inclina y sirve antes de entregar su vida.'
+    },
+    'juan 14': {
+      unit: 'Juan 14:1-14 camino al Padre; 14:15-31 promesa del Paráclito, amor, obediencia y paz.',
+      keyTerms: 'casa del Padre, camino, verdad, vida, Padre, Paráclito, Espíritu, paz, obedecer.',
+      intertext: 'El tema de morada conecta con templo y presencia de Dios. El Espíritu como Paráclito continúa la presencia y enseñanza de Jesús.',
+      caution: 'No leer Juan 14 solo como lenguaje funerario. Es consuelo de despedida para una comunidad que deberá vivir por la presencia del Espíritu.',
+      synthesis: 'La conclusión cruda es que Jesús no deja huérfanos a los suyos: su partida abre acceso al Padre y la presencia del Espíritu sostiene obediencia y paz.'
+    },
+    'juan 15': {
+      unit: 'Juan 15:1-17 vid verdadera, permanecer y amor; 15:18-27 odio del mundo y testimonio del Paráclito.',
+      keyTerms: 'vid, ramas, permanecer, fruto, podar, amor, amigos, mundo, testimonio.',
+      intertext: 'Israel como vid aparece en Isaías 5 y Salmos. Jesús se presenta como la vid verdadera, concentrando en sí la identidad fructífera del pueblo.',
+      caution: 'No leer "fruto" como productividad religiosa superficial. En Juan 15 nace de permanecer en Cristo y se expresa en amor y testimonio.',
+      synthesis: 'La conclusión cruda es que la vida del discípulo depende de unión continua con Jesús: sin permanecer no hay fruto, amor ni testimonio fiel.'
+    },
+    'juan 16': {
+      unit: 'Juan 16:1-15 persecución y obra del Espíritu; 16:16-24 tristeza convertida en gozo; 16:25-33 victoria de Jesús sobre el mundo.',
+      keyTerms: 'expulsión, Espíritu, convencer, pecado, justicia, juicio, tristeza, gozo, mundo, vencer.',
+      intertext: 'El lenguaje de testimonio, juicio y Espíritu continúa promesas proféticas de renovación y defensa de Dios para su pueblo.',
+      caution: 'No leer la victoria de Jesús como ausencia de aflicción. El capítulo dice explícitamente que habrá aflicción, pero dentro de la victoria de Cristo.',
+      synthesis: 'La conclusión cruda es que el Espíritu sostendrá a los discípulos en persecución, interpretará la obra de Jesús y transformará tristeza en gozo escatológico.'
+    },
+    'juan 17': {
+      unit: 'Juan 17:1-5 Jesús ora por glorificación; 17:6-19 ora por sus discípulos; 17:20-26 ora por los futuros creyentes y su unidad.',
+      keyTerms: 'gloria, vida eterna, nombre, mundo, verdad, santificar, enviar, unidad, amor.',
+      intertext: 'La oración sacerdotal retoma temas de nombre divino, santificación, misión y unidad del pueblo de Dios.',
+      caution: 'No usar la unidad de Juan 17 como unidad sin verdad. El texto une unidad, santificación en la verdad y misión.',
+      synthesis: 'La conclusión cruda es que Jesús interpreta su muerte como glorificación y pide que su pueblo sea guardado, santificado y unido para testimonio ante el mundo.'
+    },
+    'juan 18': {
+      unit: 'Juan 18:1-11 arresto en el huerto; 18:12-27 interrogatorio religioso y negaciones de Pedro; 18:28-40 juicio ante Pilato.',
+      keyTerms: 'huerto, yo soy, copa, sacerdote, negar, reino, verdad, Pilato.',
+      intertext: 'El huerto contrasta con escenas de caída y obediencia. El tema del reino redefine poder frente al tribunal romano.',
+      caution: 'No leer el juicio como pérdida de control. Juan presenta a Jesús entregándose conscientemente y revelando un reino que no opera como los reinos del mundo.',
+      synthesis: 'La conclusión cruda es que Jesús aparece como acusado, pero actúa con soberanía: su reino y su testimonio de la verdad confrontan tanto poder religioso como imperial.'
+    },
+    'juan 19': {
+      unit: 'Juan 19:1-16 condena y burla real; 19:17-30 crucifixión y muerte; 19:31-42 sepultura.',
+      keyTerms: 'rey, corona, cruz, título, Escritura, madre, consumado, sangre, agua, sepultura.',
+      intertext: 'Salmo 22, Zacarías 12 y la Pascua iluminan reparto de vestiduras, mirar al traspasado y huesos no quebrados.',
+      caution: 'No leer la cruz en Juan como derrota accidental. "Consumado es" indica cumplimiento de la misión recibida.',
+      synthesis: 'La conclusión cruda es que la muerte de Jesús es entronización paradójica y cumplimiento: el rey crucificado completa la obra y revela la gloria en entrega.'
+    },
+    'juan 20': {
+      unit: 'Juan 20:1-10 tumba vacía; 20:11-18 aparición a María; 20:19-23 envío y Espíritu; 20:24-31 Tomás y propósito del libro.',
+      keyTerms: 'tumba, ver, creer, María, Rabboni, paz, enviar, Espíritu, Tomás, Señor, Dios.',
+      intertext: 'El primer día evoca nueva creación. La confesión de Tomás cierra el arco cristológico iniciado en Juan 1.',
+      caution: 'No reducir Juan 20 a prueba apologética fría. El capítulo busca fe: señales escritas para creer que Jesús es el Cristo, el Hijo de Dios.',
+      synthesis: 'La conclusión cruda es que la resurrección funda una nueva comunidad enviada en paz, con testimonio suficiente para creer y tener vida en el nombre de Jesús.'
+    },
+    'juan 21': {
+      unit: 'Juan 21:1-14 pesca y comida junto al mar; 21:15-19 restauración y comisión de Pedro; 21:20-25 discípulo amado y cierre testimonial.',
+      keyTerms: 'pesca, pan, peces, amar, apacentar, ovejas, seguir, testimonio, escrito.',
+      intertext: 'La pesca y la comida evocan provisión y misión. El lenguaje de ovejas conecta con Juan 10: Pedro pastorea bajo el Pastor verdadero.',
+      caution: 'No leer Juan 21 como apéndice sin importancia. Cierra temas de misión, restauración, liderazgo y testimonio confiable.',
+      synthesis: 'La conclusión cruda es que el Resucitado restaura al discípulo fallido, lo llama a pastorear y centra toda vocación en seguir a Jesús.'
     },
     'mateo 5': {
       unit: 'Mateo 5:1-12 bienaventuranzas; 5:13-16 identidad pública de los discípulos; 5:17-20 Jesús y la Torá; 5:21-48 seis contrastes que profundizan la justicia del reino.',
