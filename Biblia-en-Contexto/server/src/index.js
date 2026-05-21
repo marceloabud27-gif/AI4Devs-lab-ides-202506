@@ -383,6 +383,84 @@ function bookArgumentContext(book, chapter) {
   return `La lectura debe ubicar ${book} dentro del argumento completo del libro antes de sacar conclusiones del pasaje.`;
 }
 
+function chapterDepthProfile(book, chapter) {
+  const key = `${normalizeTerm(book)} ${chapter}`;
+  const profiles = {
+    'romanos 9': {
+      unit: 'Romanos 9:1-5 dolor de Pablo por Israel; 9:6-13 promesa y elección en Isaac/Jacob; 9:14-18 misericordia y endurecimiento; 9:19-29 imagen del alfarero, Oseas e Isaías; 9:30-33 tropiezo de Israel y entrada de gentiles por fe.',
+      keyTerms: 'Israel, promesa, descendencia, elección, misericordia, endurecimiento, vasos, remanente, justicia, fe.',
+      intertext: 'Génesis 18, 21 y 25; Éxodo 9; Oseas 1-2; Isaías 10 y 28. Pablo no cita esos textos como adornos: los usa para defender que Dios sigue siendo fiel aunque la pertenencia al pueblo se defina por promesa y no solo por linaje.',
+      caution: 'No leer Romanos 9 separado de Romanos 10-11. El capítulo trata la fidelidad de Dios a Israel y la incorporación de gentiles, no solo un debate abstracto sobre predestinación individual.',
+      synthesis: 'La conclusión cruda es que Pablo defiende la libertad de Dios para cumplir su promesa de manera inesperada: preserva remanente de Israel, llama gentiles y deja expuesta la tensión entre misericordia divina, responsabilidad humana y tropiezo ante Cristo.'
+    },
+    'efesios 4': {
+      unit: 'Efesios 4:1-6 llamado a vivir dignamente y guardar la unidad; 4:7-16 dones para madurez del cuerpo; 4:17-24 abandono de la vida vieja; 4:25-32 ética concreta de verdad, ira, trabajo, palabra y perdón.',
+      keyTerms: 'andar, vocación, unidad, cuerpo, dones, madurez, viejo hombre, nuevo hombre, verdad, perdón.',
+      intertext: 'Salmo 68 aparece detrás de Efesios 4:8. La imagen del cuerpo conecta con la unidad judío-gentil ya expuesta en Efesios 2.',
+      caution: 'No convertir Efesios 4 en moralismo aislado. La ética del capítulo sale de Efesios 1-3: gracia, reconciliación y nueva humanidad en Cristo.',
+      synthesis: 'La conclusión cruda es que la iglesia debe vivir como un solo cuerpo maduro: la doctrina de la reconciliación se verifica en unidad, palabra limpia, vida renovada y perdón concreto.'
+    },
+    'juan 3': {
+      unit: 'Juan 3:1-12 diálogo con Nicodemo sobre nuevo nacimiento; 3:13-21 revelación del Hijo y respuesta de fe o rechazo; 3:22-36 testimonio final de Juan el Bautista.',
+      keyTerms: 'nacer de arriba, Espíritu, reino, Hijo del Hombre, creer, vida eterna, luz, juicio, testimonio.',
+      intertext: 'Números 21 está detrás de la serpiente levantada. Ezequiel 36 ayuda a entender agua y Espíritu como renovación prometida.',
+      caution: 'No reducir Juan 3 a una frase devocional aislada. El capítulo contrapone autoridad religiosa, necesidad de nuevo nacimiento y revelación del Hijo.',
+      synthesis: 'La conclusión cruda es que la entrada al reino no depende de estatus religioso, sino de una obra de Dios que exige respuesta ante la luz revelada en el Hijo.'
+    },
+    'mateo 5': {
+      unit: 'Mateo 5:1-12 bienaventuranzas; 5:13-16 identidad pública de los discípulos; 5:17-20 Jesús y la Torá; 5:21-48 seis contrastes que profundizan la justicia del reino.',
+      keyTerms: 'reino de los cielos, justicia, cumplimiento, ley, profetas, corazón, enemigo, perfecto.',
+      intertext: 'La montaña evoca a Moisés y la Torá, pero Mateo presenta a Jesús como maestro autorizado que interpreta la voluntad de Dios.',
+      caution: 'No leer el Sermón del Monte como simple lista ética universal. Es instrucción del reino dirigida a discípulos dentro de la historia de Israel.',
+      synthesis: 'La conclusión cruda es que Jesús no rebaja la justicia de la Torá; expone una justicia más profunda que llega al corazón, las relaciones y la lealtad total a Dios.'
+    },
+    'genesis 1': {
+      unit: 'Génesis 1:1-2:3 presenta creación ordenada en seis días y reposo del séptimo, con repeticiones literarias: Dios dice, separa, nombra, ve que es bueno y bendice.',
+      keyTerms: 'crear, cielo y tierra, bueno, imagen de Dios, dominio, bendición, reposo.',
+      intertext: 'El capítulo funciona como inicio canónico: prepara temas de creación, humanidad, imagen, bendición, tierra y reposo que reaparecen en toda la Biblia.',
+      caution: 'No leer Génesis 1 como si fuera un manual científico moderno ni como mito pagano sin matices. Es teología narrativa de creación en lenguaje antiguo.',
+      synthesis: 'La conclusión cruda es que el mundo no nace del caos sin propósito: Dios ordena, limita, bendice y coloca a la humanidad como imagen responsable dentro de la creación.'
+    },
+    'exodo 12': {
+      unit: 'Éxodo 12 regula la Pascua, la sangre en las casas, el juicio sobre Egipto, la salida y la memoria ritual para generaciones futuras.',
+      keyTerms: 'Pascua, cordero, sangre, casa, juicio, memoria, liberación, primogénito.',
+      intertext: 'El capítulo conecta con la memoria del éxodo en la Torá, los Profetas y el Nuevo Testamento, donde la Pascua provee lenguaje para redención y liberación.',
+      caution: 'No saltar directo a aplicaciones cristianas sin leer primero el evento como liberación histórica de Israel de Egipto.',
+      synthesis: 'La conclusión cruda es que la Pascua une juicio y rescate: Israel es liberado mediante una señal de sustitución y esa memoria forma su identidad como pueblo redimido.'
+    },
+    'salmos 23': {
+      unit: 'Salmo 23 se mueve desde YHWH como pastor que guía y provee hasta YHWH como anfitrión que protege y recibe.',
+      keyTerms: 'pastor, nada faltará, aguas, sendas, valle, vara, cayado, mesa, misericordia.',
+      intertext: 'El pastor es una imagen real y pastoral de Israel; luego será usada para líderes, reyes y esperanza mesiánica.',
+      caution: 'No suavizar el valle de sombra como si el salmo negara peligro. La confianza aparece precisamente en medio del riesgo.',
+      synthesis: 'La conclusión cruda es que la seguridad del salmista no está en ausencia de amenaza, sino en la presencia fiel de YHWH que guía, corrige, protege y hospeda.'
+    },
+    'isaias 53': {
+      unit: 'Isaías 52:13-53:12 describe al siervo exaltado mediante sufrimiento, rechazo, sustitución, silencio, muerte y vindicación.',
+      keyTerms: 'siervo, despreciado, dolores, transgresiones, paz, heridas, culpa, justificar, muchos.',
+      intertext: 'El pasaje pertenece a los cánticos del siervo y dialoga con temas de exilio, restauración, culpa e intervención de YHWH.',
+      caution: 'No separar Isaías 53 de Isaías 40-55 ni resolver de inmediato todas las preguntas sobre identidad del siervo sin seguir el argumento del libro.',
+      synthesis: 'La conclusión cruda es que la restauración de muchos aparece ligada al sufrimiento vicario del siervo y a la vindicación final de Dios.'
+    },
+    'hebreos 11': {
+      unit: 'Hebreos 11 recorre testigos de fe desde Abel hasta los profetas, mostrando confianza perseverante antes de recibir plenamente lo prometido.',
+      keyTerms: 'fe, esperanza, promesa, testimonio, peregrinos, patria, obediencia.',
+      intertext: 'El capítulo relee Génesis, Éxodo, Josué, Jueces y la historia de Israel como cadena de fidelidad bajo promesa.',
+      caution: 'No leer Hebreos 11 como galería de héroes autónomos. El punto es perseverar mirando la promesa y, en Hebreos 12, a Jesús.',
+      synthesis: 'La conclusión cruda es que la fe bíblica no es optimismo; es perseverancia obediente ante promesas aún no consumadas.'
+    },
+    'apocalipsis 1': {
+      unit: 'Apocalipsis 1 presenta prólogo, bendición, saludo a las iglesias, visión del Cristo glorificado y comisión a Juan.',
+      keyTerms: 'revelación, testimonio, bienaventurado, iglesias, Alfa y Omega, Hijo del Hombre, candeleros.',
+      intertext: 'Daniel 7 y 10, Zacarías y lenguaje profético del Antiguo Testamento moldean la visión de Cristo y las iglesias.',
+      caution: 'No empezar Apocalipsis como código de fechas. El libro se presenta como revelación profética para iglesias reales bajo presión.',
+      synthesis: 'La conclusión cruda es que las iglesias deben interpretar su sufrimiento y fidelidad desde la soberanía del Cristo resucitado que camina entre ellas.'
+    }
+  };
+
+  return profiles[key] ?? null;
+}
+
 function intrabiblicalContext(book, chapter, testament) {
   const normalizedBook = normalizeTerm(book);
 
@@ -408,17 +486,18 @@ function passageSections(reference, verses) {
   const textPreview = joinedClearText(verses).slice(0, 420);
   const lexicalRows = lexicalRowsForPassage(verses);
   const keyTerms = lexicalRows.map((row) => row.lemma).join(', ');
+  const chapterProfile = chapterDepthProfile(sample.book, sample.chapter);
   const originalText = testament === 'Nuevo Testamento' ? 'Nestle-Aland 28 para el griego' : 'Texto Masorético para el hebreo/arameo';
   const comparison = testament === 'Nuevo Testamento' ? 'LBLA/NBLA y NA28' : 'LBLA/NBLA y Texto Masorético';
 
   return [
     {
       title: 'Contexto',
-      body: `${scope} está dentro de ${sample.book} ${sample.chapter}, en el ${testament}. Primero se lee el capítulo completo: qué viene antes, qué problema o tema se está tratando y cómo continúa después. ${bookArgumentContext(sample.book, sample.chapter)} En esta consulta, el texto visible dice en resumen: "${textPreview}${joinedClearText(verses).length > 420 ? '...' : ''}". Ese marco evita usar el versículo como frase suelta.`
+      body: `${scope} está dentro de ${sample.book} ${sample.chapter}, en el ${testament}. Primero se lee el capítulo completo: qué viene antes, qué problema o tema se está tratando y cómo continúa después. ${bookArgumentContext(sample.book, sample.chapter)} ${chapterProfile ? `Estructura específica del capítulo: ${chapterProfile.unit} ` : ''}En esta consulta, el texto visible dice en resumen: "${textPreview}${joinedClearText(verses).length > 420 ? '...' : ''}". Ese marco evita usar el versículo como frase suelta.`
     },
     {
       title: 'Género y estructura',
-      body: `${sample.book} se trabaja como ${genreForBook(sample.book, testament)} En ${scope}, la estructura inmediata debe observar palabras repetidas, conectores, mandatos, promesas, contraste o secuencia de ideas. La pregunta clave es: ¿la frase principal afirma algo, manda algo, narra algo, explica una causa o muestra una consecuencia?`
+      body: `${sample.book} se trabaja como ${genreForBook(sample.book, testament)} En ${scope}, la estructura inmediata debe observar palabras repetidas, conectores, mandatos, promesas, contraste o secuencia de ideas. ${chapterProfile ? `Para este capítulo, la unidad interna debe seguirse así: ${chapterProfile.unit} ` : ''}La pregunta clave es: ¿la frase principal afirma algo, manda algo, narra algo, explica una causa o muestra una consecuencia?`
     },
     {
       title: 'Crítica textual en sencillo',
@@ -426,15 +505,19 @@ function passageSections(reference, verses) {
     },
     {
       title: 'Léxico y sintaxis',
-      body: `Las palabras de ${scope} se explican por su función en la oración, no solo por su raíz. En este análisis destacan: ${keyTerms || 'los términos principales del pasaje'}. "Léxico" pregunta qué campo de significado tiene una palabra; "sintaxis" pregunta qué papel cumple en la frase: sujeto, acción, complemento, contraste, causa, finalidad o resultado. HALOT/BDAG sirven para confirmar, pero el contexto manda.`
+      body: `Las palabras de ${scope} se explican por su función en la oración, no solo por su raíz. En este análisis destacan: ${chapterProfile?.keyTerms || keyTerms || 'los términos principales del pasaje'}. "Léxico" pregunta qué campo de significado tiene una palabra; "sintaxis" pregunta qué papel cumple en la frase: sujeto, acción, complemento, contraste, causa, finalidad o resultado. HALOT/BDAG sirven para confirmar, pero el contexto manda.`
     },
     {
       title: 'Intertextualidad intrabíblica',
-      body: intrabiblicalContext(sample.book, sample.chapter, testament)
+      body: chapterProfile
+        ? `${chapterProfile.intertext} Advertencia: ${chapterProfile.caution}`
+        : intrabiblicalContext(sample.book, sample.chapter, testament)
     },
     {
       title: 'Síntesis exegética',
-      body: `La conclusión responsable de ${scope} debe salir del texto, del capítulo, del género literario y del argumento completo de ${sample.book}. En términos simples: primero se escucha lo que el pasaje afirma en su mundo original; después se reconoce cómo funciona dentro del libro; recién al final se piensa una aplicación responsable sin forzar una doctrina externa sobre el texto.`
+      body: chapterProfile
+        ? `${chapterProfile.synthesis} En términos simples: primero se escucha lo que el pasaje afirma en su mundo original; después se reconoce cómo funciona dentro del libro; recién al final se piensa una aplicación responsable sin forzar una doctrina externa sobre el texto.`
+        : `La conclusión responsable de ${scope} debe salir del texto, del capítulo, del género literario y del argumento completo de ${sample.book}. En términos simples: primero se escucha lo que el pasaje afirma en su mundo original; después se reconoce cómo funciona dentro del libro; recién al final se piensa una aplicación responsable sin forzar una doctrina externa sobre el texto.`
     }
   ];
 }
