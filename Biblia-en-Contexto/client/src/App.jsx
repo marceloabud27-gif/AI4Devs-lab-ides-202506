@@ -1,5 +1,5 @@
 ﻿import React, { useEffect, useState } from 'react';
-import { BookOpen, Check, Clipboard, Eye, History, Loader2, Search, Sparkles, Star, Wand2 } from 'lucide-react';
+import { BookOpen, Check, Clipboard, ExternalLink, Eye, History, Loader2, Search, Sparkles, Star, Wand2 } from 'lucide-react';
 import { analyzeInput } from './api.js';
 
 const examples = ['Romanos 8:29', 'Juan 3:16', 'presciencia', 'gracia'];
@@ -1553,6 +1553,11 @@ export default function App() {
                   {section.title}
                 </a>
               ))}
+              {!simpleMode && showFullStudy && result.pastoralPerspectives && (
+                <a className="border-b border-[#e8ede4] py-2 text-sm leading-5 text-muted hover:text-moss-800" href="#perspectivas-pastorales">
+                  Perspectivas pastorales
+                </a>
+              )}
             </nav>
           </aside>
 
@@ -1656,6 +1661,41 @@ export default function App() {
                   </article>
                 ))}
               </div>
+            )}
+
+            {result.pastoralPerspectives && !simpleMode && showFullStudy && (
+              <article className="rounded-lg border border-[#dbe3d8] bg-white p-5" id="perspectivas-pastorales">
+                <Pill tone="gold">Perspectivas pastorales</Pill>
+                <h3 className="mt-3 text-2xl font-black text-ink">Sproul, MacArthur y Sugel como orientación responsable</h3>
+                <p className="mt-3 leading-8 text-muted">{result.pastoralPerspectives.note}</p>
+
+                <div className="mt-5 grid gap-3 lg:grid-cols-3">
+                  {result.pastoralPerspectives.items.map((item) => (
+                    <article className="rounded-lg border border-[#dbe3d8] bg-[#fbfcfa] p-4" key={item.author}>
+                      <strong className="block text-lg text-ink">{item.author}</strong>
+                      <p className="mt-2 text-sm font-bold leading-6 text-moss-800">{item.emphasis}</p>
+                      <p className="mt-3 leading-7 text-muted">{item.body}</p>
+                      <a
+                        className="mt-4 inline-flex items-center gap-2 rounded-lg border border-[#dbe3d8] bg-white px-3 py-2 text-sm font-extrabold text-moss-800 transition hover:border-moss-600 hover:bg-moss-50"
+                        href={item.officialUrl}
+                        target="_blank"
+                        rel="noreferrer"
+                      >
+                        Fuente oficial <ExternalLink size={14} />
+                      </a>
+                    </article>
+                  ))}
+                </div>
+
+                <div className="mt-5 rounded-lg border border-[#dbe3d8] bg-[#fbfcfa] p-4">
+                  <strong className="block text-ink">Criterios de uso</strong>
+                  <ul className="mt-3 grid gap-2 text-sm leading-6 text-muted">
+                    {result.pastoralPerspectives.guardrails.map((item) => (
+                      <li key={item}>- {item}</li>
+                    ))}
+                  </ul>
+                </div>
+              </article>
             )}
 
           </div>

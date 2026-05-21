@@ -1194,6 +1194,45 @@ function buildSimpleSummary(result) {
   return 'En simple: primero leemos el texto en su contexto, después miramos palabras importantes, y recién al final sacamos una conclusión cuidadosa.';
 }
 
+function buildPastoralPerspectives(result) {
+  const target = result.mode === 'word'
+    ? `la palabra o tema “${result.title}”`
+    : result.mode === 'text'
+      ? 'el texto ingresado'
+      : `el pasaje ${result.title}`;
+  const firstSection = result.sections?.[0]?.body ?? result.explanation;
+  const synthesis = result.sections?.find((section) => normalizeTerm(section.title).includes('sintesis'))?.body ?? result.explanation;
+
+  return {
+    note: 'Orientaciones resumidas con palabras propias. No reproducen comentarios completos protegidos por copyright.',
+    items: [
+      {
+        author: 'R.C. Sproul / Ligonier',
+        emphasis: 'Doctrina, santidad de Dios, gracia, pacto y lectura reformada responsable.',
+        body: `Para ${target}, una lectura en la línea de Sproul empezaría preguntando qué revela el texto sobre el carácter de Dios antes de convertirlo en aplicación personal. En este caso, conviene sostener la tensión del texto, respetar su contexto y dejar que la doctrina nazca de la exégesis, no al revés.`,
+        officialUrl: 'https://www.ligonier.org/'
+      },
+      {
+        author: 'John MacArthur / Grace to You',
+        emphasis: 'Exposición versículo por versículo, argumento del capítulo y conexión con el libro completo.',
+        body: `Para ${target}, una orientación expositiva al estilo MacArthur seguiría el flujo del capítulo: observar palabras, conectores, mandatos, sujetos y propósito del autor. La prioridad sería explicar qué dice el texto en su párrafo y cómo ese párrafo funciona dentro del libro completo.`,
+        officialUrl: 'https://www.gty.org/'
+      },
+      {
+        author: 'Sugel Michelén',
+        emphasis: 'Claridad pastoral, predicación expositiva, aplicación sobria y lenguaje comprensible.',
+        body: `Para ${target}, una lectura pastoral como la de Sugel buscaría explicar el sentido sin tecnicismos innecesarios: primero el contexto, luego la idea central, después las implicaciones. La aplicación debe salir de la síntesis exegética: ${synthesis}`,
+        officialUrl: 'https://www.coalicionporelevangelio.org/'
+      }
+    ],
+    guardrails: [
+      `Estas perspectivas deben revisarse a la luz del texto: ${firstSection}`,
+      'No sustituyen el análisis bíblico ni citan obras completas.',
+      'Si se agregan enlaces específicos en el futuro, deben apuntar a recursos oficiales o autorizados.'
+    ]
+  };
+}
+
 function depthNote(depth) {
   if (depth === 'sencillo') {
     return 'Nivel sencillo: prioriza claridad, frases cortas y conclusiones fáciles de seguir.';
@@ -1215,6 +1254,7 @@ function enrichAnalysis(result, depth) {
     simpleSummary: buildSimpleSummary(result),
     warnings: buildHermeneuticWarnings(result),
     translationNotes: buildTranslationNotes(result),
+    pastoralPerspectives: buildPastoralPerspectives(result),
     aiReady: Boolean(process.env.AI_PROVIDER_URL && process.env.AI_PROVIDER_KEY)
   };
 }
