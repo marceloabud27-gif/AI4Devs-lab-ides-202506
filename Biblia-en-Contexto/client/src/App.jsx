@@ -184,10 +184,16 @@ const bookHistoryDetails = {
     history: 'Hechos presenta la transición desde una comunidad judía en Jerusalén hacia iglesias compuestas por judíos y gentiles. Narra tensiones con autoridades judías, persecución, viajes misioneros, debates sobre la Ley y presencia del imperio romano. Su historia explica por qué la fe en Jesús no quedó como secta local, sino como movimiento mediterráneo.'
   },
   Romanos: {
+    era: 'Probablemente entre los años 56-58 d.C., durante el tercer viaje misionero de Pablo, antes de su visita a Jerusalén con la colecta para los santos.',
     place: 'Probablemente escrita desde Corinto o Cencreas durante el tercer viaje misionero de Pablo.',
     audience: 'Cristianos en Roma, judíos y gentiles, con tensiones de identidad después de conflictos y expulsiones de judíos bajo Claudio.',
     purpose: 'Exponer el evangelio de la justicia de Dios, unir a judíos y gentiles en una misma comunidad y preparar apoyo para la misión hacia España.',
-    history: 'Romanos nace en una iglesia que Pablo no fundó. La capital imperial reunía diversidad social, esclavos, libertos, judíos, gentiles y casas-iglesia. La carta trabaja pecado, Ley, gracia, Abraham, Israel, Espíritu, vida comunitaria y autoridad civil. Su trasfondo es pastoral y misionero, no un tratado abstracto separado de una comunidad real.'
+    literary: 'Romanos es una carta argumentativa. Pablo usa saludo epistolar, exposición doctrinal, preguntas retóricas, diatriba, citas del Antiguo Testamento, ejemplos de Abraham y Adán, exhortación ética y saludos personales. No debe leerse como un manual sistemático moderno, sino como un argumento pastoral y misionero dirigido a una comunidad real.',
+    social: 'Roma reunía élites, trabajadores, esclavos, libertos, migrantes, comerciantes y comunidades judías antiguas. Las iglesias probablemente se reunían en casas. La tensión judío-gentil es clave: después de la expulsión de judíos bajo Claudio y su retorno posterior, la comunidad tuvo que negociar identidad, liderazgo, prácticas de la Ley, comidas, días y pertenencia.',
+    cultural: 'La carta dialoga con el mundo judío de la diáspora y con una ciudad saturada de honor, patronazgo, poder imperial y pluralidad religiosa. Palabras como ley, carne, espíritu, gracia, fe, justicia, elección e Israel no son conceptos sueltos: funcionan dentro de Escritura judía, vida comunitaria y realidad romana.',
+    political: 'Roma era el centro del imperio. Confesar a Cristo como Señor y formar una comunidad donde judíos y gentiles comen, se reciben y se sirven mutuamente tenía implicaciones sociales y políticas. Pablo no escribe propaganda antiimperial directa, pero su evangelio reordena lealtades, identidad y poder bajo el señorío de Cristo.',
+    generalReading: 'Romanos 1-4 presenta la justicia de Dios frente al pecado de judíos y gentiles, y usa a Abraham como clave de la promesa. Romanos 5-8 desarrolla vida en Cristo, Espíritu, sufrimiento y esperanza. Romanos 9-11 responde la gran pregunta: si el evangelio incorpora gentiles, ¿qué pasa con Israel y las promesas? Romanos 12-16 aplica todo a la vida comunitaria. Por eso Romanos 9 debe leerse dentro de 9-11, no aislado como debate abstracto sobre predestinación.',
+    history: 'Romanos nace en una iglesia que Pablo no fundó, ubicada en la capital imperial. Su trasfondo es pastoral, misionero y comunitario: Pablo quiere presentar su evangelio, sanar tensiones entre judíos y gentiles, mostrar la fidelidad de Dios a sus promesas y preparar una misión hacia España. La carta trabaja pecado, justicia, Ley, gracia, Abraham, Adán, Israel, gentiles, Espíritu, vida comunitaria y autoridad civil. Romanos 9-11 es central para entender cómo Pablo defiende que Dios no ha fallado a Israel aunque el evangelio esté alcanzando a los gentiles.'
   },
   '1 Corintios': {
     place: 'Escrita desde Éfeso.',
@@ -1226,6 +1232,13 @@ function BookHistoryContext({ history }) {
           <strong className="block text-moss-800">Para qué público y propósito</strong>
           <p className="mt-2 leading-7 text-muted">{history.purpose}</p>
         </article>
+
+        {history.literary && (
+          <article className="rounded-lg border border-[#dbe3d8] bg-white p-4">
+            <strong className="block text-moss-800">Contexto literario</strong>
+            <p className="mt-2 leading-7 text-muted">{history.literary}</p>
+          </article>
+        )}
 
         {history.social && (
           <article className="rounded-lg border border-[#dbe3d8] bg-white p-4">

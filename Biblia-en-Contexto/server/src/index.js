@@ -365,6 +365,10 @@ function bookArgumentContext(book, chapter) {
   }
 
   if (normalizedBook === 'romanos') {
+    if (chapter === 9) {
+      return 'Romanos 9 pertenece a la unidad de Romanos 9-11. Pablo acaba de afirmar en Romanos 8 la seguridad del pueblo amado por Dios, y ahora enfrenta una tensión histórica: muchos israelitas no han recibido al Mesías mientras gentiles sí están entrando. La pregunta del capítulo no es una curiosidad filosófica aislada, sino si la palabra de Dios a Israel ha fallado. Pablo responde usando la historia bíblica de Isaac, Jacob, Esaú, Faraón, Oseas e Isaías para defender la libertad y fidelidad de Dios en su propósito.';
+    }
+
     return 'En Romanos, Pablo construye un argumento amplio sobre la justicia de Dios, el pecado, la gracia, la fe, Israel, los gentiles y la vida transformada. Cada capítulo debe leerse como parte de esa línea argumental, no como colección de frases aisladas.';
   }
 
@@ -377,6 +381,24 @@ function bookArgumentContext(book, chapter) {
   }
 
   return `La lectura debe ubicar ${book} dentro del argumento completo del libro antes de sacar conclusiones del pasaje.`;
+}
+
+function intrabiblicalContext(book, chapter, testament) {
+  const normalizedBook = normalizeTerm(book);
+
+  if (normalizedBook === 'romanos' && chapter === 9) {
+    return 'Romanos 9 usa intertextualidad intrabíblica de forma intensa. Pablo razona desde Génesis con Isaac, Jacob y Esaú para mostrar que la promesa no avanza simplemente por descendencia física. Usa Éxodo con Faraón para hablar de la libertad de Dios frente al poder humano. Cita Oseas para describir cómo Dios llama “pueblo mío” a quienes no eran pueblo, y cita Isaías para hablar del remanente de Israel. Estas conexiones no deben usarse como textos sueltos: Pablo las integra para responder si Dios sigue siendo fiel a sus promesas cuando Israel y gentiles aparecen de forma inesperada dentro del plan de Dios.';
+  }
+
+  if (normalizedBook === 'efesios' && chapter === 4) {
+    return 'Efesios 4 se conecta con el uso intrabíblico de Salmo 68 en la sección sobre dones y ascenso. También depende del trasfondo de la nueva humanidad y del pueblo unido que la carta desarrolla antes. La intertextualidad debe leerse dentro de la lógica de la carta: Cristo forma un cuerpo maduro, unido y renovado.';
+  }
+
+  if (testament === 'Nuevo Testamento') {
+    return `Para ${book} ${chapter}, la intertextualidad responsable busca primero citas explícitas del Antiguo Testamento, ecos claros o términos que el propio libro reutiliza. No se deben traer referencias lejanas solo porque suenan parecidas; la conexión debe estar sostenida por el texto, el vocabulario o el argumento del autor.`;
+  }
+
+  return `Para ${book} ${chapter}, la intertextualidad responsable compara primero el propio libro, la Torá, los Profetas o los Escritos cuando el texto use imágenes, fórmulas de pacto, promesas, juicio, sabiduría o culto. La conexión debe surgir del vocabulario y del contexto, no de asociaciones libres.`;
 }
 
 function passageSections(reference, verses) {
@@ -405,6 +427,10 @@ function passageSections(reference, verses) {
     {
       title: 'Léxico y sintaxis',
       body: `Las palabras de ${scope} se explican por su función en la oración, no solo por su raíz. En este análisis destacan: ${keyTerms || 'los términos principales del pasaje'}. "Léxico" pregunta qué campo de significado tiene una palabra; "sintaxis" pregunta qué papel cumple en la frase: sujeto, acción, complemento, contraste, causa, finalidad o resultado. HALOT/BDAG sirven para confirmar, pero el contexto manda.`
+    },
+    {
+      title: 'Intertextualidad intrabíblica',
+      body: intrabiblicalContext(sample.book, sample.chapter, testament)
     },
     {
       title: 'Síntesis exegética',
