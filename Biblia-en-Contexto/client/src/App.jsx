@@ -1001,14 +1001,11 @@ export default function App() {
                   {result.verses.map((verse) => (
                     <div className="rounded-lg border border-[#dbe3d8] bg-white p-4" key={`${verse.reference}-${verse.text}`}>
                       <strong className="mb-2 block text-ink">{verse.reference}</strong>
-                      {verse.clearText && (
-                        <div className="mb-3 rounded-lg border border-moss-100 bg-moss-50 p-3">
-                          <small className="mb-1 block font-extrabold uppercase text-moss-800">Lectura clara</small>
-                          <p className="leading-8 text-ink">{verse.clearText}</p>
-                        </div>
-                      )}
-                      <small className="mb-1 block font-extrabold uppercase text-muted">Texto base {verse.version}</small>
-                      <p className="leading-8 text-muted">{verse.text}</p>
+                      <div className="rounded-lg border border-moss-100 bg-moss-50 p-3">
+                        <small className="mb-1 block font-extrabold uppercase text-moss-800">Lectura clara</small>
+                        <p className="leading-8 text-ink">{verse.clearText || verse.text}</p>
+                      </div>
+                      <small className="mt-2 block text-xs font-bold uppercase text-muted">Base local: {verse.version}</small>
                     </div>
                   ))}
                 </div>

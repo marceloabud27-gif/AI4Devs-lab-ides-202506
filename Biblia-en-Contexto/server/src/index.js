@@ -303,6 +303,90 @@ function lexicalRowsForPassage(verses) {
   return rows;
 }
 
+function verseScopeLabel(verses) {
+  if (!verses.length) return 'la consulta';
+  const first = verses[0];
+  const last = verses.at(-1);
+  if (verses.length === 1) return first.reference;
+  if (first.book === last.book && first.chapter === last.chapter) {
+    return `${first.book} ${first.chapter}:${first.verse}-${last.verse}`;
+  }
+  return `${first.reference} - ${last.reference}`;
+}
+
+function clearVerseText(verse) {
+  return readableSpanishText(verse.text);
+}
+
+function joinedClearText(verses) {
+  return verses.map((verse) => `${verse.reference}: ${clearVerseText(verse)}`).join(' ');
+}
+
+function genreForBook(book, testament) {
+  const normalizedBook = normalizeTerm(book);
+  const evangelios = ['mateo', 'marcos', 'lucas', 'juan'];
+  const cartas = ['romanos', '1 corintios', '2 corintios', 'galatas', 'efesios', 'filipenses', 'colosenses', '1 tesalonicenses', '2 tesalonicenses', '1 timoteo', '2 timoteo', 'tito', 'filemon', 'hebreos', 'santiago', '1 pedro', '2 pedro', '1 juan', '2 juan', '3 juan', 'judas'];
+  const poesia = ['job', 'salmos', 'proverbios', 'eclesiastes', 'cantares'];
+  const profetas = ['isaias', 'jeremias', 'lamentaciones', 'ezequiel', 'daniel', 'oseas', 'joel', 'amos', 'abdias', 'jonas', 'miqueas', 'nahum', 'habacuc', 'sofonias', 'hageo', 'zacarias', 'malaquias'];
+  const tora = ['genesis', 'exodo', 'levitico', 'numeros', 'deuteronomio'];
+
+  if (evangelios.includes(normalizedBook)) {
+    return 'evangelio narrativo-teológico: cuenta hechos y enseñanzas de Jesús, pero también organiza el material para mostrar identidad, autoridad y respuesta de fe.';
+  }
+  if (cartas.includes(normalizedBook)) {
+    return 'carta apostólica: argumento pastoral dirigido a una comunidad real. Conviene seguir la lógica del párrafo, no aislar una frase.';
+  }
+  if (poesia.includes(normalizedBook)) {
+    return 'poesía o sabiduría: usa paralelismo, imagen, lamento, oración o enseñanza breve. No se lee como prosa técnica moderna.';
+  }
+  if (profetas.includes(normalizedBook)) {
+    return 'profecía: combina denuncia, llamado al pacto, juicio, esperanza y lenguaje simbólico. Hay que ubicar oráculo, audiencia y crisis histórica.';
+  }
+  if (tora.includes(normalizedBook)) {
+    return 'Torá: narración fundacional, ley, pacto, genealogía o instrucción. La estructura suele formar identidad comunitaria y memoria del pueblo.';
+  }
+  if (normalizedBook === 'apocalipsis') {
+    return 'apocalíptica profética: usa visiones, símbolos y contraste entre imperios, juicio y esperanza. No debe reducirse a un cronograma moderno.';
+  }
+  return testament === 'Nuevo Testamento'
+    ? 'texto del Nuevo Testamento: debe leerse dentro del argumento del libro y el mundo judío-grecorromano del siglo I.'
+    : 'texto del Antiguo Testamento: debe leerse dentro de la historia de Israel, pacto, culto, tierra, sabiduría o profecía según el libro.';
+}
+
+function passageSections(reference, verses) {
+  const testament = verses.some((verse) => verse.testament === 'NEW') ? 'Nuevo Testamento' : 'Antiguo Testamento';
+  const sample = verses[0];
+  const scope = verseScopeLabel(verses);
+  const textPreview = joinedClearText(verses).slice(0, 420);
+  const lexicalRows = lexicalRowsForPassage(verses);
+  const keyTerms = lexicalRows.map((row) => row.lemma).join(', ');
+  const originalText = testament === 'Nuevo Testamento' ? 'Nestle-Aland 28 para el griego' : 'Texto Masorético para el hebreo/arameo';
+  const comparison = testament === 'Nuevo Testamento' ? 'LBLA/NBLA y NA28' : 'LBLA/NBLA y Texto Masorético';
+
+  return [
+    {
+      title: 'Contexto',
+      body: `${scope} está dentro de ${sample.book} ${sample.chapter}, en el ${testament}. Primero se lee el capítulo completo: qué viene antes, qué problema o tema se está tratando y cómo continúa después. En esta consulta, el texto visible dice en resumen: "${textPreview}${joinedClearText(verses).length > 420 ? '...' : ''}". Ese marco evita usar el versículo como frase suelta.`
+    },
+    {
+      title: 'Género y estructura',
+      body: `${sample.book} se trabaja como ${genreForBook(sample.book, testament)} En ${scope}, la estructura inmediata debe observar palabras repetidas, conectores, mandatos, promesas, contraste o secuencia de ideas. La pregunta clave es: ¿la frase principal afirma algo, manda algo, narra algo, explica una causa o muestra una consecuencia?`
+    },
+    {
+      title: 'Crítica textual en sencillo',
+      body: `Para esta búsqueda se debería comparar ${originalText} con traducciones formales como LBLA/NBLA. En sencillo: crítica textual no significa desconfiar de la Biblia, sino revisar manuscritos y variantes para saber cuál lectura explica mejor el texto. La app usa RVA1909 como base libre; cuando haya proveedor autorizado, puede comparar ${comparison} sin copiar textos protegidos.`
+    },
+    {
+      title: 'Léxico y sintaxis',
+      body: `Las palabras de ${scope} se explican por su función en la oración, no solo por su raíz. En este análisis destacan: ${keyTerms || 'los términos principales del pasaje'}. "Léxico" pregunta qué campo de significado tiene una palabra; "sintaxis" pregunta qué papel cumple en la frase: sujeto, acción, complemento, contraste, causa, finalidad o resultado. HALOT/BDAG sirven para confirmar, pero el contexto manda.`
+    },
+    {
+      title: 'Síntesis exegética',
+      body: `La conclusión responsable de ${scope} debe salir del texto, del capítulo y del género literario. En términos simples: primero se escucha lo que el pasaje afirma en su mundo original; después se reconocen tensiones doctrinales o históricas sin resolverlas a la fuerza; recién al final se piensa una aplicación responsable.`
+    }
+  ];
+}
+
 function simplePassageExplanation(reference, verses) {
   if (!verses.length) {
     return {
@@ -312,60 +396,7 @@ function simplePassageExplanation(reference, verses) {
     };
   }
 
-  const testament = verses.some((verse) => verse.testament === 'NEW') ? 'Nuevo Testamento' : 'Antiguo Testamento';
-  const scope = verses.length === 1 ? 'Este versículo' : 'Este pasaje';
-  const sample = verses[0];
-  const isRomans829 = normalizeTerm(reference) === 'romanos 8:29';
-
-  const sections = isRomans829
-    ? [
-        {
-          title: 'Contexto',
-          body: 'Romanos 8 habla de la vida guiada por el Espíritu, el sufrimiento presente y la esperanza futura. El versículo 29 no aparece aislado: forma parte de una cadena que explica por qué la esperanza del creyente no depende de circunstancias cambiantes.'
-        },
-        {
-          title: 'Género y marco histórico',
-          body: 'Es una carta apostólica. Pablo escribe a creyentes en Roma usando argumento teológico y pastoral. No está contando una historia, sino razonando para fortalecer la confianza de la comunidad.'
-        },
-        {
-          title: 'Estructura literaria',
-          body: 'La frase avanza en cadena: antes conoció, predestinó, llamó, justificó y glorificó. La estructura muestra una secuencia completa, desde el propósito de Dios hasta el destino final.'
-        },
-        {
-          title: 'Crítica textual en sencillo',
-          body: 'Para un estudio académico se compararía el texto griego crítico, como NA28. En esta app todavía no se copia NA28 ni NBLA/LBLA por licencia; el módulo queda listo para consultarlos mediante proveedor autorizado. La idea básica del versículo no depende de una variante textual conocida que cambie radicalmente el sentido.'
-        },
-        {
-          title: 'Intertextualidad restringida',
-          body: 'El versículo usa lenguaje de imagen y filiación. La conexión más responsable es intrabíblica y cercana: Cristo como Hijo y modelo del pueblo redimido. No conviene saltar directamente a debates dogmáticos sin terminar primero el argumento de Romanos 8.'
-        },
-        {
-          title: 'Síntesis exegética',
-          body: 'La conclusión cruda del texto es que Pablo presenta la salvación como una obra completa de Dios orientada a formar un pueblo semejante a Cristo. La tensión con discusiones actuales sobre libertad humana y predestinación existe, pero el versículo mismo enfatiza primero el propósito divino y la seguridad de esa obra.'
-        }
-      ]
-    : [
-        {
-          title: 'Contexto',
-          body: `${scope} pertenece a ${testament}, dentro de ${sample.book} ${sample.chapter}. La lectura responsable empieza mirando qué viene antes y después, quién habla y qué situación se está tratando.`
-        },
-        {
-          title: 'Género y estructura',
-          body: `El género debe definirse según el libro: narración, poesía, profecía, evangelio, carta u otro tipo de texto. La estructura inmediata ayuda a distinguir la idea principal de los detalles secundarios.`
-        },
-        {
-          title: 'Crítica textual en sencillo',
-          body: 'Un análisis académico compararía el Texto Masorético para el Antiguo Testamento o NA28 para el Nuevo, además de traducciones como LBLA/NBLA. En esta app se muestra el texto local RVA1909 y se deja lista la consulta autorizada para esas fuentes.'
-        },
-        {
-          title: 'Léxico y sintaxis',
-          body: 'Las palabras importantes no deben definirse solo por su raíz. Primero se mira cómo funcionan en la frase y luego se consulta un léxico especializado como HALOT o BDAG si hay acceso autorizado.'
-        },
-        {
-          title: 'Síntesis exegética',
-          body: 'La interpretación debe salir del texto en su contexto original. Después se puede pensar en aplicación, pero sin resolver tensiones teológicas antes de escuchar bien el pasaje.'
-        }
-      ];
+  const sections = passageSections(reference, verses);
 
   return {
     summary: sections.at(-1).body,
@@ -576,6 +607,53 @@ function lexicalStudyForWord(word, verses, glossary) {
       syntax: 'La función gramatical se confirma mirando la oración completa.'
     }]
   };
+}
+
+function wordAnalysisSections(word, verses, lexicalStudy, totalOccurrences) {
+  const normalizedWord = word.trim();
+  const occurrences = totalOccurrences || verses.length;
+  const firstRefs = verses.slice(0, 4).map((verse) => verse.reference).join(', ');
+  const hasOld = verses.some((verse) => verse.testament === 'OLD');
+  const hasNew = verses.some((verse) => verse.testament === 'NEW');
+  const corpus = hasOld && hasNew
+    ? 'Antiguo y Nuevo Testamento'
+    : hasOld
+      ? 'Antiguo Testamento'
+      : hasNew
+        ? 'Nuevo Testamento'
+        : 'la Biblia cargada';
+  const originalTools = hasOld && hasNew
+    ? 'Texto Masorético para hebreo/arameo y NA28 para griego'
+    : hasOld
+      ? 'Texto Masorético y HALOT'
+      : hasNew
+        ? 'NA28 y BDAG'
+        : 'el texto original que corresponda';
+
+  return [
+    {
+      title: 'Contexto',
+      body: occurrences
+        ? `"${normalizedWord}" aparece en ${occurrences} resultado(s) relacionado(s) dentro de ${corpus}. No se define como idea aislada: se mira dónde aparece, quién habla, qué tema trata el capítulo y qué función cumple en cada frase. Primeros lugares para revisar: ${firstRefs || 'sin referencias suficientes'}.`
+        : `No encontré "${normalizedWord}" en la Biblia cargada. Aun así, el método correcto sería buscar ocurrencias reales, mirar el capítulo de cada una y evitar construir una definición sin pasajes concretos.`
+    },
+    {
+      title: 'Género y estructura',
+      body: `Una palabra no tiene género literario por sí sola; lo tiene el pasaje donde aparece. Por eso "${normalizedWord}" debe leerse de forma distinta si aparece en poesía, narración, profecía, evangelio o carta. La estructura que importa es la frase completa: si la palabra es acción, sujeto, motivo, resultado, promesa, mandato o contraste.`
+    },
+    {
+      title: 'Crítica textual en sencillo',
+      body: `Para estudiar "${normalizedWord}" con rigor se revisaría ${originalTools}. En sencillo: no basta preguntar "qué significa la palabra"; también hay que confirmar qué palabra original está detrás, si hay variantes relevantes y si la traducción española refleja bien el uso del pasaje.`
+    },
+    {
+      title: 'Léxico y sintaxis',
+      body: `${lexicalStudy.meaning} ${lexicalStudy.academicNote} La sintaxis pregunta cómo trabaja "${normalizedWord}" dentro de la oración: si nombra algo, describe algo, ordena algo, explica causa o señala finalidad. Así evitamos la falacia de definir una palabra solo por su raíz.`
+    },
+    {
+      title: 'Síntesis exegética',
+      body: `Síntesis sencilla: "${normalizedWord}" debe explicarse por sus usos reales, especialmente por los pasajes más claros. Si aparece en contextos distintos, puede tener matices distintos. La conclusión responsable no fuerza una doctrina completa desde una sola ocurrencia.`
+    }
+  ];
 }
 
 app.get('/api/glosario', async (req, res, next) => {
@@ -914,23 +992,23 @@ function textStudy(input) {
     sections: [
       {
         title: 'Contexto',
-        body: 'Primero hay que identificar de qué libro y sección viene el texto. Sin esa ubicación, solo se puede observar el contenido inmediato, no su marco histórico completo.'
+        body: `Voy a trabajar con el texto que escribiste: "${input.slice(0, 280)}${input.length > 280 ? '...' : ''}". Como no hay referencia bíblica exacta, el contexto se limita al contenido visible. Para completar el análisis histórico-gramatical, conviene indicar libro, capítulo y versículo.`
       },
       {
         title: 'Género y estructura',
-        body: 'Observá si el texto narra, argumenta, manda, promete, lamenta o enseña. Esa forma literaria define cómo debe leerse.'
+        body: 'Primero se observa qué hace el texto: narra, argumenta, manda, promete, lamenta, compara o enseña. Luego se separan idea principal, apoyos, conectores y repeticiones. Sin identificar el género, se corre el riesgo de leer poesía como si fuera prosa técnica o una carta como si fuera narración.'
       },
       {
         title: 'Crítica textual en sencillo',
-        body: 'Si el texto pertenece al Antiguo Testamento, se revisaría el Texto Masorético; si pertenece al Nuevo, NA28. LBLA/NBLA servirían como traducciones comparativas cuando haya acceso autorizado.'
+        body: 'Si este texto pertenece al Antiguo Testamento, se revisaría el Texto Masorético; si pertenece al Nuevo, NA28. LBLA/NBLA servirían como traducciones comparativas cuando haya acceso autorizado. En sencillo: primero confirmamos cuál es el texto base antes de sacar conclusiones fuertes.'
       },
       {
-        title: 'Léxico',
-        body: 'Las palabras importantes deben explicarse por su uso dentro de la oración. HALOT y BDAG ayudan a confirmar el sentido, pero no reemplazan el contexto.'
+        title: 'Léxico y sintaxis',
+        body: 'Las palabras importantes deben explicarse por su uso dentro de la oración. HALOT y BDAG ayudan a confirmar el campo de significado, pero no reemplazan el contexto. La sintaxis mira qué papel cumple cada palabra: acción, sujeto, objeto, causa, finalidad, contraste o resultado.'
       },
       {
-        title: 'Síntesis',
-        body: 'La conclusión debe salir del texto mismo: qué afirma, qué tensión deja abierta y qué no debemos resolver a la fuerza.'
+        title: 'Síntesis exegética',
+        body: 'La conclusión debe salir del texto mismo: qué afirma, qué tensión deja abierta y qué no debemos resolver a la fuerza. Si falta la referencia, la síntesis queda como observación provisional, no como explicación final del pasaje.'
       }
     ],
     lexicalRows: [{
@@ -1138,20 +1216,7 @@ app.post('/api/analizar', async (req, res, next) => {
         title: input,
         found: verses.length > 0,
         explanation: lexicalStudy.meaning,
-        sections: [
-          {
-            title: 'Uso bíblico',
-            body: `Encontré ${totalOccurrences || verses.length} ocurrencia(s) relacionadas. El significado se decide mirando cómo se usa la palabra en frases reales, no por una definición aislada.`
-          },
-          {
-            title: 'Cuidado exegético',
-            body: lexicalStudy.academicNote
-          },
-          {
-            title: 'Síntesis',
-            body: 'La palabra debe estudiarse en cada pasaje donde aparece. No siempre mantiene exactamente el mismo matiz.'
-          }
-        ],
+        sections: wordAnalysisSections(input, verses, lexicalStudy, totalOccurrences),
         lexicalRows: lexicalStudy.lexicalRows,
         verses: verses.map(bibleVerseDto)
       }, data.depth));
