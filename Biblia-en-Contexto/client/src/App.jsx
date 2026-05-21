@@ -152,6 +152,177 @@ const specificBookContexts = {
   }
 };
 
+const bookHistoryDetails = {
+  Mateo: {
+    place: 'Probablemente Siria o una comunidad judeocristiana de habla griega cercana a Antioquía; la ubicación exacta no es segura.',
+    audience: 'Creyentes judíos y gentiles que necesitaban entender a Jesús dentro de la historia de Israel, la Torá y las promesas mesiánicas.',
+    purpose: 'Mostrar que Jesús es el Mesías davídico, maestro autorizado y cumplimiento de las Escrituras, y formar una comunidad obediente a sus enseñanzas.',
+    history: 'Mateo refleja un ambiente donde la identidad judía, la sinagoga, la Torá, los escribas y fariseos, y la pregunta por el verdadero pueblo de Dios eran temas vivos. El libro organiza la vida y enseñanza de Jesús con énfasis en discursos, cumplimiento bíblico, reino de los cielos y justicia del discípulo. Su público parece conocer bien el Antiguo Testamento y los debates judíos del siglo I.'
+  },
+  Marcos: {
+    place: 'Tradicionalmente asociado con Roma, aunque algunos proponen Siria o Galilea; la tradición romana es antigua pero no definitiva.',
+    audience: 'Cristianos gentiles o mixtos que necesitaban una narración clara de Jesús en medio de sufrimiento, persecución o presión imperial.',
+    purpose: 'Presentar a Jesús como Mesías sufriente e Hijo de Dios, destacando su autoridad, su camino hacia la cruz y el llamado al discipulado.',
+    history: 'Marcos es breve, directo y narrativo. Explica costumbres judías más que Mateo, lo que sugiere lectores no plenamente familiarizados con Judea. La cruz no aparece como accidente, sino como centro del camino de Jesús. El trasfondo de presión social ayuda a entender el llamado a seguir a Jesús aun cuando implique pérdida y sufrimiento.'
+  },
+  Lucas: {
+    place: 'Probablemente escrito para comunidades grecorromanas fuera de Palestina; se ha propuesto Antioquía, Asia Menor o Acaya.',
+    audience: 'Lectores cristianos de trasfondo gentil, representados por Teófilo, que necesitaban seguridad histórica y ordenada sobre Jesús.',
+    purpose: 'Dar un relato ordenado de Jesús y mostrar que la salvación prometida a Israel se abre también a los gentiles, pobres, marginados y pecadores.',
+    history: 'Lucas escribe con sensibilidad histórica y literaria. Conecta a Jesús con la historia de Israel, pero también con el mundo romano. Destaca oración, Espíritu, reversión social, misericordia, mujeres, pobres y extranjeros. Su segundo tomo, Hechos, continúa la expansión del evangelio desde Jerusalén hacia las naciones.'
+  },
+  Juan: {
+    place: 'Tradicionalmente asociado con Éfeso o Asia Menor; la ubicación exacta sigue debatida.',
+    audience: 'Comunidades cristianas que enfrentaban disputas sobre la identidad de Jesús, su relación con el Padre y su lugar frente a la sinagoga.',
+    purpose: 'Llevar al lector a reconocer a Jesús como el Cristo, el Hijo de Dios, y entender sus señales, discursos y muerte a la luz de la vida que él da.',
+    history: 'Juan usa lenguaje simbólico profundo: vida, luz, verdad, gloria, mundo, testimonio, pan, agua, vid y pastor. El libro respira ambiente judío: fiestas, templo, Escritura, purificación y debates de autoridad. Su historia no es solo biográfica; organiza los hechos para mostrar quién es Jesús y por qué su rechazo y su muerte revelan su gloria.'
+  },
+  Hechos: {
+    place: 'Probablemente escrito en el mismo entorno de Lucas, para lectores grecorromanos vinculados a comunidades cristianas fuera de Palestina.',
+    audience: 'Cristianos gentiles y mixtos que necesitaban entender cómo el movimiento de Jesús pasó de Jerusalén al mundo romano.',
+    purpose: 'Mostrar la expansión del evangelio por obra del Espíritu, desde Jerusalén hasta Roma, y legitimar la misión a los gentiles.',
+    history: 'Hechos presenta la transición desde una comunidad judía en Jerusalén hacia iglesias compuestas por judíos y gentiles. Narra tensiones con autoridades judías, persecución, viajes misioneros, debates sobre la Ley y presencia del imperio romano. Su historia explica por qué la fe en Jesús no quedó como secta local, sino como movimiento mediterráneo.'
+  },
+  Romanos: {
+    place: 'Probablemente escrita desde Corinto o Cencreas durante el tercer viaje misionero de Pablo.',
+    audience: 'Cristianos en Roma, judíos y gentiles, con tensiones de identidad después de conflictos y expulsiones de judíos bajo Claudio.',
+    purpose: 'Exponer el evangelio de la justicia de Dios, unir a judíos y gentiles en una misma comunidad y preparar apoyo para la misión hacia España.',
+    history: 'Romanos nace en una iglesia que Pablo no fundó. La capital imperial reunía diversidad social, esclavos, libertos, judíos, gentiles y casas-iglesia. La carta trabaja pecado, Ley, gracia, Abraham, Israel, Espíritu, vida comunitaria y autoridad civil. Su trasfondo es pastoral y misionero, no un tratado abstracto separado de una comunidad real.'
+  },
+  '1 Corintios': {
+    place: 'Escrita desde Éfeso.',
+    audience: 'La iglesia de Corinto, una comunidad urbana, diversa y conflictiva en una ciudad comercial grecorromana.',
+    purpose: 'Corregir divisiones, inmoralidad, abusos en la cena del Señor, confusión sobre dones espirituales y preguntas sobre matrimonio, comida y resurrección.',
+    history: 'Corinto era una ciudad portuaria rica, competitiva y marcada por honor social, patronazgo, retórica pública y diversidad religiosa. Pablo responde problemas concretos, no teorías. La carta muestra cómo el evangelio confronta orgullo, estatus, sexualidad, culto comunitario y negación de la resurrección.'
+  },
+  '2 Corintios': {
+    place: 'Probablemente escrita desde Macedonia.',
+    audience: 'La misma iglesia de Corinto, después de conflictos severos entre Pablo y parte de la comunidad.',
+    purpose: 'Defender el ministerio apostólico de Pablo, restaurar la relación con la iglesia y preparar la colecta para Jerusalén.',
+    history: 'La carta refleja tensión emocional, acusaciones contra Pablo y competencia con líderes que se presentaban como superiores. Pablo responde mostrando que el ministerio apostólico se reconoce en debilidad, sufrimiento, integridad y servicio, no en espectáculo retórico o prestigio social.'
+  },
+  Gálatas: {
+    place: 'Probablemente escrita por Pablo a iglesias de Galacia; la fecha y si se trata del norte o sur de Galacia es debatido.',
+    audience: 'Comunidades gentiles presionadas por maestros que exigían circuncisión y adopción de marcas de identidad judía.',
+    purpose: 'Defender que los gentiles son incorporados al pueblo de Dios por la fe en Cristo y no por convertirse en judíos mediante la Ley.',
+    history: 'Gálatas surge de una crisis de identidad. La pregunta central no es religión privada, sino quién pertenece al pueblo de Dios y bajo qué condiciones. Pablo argumenta desde su llamado, Abraham, la promesa, la Ley, el Espíritu y la cruz para proteger la libertad de los gentiles en Cristo.'
+  },
+  Efesios: {
+    place: 'Tradicionalmente asociada con Pablo en prisión; pudo circular en Éfeso y otras iglesias de Asia Menor.',
+    audience: 'Creyentes mayormente gentiles, junto con judíos cristianos, en comunidades urbanas de Asia Menor.',
+    purpose: 'Explicar la nueva identidad del pueblo de Dios en Cristo: judíos y gentiles reconciliados en un solo cuerpo, viviendo una nueva humanidad.',
+    history: 'Éfeso era una ciudad importante de Asia Menor, con culto a Artemisa, comercio, prestigio urbano y prácticas religiosas diversas. La carta no se concentra en una crisis local específica, sino en identidad, unidad, gracia, poderes espirituales, vida comunitaria, familia y resistencia. Su historia ayuda a leer “templo”, “cuerpo”, “misterio” y “poderes” como lenguaje comunitario y cósmico.'
+  },
+  Filipenses: {
+    place: 'Escrita desde prisión, probablemente Roma, aunque Éfeso o Cesarea también son propuestas.',
+    audience: 'La iglesia de Filipos, una colonia romana de Macedonia con fuerte identidad cívica imperial.',
+    purpose: 'Animar a la comunidad a perseverar, vivir en humildad y unidad, y sostener la misión en medio de sufrimiento.',
+    history: 'Filipos era una colonia romana orgullosa de su ciudadanía. Pablo escribe desde prisión a una iglesia que lo apoyó económicamente. El trasfondo de ciudadanía, honor y lealtad imperial ilumina el llamado a vivir como ciudadanos dignos del evangelio y confesar a Cristo como Señor.'
+  },
+  Colosenses: {
+    place: 'Tradicionalmente escrita por Pablo desde prisión.',
+    audience: 'Cristianos de Colosas, una comunidad de Asia Menor que Pablo probablemente no conocía personalmente.',
+    purpose: 'Afirmar la supremacía de Cristo y advertir contra enseñanzas que mezclaban prácticas ascéticas, poderes espirituales y regulaciones religiosas.',
+    history: 'Colosas era una ciudad menor del valle del Lico, cerca de Laodicea y Hierápolis. La carta responde a presiones religiosas que prometían plenitud por prácticas especiales. El énfasis histórico es que la comunidad no necesita añadir sistemas de poder o rituales a Cristo para estar completa.'
+  },
+  '1 Tesalonicenses': {
+    place: 'Escrita probablemente desde Corinto.',
+    audience: 'La joven iglesia de Tesalónica, ciudad importante de Macedonia, formada bajo presión social.',
+    purpose: 'Animar a creyentes recientes, afirmar su esperanza y aclarar dudas sobre la venida del Señor y los creyentes que habían muerto.',
+    history: 'Tesalónica era una ciudad estratégica y leal a Roma. La iglesia nació en medio de oposición. Pablo escribe con tono afectuoso para fortalecer fe, amor, trabajo, santidad y esperanza. El tema escatológico responde a angustias reales, no a curiosidad especulativa.'
+  },
+  '2 Tesalonicenses': {
+    place: 'Probablemente escrita desde Corinto si se acepta autoría paulina temprana.',
+    audience: 'La iglesia de Tesalónica, todavía bajo presión y confundida sobre el día del Señor.',
+    purpose: 'Corregir alarma escatológica, animar perseverancia y ordenar una vida responsable mientras esperan al Señor.',
+    history: 'La carta refleja una comunidad inquieta por persecución y mensajes sobre el fin. Su contexto no es cálculo de fechas, sino resistencia, discernimiento y trabajo fiel. Habla de oposición, engaño y disciplina comunitaria.'
+  },
+  '1 Timoteo': {
+    place: 'Tradicionalmente dirigida a Timoteo en Éfeso; la situación exacta depende del debate sobre las Pastorales.',
+    audience: 'Timoteo y la iglesia de Éfeso, con problemas de enseñanza, orden comunitario y liderazgo.',
+    purpose: 'Organizar la vida de la iglesia, corregir falsas enseñanzas y establecer criterios para líderes.',
+    history: 'La carta refleja una etapa donde la comunidad necesita estabilidad doctrinal y orden público. Éfeso era un centro religioso y urbano complejo. El énfasis está en enseñanza sana, oración, conducta comunitaria, cuidado de viudas y carácter de ancianos y diáconos.'
+  },
+  '2 Timoteo': {
+    place: 'Tradicionalmente escrita desde prisión en Roma, cerca del final de la vida de Pablo.',
+    audience: 'Timoteo, colaborador de Pablo, en un contexto de abandono, sufrimiento y necesidad de perseverancia.',
+    purpose: 'Animar a Timoteo a guardar el evangelio, enseñar fielmente y soportar sufrimiento.',
+    history: 'La carta tiene tono de despedida. Refleja soledad, peligro, falsos maestros y transmisión generacional del ministerio. Su historia no es triunfalista: presenta fidelidad en medio de desgaste, prisión y oposición.'
+  },
+  Tito: {
+    place: 'Dirigida a Tito en Creta.',
+    audience: 'Tito y comunidades cristianas cretenses que necesitaban orden, liderazgo y enseñanza sana.',
+    purpose: 'Establecer ancianos, corregir enseñanzas dañinas y formar una vida comunitaria visible y honorable.',
+    history: 'Creta tenía fama antigua de conflictos morales y sociales, aunque esa fama debe leerse con cuidado. La carta busca organizar iglesias jóvenes para que su conducta pública no desacredite el mensaje. El énfasis está en doctrina sana que produce vida ordenada.'
+  },
+  Filemón: {
+    place: 'Escrita desde prisión, tradicionalmente por Pablo.',
+    audience: 'Filemón, Apia, Arquipo y la iglesia que se reunía en su casa.',
+    purpose: 'Interceder por Onésimo y transformar una relación social rota a la luz de la fraternidad en Cristo.',
+    history: 'Filemón es una carta personal dentro del mundo de esclavitud doméstica romana. Pablo no escribe un tratado social completo, sino una apelación concreta. El trasfondo de honor, deuda, patronazgo y casa-iglesia ayuda a entender la fuerza pastoral de su petición.'
+  },
+  Hebreos: {
+    place: 'Lugar desconocido; “los de Italia” sugiere alguna conexión con Roma, pero no decide el origen.',
+    audience: 'Cristianos con fuerte conocimiento del Antiguo Testamento, probablemente bajo presión y tentados a retroceder.',
+    purpose: 'Mostrar la superioridad de Cristo, su sacerdocio y su sacrificio, para exhortar a perseverar.',
+    history: 'Hebreos combina sermón y carta. Su público conoce templo, sacrificios, sacerdocio, pacto y Escrituras. El trasfondo de cansancio, persecución y peligro de abandonar la confesión explica las advertencias fuertes y el énfasis en Cristo como mediador definitivo.'
+  },
+  Santiago: {
+    place: 'Asociada tradicionalmente con Santiago en Jerusalén, dirigida a creyentes judíos de la diáspora.',
+    audience: 'Las “doce tribus en la dispersión”: comunidades creyentes con trasfondo judío, pobreza, tensiones sociales y necesidad de sabiduría práctica.',
+    purpose: 'Llamar a una fe íntegra que se muestra en obras, dominio de la lengua, justicia, paciencia y humildad.',
+    history: 'Santiago suena como sabiduría judía aplicada a comunidades cristianas. El libro refleja desigualdad económica, favoritismo hacia ricos, conflictos internos y opresión. Su historia se entiende mejor en continuidad con Proverbios, profetas y enseñanza ética judía.'
+  },
+  '1 Pedro': {
+    place: 'Escrita desde “Babilonia”, probablemente una forma simbólica de referirse a Roma.',
+    audience: 'Cristianos dispersos en Asia Menor, muchos gentiles, viviendo como minoría social bajo sospecha.',
+    purpose: 'Animar a vivir con santidad, esperanza y buen testimonio en medio de sufrimiento injusto.',
+    history: '1 Pedro se dirige a comunidades extranjeras y marginadas en su propio entorno social. Usa lenguaje de identidad de Israel aplicado a creyentes en Cristo. El sufrimiento no parece persecución imperial sistemática todavía, sino presión social, calumnia y exclusión.'
+  },
+  '2 Pedro': {
+    place: 'Lugar incierto; se presenta como testamento apostólico de Pedro.',
+    audience: 'Comunidades cristianas amenazadas por falsos maestros y burla sobre la venida del Señor.',
+    purpose: 'Defender la memoria apostólica, la vida piadosa y la certeza del juicio y promesa futura.',
+    history: '2 Pedro refleja preocupación por continuidad después de la generación apostólica. Enfrenta maestros que relativizan juicio, conducta y esperanza. Su historia es de preservación de enseñanza frente a distorsiones internas.'
+  },
+  '1 Juan': {
+    place: 'Probablemente Asia Menor, dentro del círculo joánico.',
+    audience: 'Comunidades afectadas por ruptura interna y desacuerdo sobre Jesús, pecado, amor y obediencia.',
+    purpose: 'Dar seguridad a los creyentes y distinguir la confesión verdadera de interpretaciones que separaban a Cristo de la vida ética.',
+    history: '1 Juan no tiene forma típica de carta. Responde a una crisis comunitaria: algunos salieron y dejaron confusión. El libro insiste en la encarnación, el amor fraternal, la obediencia y el discernimiento espiritual.'
+  },
+  '2 Juan': {
+    place: 'Probablemente Asia Menor.',
+    audience: 'La “señora elegida” y sus hijos, quizá una iglesia local.',
+    purpose: 'Animar a caminar en verdad y amor, y advertir contra maestros que niegan la venida de Cristo en carne.',
+    history: '2 Juan refleja iglesias domésticas y movilidad de maestros cristianos. La hospitalidad era importante, pero también podía facilitar doctrinas dañinas. La carta equilibra amor comunitario y discernimiento.'
+  },
+  '3 Juan': {
+    place: 'Probablemente Asia Menor.',
+    audience: 'Gayo, un creyente que apoyaba misioneros itinerantes.',
+    purpose: 'Elogiar la hospitalidad de Gayo y denunciar el control abusivo de Diótrefes.',
+    history: '3 Juan muestra la vida concreta de iglesias domésticas: hospitalidad, autoridad local, recomendación de enviados y conflictos de liderazgo. Es una ventana breve pero valiosa al funcionamiento comunitario temprano.'
+  },
+  Judas: {
+    place: 'Lugar incierto.',
+    audience: 'Cristianos amenazados por maestros inmorales que distorsionaban la gracia.',
+    purpose: 'Exhortar a contender por la fe recibida y advertir con ejemplos de juicio.',
+    history: 'Judas usa tradiciones judías, ejemplos del Antiguo Testamento y literatura como 1 Enoc. Su contexto muestra comunidades que necesitaban discernir entre gracia verdadera y libertinaje religioso.'
+  },
+  Apocalipsis: {
+    place: 'Escrito desde Patmos, dirigido a iglesias de Asia Menor.',
+    audience: 'Siete iglesias de Asia Menor bajo presión imperial, tentación de acomodación y conflicto espiritual.',
+    purpose: 'Revelar la soberanía de Dios y del Cordero, llamar a perseverar y desenmascarar el poder imperial idolátrico.',
+    history: 'Apocalipsis pertenece al género apocalíptico-profético. Usa símbolos de Daniel, Ezequiel, Éxodo y culto celestial. Su mundo histórico incluye Asia Menor romana, culto imperial, comercio, persecución local y seducción cultural. No fue escrito como código moderno, sino como visión pastoral para iglesias reales.'
+  }
+};
+
+function getBookHistory(book) {
+  if (!book) return null;
+  const history = bookHistoryDetails[book];
+  return history ? { book, ...history } : null;
+}
+
 function detectInputKind(value) {
   const cleaned = value.trim();
   if (!cleaned) return { label: 'Esperando consulta', helper: 'Escribí una palabra, un versículo o pegá un texto.' };
@@ -677,7 +848,8 @@ export default function App() {
   const inputKind = detectInputKind(input);
   const detectedBook = detectBook(input);
   const historicalContext = getBookHistoricalContext(input);
-  const canShowHistoricalContext = Boolean(detectedBook);
+  const bookHistory = getBookHistory(detectedBook);
+  const canShowHistoricalContext = Boolean(bookHistory);
   const showFullStudy = studyView === 'completo' || (studyView === 'historia' && canShowHistoricalContext);
   const showHistoryStudy = studyView === 'historia' && canShowHistoricalContext;
 
@@ -879,9 +1051,9 @@ export default function App() {
         <div className="flex flex-wrap items-start justify-between gap-4">
           <div className="max-w-3xl">
             <Pill tone="gold">Marco histórico</Pill>
-            <h2 className="mt-3 text-2xl font-black leading-tight text-ink md:text-3xl">Marco histórico de {historicalContext.book}</h2>
+            <h2 className="mt-3 text-2xl font-black leading-tight text-ink md:text-3xl">Historia de {bookHistory.book}</h2>
             <p className="mt-2 leading-8 text-muted">
-              {historicalContext.setting}
+              {bookHistory.history}
             </p>
           </div>
           <button
@@ -894,7 +1066,7 @@ export default function App() {
           </button>
         </div>
 
-        {showHistoricalContext && <SecondTempleContext bookContext={historicalContext} query={input} />}
+        {showHistoricalContext && <BookHistoryContext history={bookHistory} />}
       </section>
       )}
 
@@ -935,7 +1107,7 @@ export default function App() {
                 {[
                   ['resumen', 'Resumen'],
                   ['completo', 'Estudio completo'],
-                  ...(canShowHistoricalContext ? [['historia', 'Historia de interpretación']] : [])
+                  ...(canShowHistoricalContext ? [['historia', 'Marco histórico']] : [])
                 ].map(([view, label]) => (
                   <button
                     key={view}
@@ -1024,10 +1196,10 @@ export default function App() {
             {!simpleMode && showHistoryStudy && (
               <article className="rounded-lg border border-[#dbe3d8] bg-white p-5">
                 <div className="mb-4">
-                  <Pill tone="gold">Historia de interpretación</Pill>
-                  <h3 className="mt-3 text-2xl font-black text-ink">Recepción histórica de {historicalContext.book}</h3>
+                  <Pill tone="gold">Marco histórico</Pill>
+                  <h3 className="mt-3 text-2xl font-black text-ink">Historia de {bookHistory.book}</h3>
                 </div>
-                <SecondTempleContext bookContext={historicalContext} query={input} />
+                <BookHistoryContext history={bookHistory} />
               </article>
             )}
 
@@ -1046,109 +1218,30 @@ export default function App() {
   );
 }
 
-function SecondTempleContext({ bookContext, query }) {
-  const sections = historicalSectionsForBook(bookContext);
-  const theme = theologicalThemeForQuery(query, bookContext);
-  const patristics = patristicContextForTheme(theme, bookContext);
-  const disputes = theologicalDisputesForTheme(theme);
-  const chronologyRows = chronologyRowsForTheme(theme, bookContext);
-
+function BookHistoryContext({ history }) {
   return (
-    <div className="mt-6 grid gap-5 border-t border-[#dbe3d8] pt-5">
-      <div className="grid gap-3 lg:grid-cols-2">
-        <article className="rounded-lg border border-[#dbe3d8] bg-[#fbfcfa] p-5">
-          <h3 className="mb-3 text-xl font-black text-ink">1. Cosmovisión y creencias judías en {bookContext.book}</h3>
-          <p className="leading-8 text-muted">
-            {sections.worldview}
-          </p>
+    <div className="mt-6 grid gap-4 border-t border-[#dbe3d8] pt-5">
+      <article className="rounded-lg border border-[#dbe3d8] bg-[#fbfcfa] p-5">
+        <h3 className="mb-3 text-xl font-black text-ink">Historia de composición</h3>
+        <p className="leading-8 text-muted">{history.history}</p>
+      </article>
+
+      <div className="grid gap-3 lg:grid-cols-3">
+        <article className="rounded-lg border border-[#dbe3d8] bg-white p-4">
+          <strong className="block text-moss-800">Dónde se escribió</strong>
+          <p className="mt-2 leading-7 text-muted">{history.place}</p>
         </article>
 
-        <article className="rounded-lg border border-[#dbe3d8] bg-[#fbfcfa] p-5">
-          <h3 className="mb-3 text-xl font-black text-ink">2. Literatura, parábolas y folclore relacionados</h3>
-          <p className="leading-8 text-muted">
-            {sections.literature}
-          </p>
+        <article className="rounded-lg border border-[#dbe3d8] bg-white p-4">
+          <strong className="block text-moss-800">Para quién</strong>
+          <p className="mt-2 leading-7 text-muted">{history.audience}</p>
+        </article>
+
+        <article className="rounded-lg border border-[#dbe3d8] bg-white p-4">
+          <strong className="block text-moss-800">Para qué público y propósito</strong>
+          <p className="mt-2 leading-7 text-muted">{history.purpose}</p>
         </article>
       </div>
-
-      <article className="rounded-lg border border-[#dbe3d8] bg-[#fbfcfa] p-5">
-        <h3 className="mb-3 text-xl font-black text-ink">3. Historiadores contemporáneos y cercanos útiles para {bookContext.book}</h3>
-        <p className="leading-8 text-muted">{sections.historians}</p>
-      </article>
-
-      <article className="rounded-lg border border-[#dbe3d8] bg-[#fbfcfa] p-5">
-        <h3 className="mb-3 text-xl font-black text-ink">4. Textos y evidencia escrita para {bookContext.book}</h3>
-        <div className="grid overflow-hidden rounded-lg border border-[#dbe3d8] bg-white lg:grid-cols-[180px_220px_minmax(0,1fr)_minmax(0,1fr)]">
-          <div className="bg-moss-50 p-3 text-xs font-extrabold uppercase text-moss-800">Autor / Fuente</div>
-          <div className="bg-moss-50 p-3 text-xs font-extrabold uppercase text-moss-800">Obra / Manuscrito</div>
-          <div className="bg-moss-50 p-3 text-xs font-extrabold uppercase text-moss-800">Semántica / Contenido clave</div>
-          <div className="bg-moss-50 p-3 text-xs font-extrabold uppercase text-moss-800">Uso contextual</div>
-          {sections.evidence.map(([source, work, context]) => (
-            <React.Fragment key={`${source}-${work}`}>
-              <span className="border-t border-[#dbe3d8] p-3 text-sm font-bold leading-6 text-ink">{source}</span>
-              <span className="border-t border-[#dbe3d8] p-3 text-sm leading-6 text-muted">{work}</span>
-              <span className="border-t border-[#dbe3d8] p-3 text-sm leading-6 text-muted">{context}</span>
-              <span className="border-t border-[#dbe3d8] p-3 text-sm leading-6 text-muted">Ayuda a leer {bookContext.book} dentro de su marco histórico, literario y socio-cultural.</span>
-            </React.Fragment>
-          ))}
-        </div>
-      </article>
-
-      <article className="rounded-lg border border-[#dbe3d8] bg-[#fbfcfa] p-5">
-        <h3 className="mb-3 text-xl font-black text-ink">5. Patrística relacionada con {bookContext.book}</h3>
-        <p className="mb-4 leading-8 text-muted">{patristics.emphasis}</p>
-        <div className="grid gap-3 lg:grid-cols-4">
-          {patristics.stages.map((stage) => (
-            <div className="rounded-lg border border-[#dbe3d8] bg-white p-4" key={stage.period}>
-              <strong className="block text-moss-800">{stage.period}</strong>
-              <p className="mt-1 text-sm font-bold leading-6 text-ink">{stage.figures}</p>
-              <p className="mt-2 leading-7 text-muted">{stage.focus}</p>
-              <p className="mt-2 text-sm leading-6 text-muted">{stage.relevance}</p>
-            </div>
-          ))}
-        </div>
-      </article>
-
-      <article className="rounded-lg border border-[#dbe3d8] bg-[#fbfcfa] p-5">
-        <h3 className="mb-3 text-xl font-black text-ink">6. Grandes disputas teológicas vinculadas</h3>
-        <p className="mb-4 leading-8 text-muted">{disputes.highlight}</p>
-        <div className="grid gap-3">
-          {disputes.disputes.map((dispute) => (
-            <div className="rounded-lg border border-[#dbe3d8] bg-white p-4" key={dispute.title}>
-              <div className="flex flex-wrap items-center justify-between gap-2">
-                <strong className="text-moss-800">{dispute.title}</strong>
-                <span className="rounded-full bg-moss-50 px-3 py-1 text-xs font-extrabold text-moss-800">{dispute.period}</span>
-              </div>
-              <p className="mt-2 leading-7 text-muted"><strong>Contexto político:</strong> {dispute.context}</p>
-              <div className="mt-3 grid gap-3 md:grid-cols-2">
-                <p className="rounded-lg border border-[#dbe3d8] bg-[#fbfcfa] p-3 leading-7 text-muted"><strong>Bando A:</strong> {dispute.sideA}</p>
-                <p className="rounded-lg border border-[#dbe3d8] bg-[#fbfcfa] p-3 leading-7 text-muted"><strong>Bando B:</strong> {dispute.sideB}</p>
-              </div>
-              <p className="mt-3 text-sm leading-6 text-muted">{dispute.relevance}</p>
-            </div>
-          ))}
-        </div>
-      </article>
-
-      <article className="rounded-lg border border-[#dbe3d8] bg-[#fbfcfa] p-5">
-        <h3 className="mb-3 text-xl font-black text-ink">7. Tabla de síntesis cronológica</h3>
-        <div className="grid overflow-hidden rounded-lg border border-[#dbe3d8] bg-white lg:grid-cols-[140px_minmax(0,1.4fr)_minmax(0,1fr)_minmax(0,1fr)_minmax(0,1fr)]">
-          <div className="bg-moss-50 p-3 text-xs font-extrabold uppercase text-moss-800">Período / Siglo</div>
-          <div className="bg-moss-50 p-3 text-xs font-extrabold uppercase text-moss-800">Controversia o contexto</div>
-          <div className="bg-moss-50 p-3 text-xs font-extrabold uppercase text-moss-800">Núcleo del debate</div>
-          <div className="bg-moss-50 p-3 text-xs font-extrabold uppercase text-moss-800">Texto o manuscrito clave</div>
-          <div className="bg-moss-50 p-3 text-xs font-extrabold uppercase text-moss-800">Conclusión histórica</div>
-          {chronologyRows.map((row) => (
-            <React.Fragment key={`${row[0]}-${row[1]}`}>
-              {row.map((cell, index) => (
-                <span className={`border-t border-[#dbe3d8] p-3 text-sm leading-6 ${index === 0 ? 'font-bold text-ink' : 'text-muted'}`} key={`${row[0]}-${index}`}>
-                  {cell}
-                </span>
-              ))}
-            </React.Fragment>
-          ))}
-        </div>
-      </article>
     </div>
   );
 }
