@@ -386,12 +386,117 @@ function bookArgumentContext(book, chapter) {
 function chapterDepthProfile(book, chapter) {
   const key = `${normalizeTerm(book)} ${chapter}`;
   const profiles = {
+    'romanos 1': {
+      unit: 'Romanos 1:1-7 saludo y evangelio prometido; 1:8-15 deseo misionero de Pablo; 1:16-17 tesis de la carta sobre evangelio y justicia de Dios; 1:18-32 revelación de la ira contra la idolatría y degradación humana.',
+      keyTerms: 'evangelio, justicia de Dios, fe, ira, revelación, creación, idolatría, pasiones, mente reprobada.',
+      intertext: 'Habacuc 2:4 sostiene la frase "el justo por la fe vivirá". Génesis 1 y el lenguaje de creación están detrás de la acusación contra la idolatría: la humanidad cambia la gloria del Creador por imágenes creadas.',
+      caution: 'No leer Romanos 1 como ataque aislado a un grupo externo. Pablo prepara el argumento de Romanos 1-3: gentiles y judíos quedan bajo pecado antes de exponer la gracia.',
+      synthesis: 'La conclusión cruda es que Pablo abre la carta mostrando que el evangelio revela la justicia salvadora de Dios porque la humanidad, al rechazar al Creador, queda moral y religiosamente desordenada.'
+    },
+    'romanos 2': {
+      unit: 'Romanos 2:1-11 juicio imparcial de Dios; 2:12-16 Ley, conciencia y juicio; 2:17-24 crítica al judío que presume de la Ley; 2:25-29 circuncisión exterior e interior.',
+      keyTerms: 'juicio, arrepentimiento, Ley, conciencia, judío, circuncisión, corazón, Espíritu.',
+      intertext: 'Deuteronomio y los Profetas ya habían criticado la confianza externa en señales del pacto sin obediencia del corazón. Pablo trabaja esa línea profética contra la falsa seguridad religiosa.',
+      caution: 'No usar Romanos 2 para decir que Pablo niega el valor histórico de Israel. Su punto es que privilegio religioso sin obediencia no evita el juicio.',
+      synthesis: 'La conclusión cruda es que Dios juzga con imparcialidad: conocer la Ley o portar señales externas no reemplaza una vida transformada ante Dios.'
+    },
+    'romanos 3': {
+      unit: 'Romanos 3:1-8 ventaja judía y fidelidad de Dios; 3:9-20 todos bajo pecado; 3:21-26 justicia de Dios manifestada en Cristo; 3:27-31 exclusión de jactancia y confirmación de la Ley.',
+      keyTerms: 'fidelidad, pecado, Ley, justicia de Dios, redención, propiciación, fe, jactancia.',
+      intertext: 'Pablo encadena Salmos e Isaías para probar que el pecado es universal. La lógica sacrificial aparece en el lenguaje de redención y propiciación.',
+      caution: 'No separar Romanos 3:21-26 de 1:18-3:20. La buena noticia responde al diagnóstico previo: todos están bajo pecado.',
+      synthesis: 'La conclusión cruda es que Dios justifica por gracia mediante Cristo sin negar su justicia: la jactancia humana queda excluida y la fidelidad de Dios queda vindicada.'
+    },
+    'romanos 4': {
+      unit: 'Romanos 4:1-8 Abraham justificado por fe; 4:9-12 fe antes de circuncisión; 4:13-17 promesa antes de la Ley; 4:18-25 Abraham como modelo de confianza en el Dios que da vida.',
+      keyTerms: 'Abraham, fe, contar, justicia, promesa, circuncisión, descendencia, resurrección.',
+      intertext: 'Génesis 15:6 es el texto central. Salmo 32 apoya la bendición del perdón. Pablo usa la historia de Abraham para integrar judíos y gentiles bajo promesa.',
+      caution: 'No leer Abraham solo como ejemplo moral. En Romanos 4 funciona como argumento histórico-bíblico sobre cómo Dios declara justo y cumple promesa.',
+      synthesis: 'La conclusión cruda es que Abraham muestra que la pertenencia al pueblo de la promesa se basa en la fe en el Dios que justifica y da vida, no en marcas étnicas o méritos.'
+    },
+    'romanos 5': {
+      unit: 'Romanos 5:1-11 paz con Dios, esperanza y amor derramado; 5:12-21 contraste Adán/Cristo: pecado, muerte, gracia y vida.',
+      keyTerms: 'justificación, paz, esperanza, sufrimiento, amor, Adán, muerte, gracia, obediencia, vida.',
+      intertext: 'Génesis 2-3 está detrás del contraste Adán/Cristo. La historia humana se lee como dominio de pecado y muerte, superado por la obediencia de Cristo.',
+      caution: 'No reducir Romanos 5 a consuelo psicológico. Pablo está explicando una nueva posición histórica y representativa en Cristo.',
+      synthesis: 'La conclusión cruda es que la gracia no solo perdona pecados individuales: inaugura un nuevo régimen de vida bajo Cristo frente al viejo dominio de Adán, pecado y muerte.'
+    },
+    'romanos 6': {
+      unit: 'Romanos 6:1-14 unión con Cristo en muerte y vida; 6:15-23 cambio de señorío: del pecado a la obediencia y justicia.',
+      keyTerms: 'bautismo, muerte, vida nueva, pecado, obediencia, esclavos, justicia, santificación.',
+      intertext: 'La lógica de éxodo y cambio de señorío está de fondo: ya no se pertenece al antiguo amo. Pablo usa muerte/resurrección de Cristo como base de vida nueva.',
+      caution: 'No leer la gracia como permiso para pecar. Pablo anticipa esa mala lectura y la rechaza de raíz.',
+      synthesis: 'La conclusión cruda es que quien participa de Cristo no puede seguir tratando al pecado como dueño legítimo: la gracia crea una nueva obediencia.'
+    },
+    'romanos 7': {
+      unit: 'Romanos 7:1-6 liberación de la Ley mediante muerte; 7:7-13 la Ley revela pecado; 7:14-25 conflicto bajo el poder del pecado.',
+      keyTerms: 'Ley, pecado, mandamiento, carne, muerte, querer, hacer, mente, esclavitud.',
+      intertext: 'El mandamiento "no codiciarás" remite al Decálogo. La dinámica de deseo y transgresión recuerda Génesis 3: el mandato bueno es usado por el pecado para producir muerte.',
+      caution: 'No usar Romanos 7 como excusa cómoda para la derrota moral. El capítulo prepara Romanos 8 y muestra la incapacidad humana bajo pecado y Ley sin la liberación del Espíritu.',
+      synthesis: 'La conclusión cruda es que la Ley es buena, pero no puede liberar al ser humano dominado por el pecado; revela el problema y conduce a la necesidad de rescate.'
+    },
+    'romanos 8': {
+      unit: 'Romanos 8:1-11 vida en el Espíritu; 8:12-17 adopción e hijos de Dios; 8:18-30 sufrimiento, creación y esperanza; 8:31-39 seguridad del amor de Dios.',
+      keyTerms: 'condenación, Espíritu, carne, adopción, creación, gemir, esperanza, predestinar, amor de Dios.',
+      intertext: 'El lenguaje de adopción, herencia y liberación dialoga con la historia de Israel y con la esperanza profética de nueva creación. Romanos 8:36 cita Salmo 44 para mostrar sufrimiento de los justos.',
+      caution: 'No aislar Romanos 8:28-30 de la sección sobre sufrimiento. La seguridad que Pablo afirma no niega el dolor; lo ubica dentro del propósito de Dios.',
+      synthesis: 'La conclusión cruda es que la vida en el Espíritu no elimina el sufrimiento presente, pero asegura que Dios lleva a su pueblo hacia conformidad con Cristo y nada lo separa de su amor.'
+    },
     'romanos 9': {
       unit: 'Romanos 9:1-5 dolor de Pablo por Israel; 9:6-13 promesa y elección en Isaac/Jacob; 9:14-18 misericordia y endurecimiento; 9:19-29 imagen del alfarero, Oseas e Isaías; 9:30-33 tropiezo de Israel y entrada de gentiles por fe.',
       keyTerms: 'Israel, promesa, descendencia, elección, misericordia, endurecimiento, vasos, remanente, justicia, fe.',
       intertext: 'Génesis 18, 21 y 25; Éxodo 9; Oseas 1-2; Isaías 10 y 28. Pablo no cita esos textos como adornos: los usa para defender que Dios sigue siendo fiel aunque la pertenencia al pueblo se defina por promesa y no solo por linaje.',
       caution: 'No leer Romanos 9 separado de Romanos 10-11. El capítulo trata la fidelidad de Dios a Israel y la incorporación de gentiles, no solo un debate abstracto sobre predestinación individual.',
       synthesis: 'La conclusión cruda es que Pablo defiende la libertad de Dios para cumplir su promesa de manera inesperada: preserva remanente de Israel, llama gentiles y deja expuesta la tensión entre misericordia divina, responsabilidad humana y tropiezo ante Cristo.'
+    },
+    'romanos 10': {
+      unit: 'Romanos 10:1-4 celo de Israel y Cristo como meta de la Ley; 10:5-13 justicia por fe y confesión; 10:14-17 necesidad de predicación; 10:18-21 respuesta de Israel ante el mensaje.',
+      keyTerms: 'celo, justicia, Ley, Cristo, creer, confesar, invocar, predicación, oír.',
+      intertext: 'Pablo usa Deuteronomio 30 para hablar de cercanía de la palabra, Joel 2 para invocar el nombre del Señor, Isaías 52 para la predicación e Isaías 65 para Israel resistente.',
+      caution: 'No separar Romanos 10 de Romanos 9. Pablo no abandona la soberanía de Dios; muestra también responsabilidad humana ante el mensaje anunciado.',
+      synthesis: 'La conclusión cruda es que la justicia no se alcanza estableciendo mérito propio, sino respondiendo con fe al Cristo proclamado; por eso la predicación importa.'
+    },
+    'romanos 11': {
+      unit: 'Romanos 11:1-10 remanente por gracia; 11:11-24 olivo, ramas y gentiles injertados; 11:25-32 misterio de Israel y misericordia; 11:33-36 doxología.',
+      keyTerms: 'remanente, gracia, endurecimiento, gentiles, olivo, injertar, misterio, misericordia.',
+      intertext: 'Pablo usa la historia de Elías, Deuteronomio, Isaías y Salmos para explicar remanente y endurecimiento. La imagen del olivo organiza la relación Israel-gentiles.',
+      caution: 'No leer Romanos 11 como licencia para orgullo gentil ni como negación del lugar histórico de Israel. Pablo advierte contra la arrogancia.',
+      synthesis: 'La conclusión cruda es que Dios gobierna la historia de Israel y gentiles de modo que nadie pueda jactarse: todo termina en misericordia y adoración.'
+    },
+    'romanos 12': {
+      unit: 'Romanos 12:1-2 culto racional y mente renovada; 12:3-8 dones en el cuerpo; 12:9-21 amor sincero, hospitalidad, paciencia y respuesta al mal.',
+      keyTerms: 'misericordias, cuerpo, sacrificio vivo, mente, dones, amor, enemigo, vencer el mal.',
+      intertext: 'El lenguaje sacrificial se reubica en la vida entera del creyente. Proverbios 25 aparece en la respuesta al enemigo con bien.',
+      caution: 'No convertir Romanos 12 en lista de consejos desconectados. Es la respuesta ética a la misericordia expuesta en Romanos 1-11.',
+      synthesis: 'La conclusión cruda es que la doctrina de la gracia debe tomar forma corporal y comunitaria: adoración, humildad, servicio y amor al enemigo.'
+    },
+    'romanos 13': {
+      unit: 'Romanos 13:1-7 autoridades civiles; 13:8-10 amor como cumplimiento de la Ley; 13:11-14 urgencia escatológica y vida sobria.',
+      keyTerms: 'autoridades, someterse, espada, tributo, amor, Ley, noche, día, Cristo.',
+      intertext: 'El mandamiento de amar al prójimo resume preceptos del Decálogo. La imagen noche/día pertenece al lenguaje escatológico de vigilancia.',
+      caution: 'No leer Romanos 13 como cheque en blanco para cualquier poder político. Pablo habla de orden civil, pero el conjunto bíblico también limita la obediencia cuando el poder exige idolatría o injusticia.',
+      synthesis: 'La conclusión cruda es que la comunidad cristiana debe vivir públicamente con responsabilidad, amor y sobriedad, sabiendo que pertenece al día que viene.'
+    },
+    'romanos 14': {
+      unit: 'Romanos 14:1-12 débiles y fuertes ante comidas y días; 14:13-23 no destruir al hermano por libertad personal.',
+      keyTerms: 'débil, fuerte, juzgar, comida, día, tropiezo, conciencia, reino de Dios, paz.',
+      intertext: 'Las tensiones sobre alimentos y días vienen del mundo judío-gentil y de prácticas de pureza, identidad y conciencia religiosa.',
+      caution: 'No usar Romanos 14 para relativizar cualquier doctrina. Pablo trata asuntos disputables dentro de una comunidad que confiesa al mismo Señor.',
+      synthesis: 'La conclusión cruda es que la libertad cristiana no existe para ganar discusiones, sino para edificar al hermano y preservar la paz del cuerpo.'
+    },
+    'romanos 15': {
+      unit: 'Romanos 15:1-6 fuertes cargan con débiles; 15:7-13 Cristo recibe a judíos y gentiles; 15:14-21 ministerio de Pablo; 15:22-33 planes misioneros y colecta.',
+      keyTerms: 'sobrellevar, recibir, esperanza, gentiles, ministro, evangelio, España, Jerusalén, colecta.',
+      intertext: 'Pablo cita Salmos, Deuteronomio e Isaías para mostrar que la alabanza de los gentiles ya estaba dentro de la esperanza bíblica.',
+      caution: 'No separar la ética comunitaria de la misión. Para Pablo, recibir al otro y llevar el evangelio a las naciones son parte del mismo plan de Dios.',
+      synthesis: 'La conclusión cruda es que Cristo confirma las promesas a Israel y abre misericordia a los gentiles; por eso la iglesia debe recibirse mutuamente y vivir en misión.'
+    },
+    'romanos 16': {
+      unit: 'Romanos 16:1-16 recomendación de Febe y saludos; 16:17-20 advertencia contra divisores; 16:21-24 saludos finales; 16:25-27 doxología.',
+      keyTerms: 'Febe, Priscila, Aquila, colaboradores, iglesias en casas, divisiones, misterio, obediencia de fe.',
+      intertext: 'La doxología retoma el tema del misterio ahora revelado a las naciones, en línea con la apertura de Romanos 1: obediencia de fe entre los gentiles.',
+      caution: 'No saltar Romanos 16 como si fuera solo lista de nombres. Muestra redes reales de misión, mujeres y hombres colaboradores, casas-iglesia y unidad comunitaria.',
+      synthesis: 'La conclusión cruda es que el evangelio de Romanos no queda en teoría: aparece encarnado en comunidades, colaboradores, hospitalidad, vigilancia doctrinal y misión entre las naciones.'
     },
     'efesios 4': {
       unit: 'Efesios 4:1-6 llamado a vivir dignamente y guardar la unidad; 4:7-16 dones para madurez del cuerpo; 4:17-24 abandono de la vida vieja; 4:25-32 ética concreta de verdad, ira, trabajo, palabra y perdón.',
