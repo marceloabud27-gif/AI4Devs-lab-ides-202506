@@ -13,6 +13,8 @@ const CHUNK_OVERLAP = 200;
 
 function normalizeWhitespace(text) {
   return text
+    .replace(/\u0000/g, '')
+    .replace(/[\u0001-\u0008\u000B\u000C\u000E-\u001F]/g, ' ')
     .replace(/\r/g, '\n')
     .replace(/[ \t]+/g, ' ')
     .replace(/\n{3,}/g, '\n\n')
