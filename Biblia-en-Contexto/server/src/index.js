@@ -3,9 +3,13 @@ import express from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
 import morgan from 'morgan';
+import multer from 'multer';
 import { z } from 'zod';
 import { createHmac, pbkdf2Sync, randomBytes, timingSafeEqual } from 'node:crypto';
+import { mkdir } from 'node:fs/promises';
+import { join } from 'node:path';
 import { PrismaClient } from '@prisma/client';
+import { buscarChunksDeFuentes, importarPDF } from './source-library.js';
 
 const prisma = new PrismaClient();
 const app = express();
@@ -23,6 +27,12 @@ const allowedOrigins = new Set([
   'http://localhost:5174',
   'http://127.0.0.1:5174'
 ]);
+const uploadDir = join(process.cwd(), 'uploads');
+await mkdir(uploadDir, { recursive: true });
+const upload = multer({
+  dest: uploadDir,
+  limits: { fileSize: 25 * 1024 * 1024 }
+});
 
 app.use(helmet());
 app.use(cors({
@@ -1399,6 +1409,80 @@ app.get('/api/fuentes/diccionarios', async (_req, res, next) => {
   }
 });
 
+const sourceImportSchema = z.object({
+  filePath: z.string().min(3),
+  title: z.string().min(2).max(180).optional(),
+  author: z.string().max(120).optional(),
+  licenseStatus: z.enum(['PUBLIC_DOMAIN', 'COPYRIGHTED', 'OPEN_ACCESS', 'LICENSE_REQUIRED']).default('COPYRIGHTED'),
+  licenseNote: z.string().max(400).optional()
+});
+
+const sourceSearchSchema = z.object({
+  query: z.string().min(2).max(600),
+  limit: z.number().int().min(1).max(20).default(6)
+});
+
+app.get('/api/sources', async (_req, res, next) => {
+  try {
+    const sources = await prisma.sourceBook.findMany({
+      orderBy: { processedAt: 'desc' },
+      include: { _count: { select: { chunks: true } } }
+    });
+    res.json(sources);
+  } catch (error) {
+    next(error);
+  }
+});
+
+app.post('/api/sources/import-local', async (req, res, next) => {
+  try {
+    const data = sourceImportSchema.parse(req.body);
+    const result = await importarPDF(prisma, data.filePath, data);
+    res.status(result.skipped ? 200 : 201).json(result);
+  } catch (error) {
+    next(error);
+  }
+});
+
+app.post('/api/sources/upload', upload.single('pdf'), async (req, res, next) => {
+  try {
+    if (!req.file) {
+      return res.status(400).json({ mensaje: 'Subí un archivo PDF en el campo "pdf".' });
+    }
+
+    const metadata = sourceImportSchema.omit({ filePath: true }).parse({
+      title: req.body.title || req.file.originalname.replace(/\.pdf$/i, ''),
+      author: req.body.author || undefined,
+      licenseStatus: req.body.licenseStatus || 'COPYRIGHTED',
+      licenseNote: req.body.licenseNote || undefined
+    });
+
+    const result = await importarPDF(prisma, req.file.path, {
+      ...metadata,
+      title: metadata.title,
+      licenseNote: metadata.licenseNote ?? `Importado desde ${req.file.originalname}.`
+    });
+
+    res.status(result.skipped ? 200 : 201).json(result);
+  } catch (error) {
+    next(error);
+  }
+});
+
+app.post('/api/sources/search', async (req, res, next) => {
+  try {
+    const data = sourceSearchSchema.parse(req.body);
+    const results = await buscarChunksDeFuentes(prisma, data.query, data.limit);
+    res.json({
+      query: data.query,
+      mode: process.env.OPENAI_API_KEY ? 'vector_or_text' : 'text',
+      results
+    });
+  } catch (error) {
+    next(error);
+  }
+});
+
 app.get('/api/biblia/versiculos', async (req, res, next) => {
   try {
     const search = req.query.q?.toString() ?? '';
@@ -1421,7 +1505,7 @@ app.get('/api/buscar', async (req, res, next) => {
     }
 
     const variants = searchTerms(q);
-    const [verses, glossary, events, textSources, lexicons] = await Promise.all([
+    const [verses, glossary, events, textSources, lexicons, sourceChunks] = await Promise.all([
       prisma.bibleVerse.findMany({
         where: bibleSearchWhere(q),
         take: 12,
@@ -1475,7 +1559,8 @@ app.get('/api/buscar', async (req, res, next) => {
         },
         take: 8,
         orderBy: { priority: 'asc' }
-      })
+      }),
+      buscarChunksDeFuentes(prisma, q, 5).catch(() => [])
     ]);
 
     res.json({
@@ -1516,6 +1601,14 @@ app.get('/api/buscar', async (req, res, next) => {
           title: item.name,
           description: item.useInApp,
           target: 'fuentes'
+        })),
+        ...sourceChunks.map((item) => ({
+          id: item.id,
+          type: 'Biblioteca',
+          title: `${item.title}${item.author ? ` - ${item.author}` : ''}`,
+          description: item.contentText.slice(0, 260),
+          target: 'biblioteca',
+          score: Number(item.score ?? 0)
         }))
       ]
     });
@@ -1895,6 +1988,29 @@ function enrichAnalysis(result, depth) {
   };
 }
 
+async function enrichAnalysisWithSources(result, depth, query) {
+  const enriched = enrichAnalysis(result, depth);
+  const sourceMatches = await buscarChunksDeFuentes(prisma, query, 3).catch(() => []);
+  if (!sourceMatches.length) return enriched;
+
+  const sourceSummary = sourceMatches.map((item) => {
+    const author = item.author ? `, ${item.author}` : '';
+    return `${item.title}${author}: ${item.contentText.slice(0, 360).replace(/\s+/g, ' ')}${item.contentText.length > 360 ? '...' : ''}`;
+  }).join(' ');
+
+  return {
+    ...enriched,
+    sourceMatches,
+    sections: [
+      ...(enriched.sections ?? []),
+      {
+        title: 'Biblioteca de fuentes',
+        body: `La biblioteca interna encontró material relacionado con esta búsqueda. Úsalo como apoyo, no como reemplazo del texto bíblico: ${sourceSummary}`
+      }
+    ]
+  };
+}
+
 app.post('/api/analizar', async (req, res, next) => {
   try {
     const data = analyzeSchema.parse(req.body);
@@ -1920,7 +2036,7 @@ app.post('/api/analizar', async (req, res, next) => {
       }
 
       const explanation = simplePassageExplanation(input, verses);
-      return res.json(enrichAnalysis({
+      const result = {
         mode: 'passage',
         title: input,
         found: verses.length > 0,
@@ -1928,7 +2044,9 @@ app.post('/api/analizar', async (req, res, next) => {
         sections: explanation.sections,
         lexicalRows: explanation.lexicalRows,
         verses: verses.map(bibleVerseDto)
-      }, data.depth));
+      };
+
+      return res.json(await enrichAnalysisWithSources(result, data.depth, input));
     }
 
     if (wordCount <= 3) {
@@ -1951,7 +2069,7 @@ app.post('/api/analizar', async (req, res, next) => {
       });
       const lexicalStudy = lexicalStudyForWord(input, verses, glossary);
 
-      return res.json(enrichAnalysis({
+      const result = {
         mode: 'word',
         title: input,
         found: verses.length > 0,
@@ -1959,10 +2077,12 @@ app.post('/api/analizar', async (req, res, next) => {
         sections: wordAnalysisSections(input, verses, lexicalStudy, totalOccurrences),
         lexicalRows: lexicalStudy.lexicalRows,
         verses: verses.map(bibleVerseDto)
-      }, data.depth));
+      };
+
+      return res.json(await enrichAnalysisWithSources(result, data.depth, input));
     }
 
-    return res.json(enrichAnalysis(textStudy(input), data.depth));
+    return res.json(await enrichAnalysisWithSources(textStudy(input), data.depth, input));
   } catch (error) {
     next(error);
   }

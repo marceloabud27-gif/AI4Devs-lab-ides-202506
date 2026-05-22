@@ -229,6 +229,40 @@ model LexiconSource {
   updatedAt     DateTime      @updatedAt
 }
 
+model SourceBook {
+  id             String        @id @default(uuid())
+  fileName       String
+  title          String
+  author         String?
+  licenseStatus  LicenseStatus @default(COPYRIGHTED)
+  licenseNote    String?
+  contentHash    String        @unique
+  totalCharacters Int          @default(0)
+  totalChunks     Int          @default(0)
+  processedAt     DateTime     @default(now())
+  chunks          SourceChunk[]
+  createdAt       DateTime     @default(now())
+  updatedAt       DateTime     @updatedAt
+
+  @@index([title])
+  @@index([author])
+}
+
+model SourceChunk {
+  id          String                  @id @default(uuid())
+  sourceBookId String
+  sourceBook   SourceBook             @relation(fields: [sourceBookId], references: [id], onDelete: Cascade)
+  chunkIndex    Int
+  contentText   String                 @db.Text
+  contentHash   String                 @unique
+  tokenEstimate Int
+  embedding     Unsupported("vector(1536)")?
+  createdAt     DateTime               @default(now())
+
+  @@unique([sourceBookId, chunkIndex])
+  @@index([sourceBookId])
+}
+
 model PassageConnection {
   id            String   @id @default(uuid())
   fromReference String
