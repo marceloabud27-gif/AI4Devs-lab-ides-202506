@@ -2048,6 +2048,8 @@ function inferSourceTopic(query, matches = []) {
 
   if (/\b(infierno|gehenna|hades|castigo|juicio|condenacion|fuego)\b/.test(text)) return 'infierno';
   if (/\b(milenio|milenial|apocalipsis 20|reino de mil anos)\b/.test(text)) return 'milenio';
+  if (/\b(apocalipsis|escatologia|gog|magog|bestia|lago de fuego|nueva jerusalen)\b/.test(text)) return 'apocalipsis';
+  if (/\b(conversion|arrepentimiento|nuevo nacimiento|nacer de nuevo|discipulado)\b/.test(text)) return 'conversion';
   if (/\b(espiritu|pentecostes|santificacion|regeneracion)\b/.test(text)) return 'espiritu';
   if (/\b(gracia|justificacion|salvacion|fe|redencion)\b/.test(text)) return 'gracia';
   if (/\b(iglesia|comunidad|disciplina|discipulado|mision)\b/.test(text)) return 'iglesia';
@@ -2055,7 +2057,124 @@ function inferSourceTopic(query, matches = []) {
   return 'general';
 }
 
-function buildLibrarySynthesis(topic, target, matches) {
+function plainForAnalysis(value) {
+  return String(value ?? '')
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+function sourceEvidenceText(matches) {
+  return matches
+    .map((match) => `${match.title ?? ''} ${match.author ?? ''} ${match.contentText ?? ''} ${(match.snippets ?? []).join(' ')}`)
+    .join(' ');
+}
+
+function hasAny(text, terms) {
+  return terms.some((term) => text.includes(term));
+}
+
+function sourceSentences(matches, query, limit = 4) {
+  const terms = plainForAnalysis(query)
+    .split(/\W+/)
+    .filter((term) => term.length >= 5)
+    .slice(0, 12);
+  const candidates = matches
+    .flatMap((match) => String(match.contentText ?? '').split(/(?<=[.!?])\s+/))
+    .map((sentence) => compactSourceText(sentence, 260))
+    .filter((sentence) => sentence.length >= 80 && sentence.length <= 280)
+    .map((sentence) => {
+      const plain = plainForAnalysis(sentence);
+      const score = terms.reduce((total, term) => total + (plain.includes(term) ? 1 : 0), 0);
+      return { sentence, score };
+    })
+    .filter((item) => item.score > 0)
+    .sort((a, b) => b.score - a.score);
+
+  return Array.from(new Set(candidates.map((item) => item.sentence))).slice(0, limit);
+}
+
+function evidenceDrivenDetails(topic, target, matches, result) {
+  const text = plainForAnalysis(sourceEvidenceText(matches));
+  const details = [];
+
+  if (topic === 'infierno') {
+    if (hasAny(text, ['lago de fuego', 'muerte segunda', 'hades'])) {
+      details.push('Cuando el tema aparece en Apocalipsis, debe observarse el lenguaje del lago de fuego, la muerte segunda y el destino final del mal. Ese lenguaje no funciona como curiosidad morbosa, sino como cierre judicial de la historia.');
+    }
+    if (hasAny(text, ['justicia retributiva', 'justo', 'juicio'])) {
+      details.push('El juicio se presenta como respuesta justa de Dios, no como reaccion caprichosa. La pregunta exegética no es si el juicio incomoda al lector moderno, sino que funcion cumple en el argumento del pasaje.');
+    }
+    if (hasAny(text, ['separacion', 'exclusion', 'presencia de dios'])) {
+      details.push('Otra linea importante es la separacion de la presencia favorable de Dios. En terminos sencillos: el juicio no es solo dolor, sino perdida de comunion, reino y vida delante de Dios.');
+    }
+  }
+
+  if (topic === 'milenio' || topic === 'apocalipsis') {
+    if (hasAny(text, ['ezequiel 37', 'gog', 'magog'])) {
+      details.push('Apocalipsis debe leerse con el Antiguo Testamento abierto. Las conexiones con Ezequiel, Gog y Magog muestran que Juan no inventa imagenes sueltas: reutiliza simbolos profeticos para describir la oposicion final contra Dios.');
+    }
+    if (hasAny(text, ['apocalipsis 20', 'milenio', 'mil anos'])) {
+      details.push('En Apocalipsis 20, el milenio debe analizarse dentro de la secuencia literaria del libro: reinado, testimonio, oposicion, juicio y consumacion. Antes de elegir una postura escatologica, hay que preguntar que esta haciendo el simbolo dentro de la vision.');
+    }
+    if (hasAny(text, ['simbol', 'vision', 'apocalipt'])) {
+      details.push('El genero apocaliptico exige cuidado: comunica verdad real mediante imagenes fuertes. Eso no significa que sea falso, sino que no siempre debe leerse como prosa cronologica ordinaria.');
+    }
+  }
+
+  if (topic === 'conversion') {
+    if (hasAny(text, ['arrepentimiento', 'seguirlo', 'cruz'])) {
+      details.push('La conversion biblica no es solo aceptar una idea religiosa. Incluye arrepentimiento, cambio de lealtad y seguimiento de Cristo. Dicho simple: convertirse es dejar de vivir como dueño de uno mismo y responder al llamado del evangelio.');
+    }
+    if (hasAny(text, ['momento determinado', 'continua', 'vida'])) {
+      details.push('La conversion tiene un comienzo real, pero sus efectos continuan en la vida. Por eso no debe reducirse a una decision pasada sin fruto presente.');
+    }
+    if (hasAny(text, ['evangelio', 'salvar', 'vida'])) {
+      details.push('El evangelio presenta la conversion como respuesta a la obra de Dios, no como auto-mejoramiento moral. La fe recibe a Cristo; el arrepentimiento abandona el camino anterior.');
+    }
+  }
+
+  if (topic === 'espiritu') {
+    if (hasAny(text, ['regenerada', 'bautismo del espiritu', 'pentecostes'])) {
+      details.push('La obra del Espiritu debe leerse dentro de la historia de la redencion: Pentecostes, regeneracion, pertenencia a Cristo y formacion del pueblo de Dios.');
+    }
+    if (hasAny(text, ['santificacion', 'edificacion', 'iglesia'])) {
+      details.push('El Espiritu no solo produce experiencias individuales; edifica la iglesia y forma santidad concreta.');
+    }
+  }
+
+  if (topic === 'gracia') {
+    if (hasAny(text, ['justifica', 'impios', 'salva', 'redencion'])) {
+      details.push('La gracia aparece como accion salvadora de Dios hacia quienes no pueden justificarse a si mismos. Esto protege la lectura contra cualquier idea de merito humano.');
+    }
+    if (hasAny(text, ['fe', 'arrepentimiento', 'obediencia'])) {
+      details.push('La fe y el arrepentimiento son respuestas necesarias, pero no deben presentarse como precio que compra la salvacion. Son la forma en que la persona recibe y vive la gracia.');
+    }
+  }
+
+  if (topic === 'iglesia') {
+    if (hasAny(text, ['comunidad', 'iglesia', 'discipulado'])) {
+      details.push('La iglesia debe entenderse como comunidad formada por el evangelio. La pregunta no es solo que cree una persona, sino que clase de pueblo produce el texto.');
+    }
+    if (hasAny(text, ['lideres', 'predicacion', 'evangelio'])) {
+      details.push('El liderazgo, la predicacion y el discipulado aparecen como medios concretos por los cuales la iglesia cuida la fidelidad al evangelio.');
+    }
+  }
+
+  if (!details.length) {
+    const sentences = sourceSentences(matches, `${target} ${result.explanation ?? ''}`, 3);
+    if (sentences.length) {
+      details.push('El material recuperado apunta a estas lineas de lectura:');
+      details.push(...sentences.map((sentence) => `- ${sentence}`));
+    }
+  }
+
+  return details;
+}
+
+function buildLibrarySynthesis(topic, target, matches, result = {}) {
   const hasImportedSupport = matches.length > 0;
   const topicBodies = {
     infierno: [
@@ -2067,6 +2186,16 @@ function buildLibrarySynthesis(topic, target, matches) {
       `Sobre ${target}, la pregunta central no es solo cuanto dura el milenio, sino que funcion cumple dentro del argumento biblico: mostrar el reinado de Cristo, la derrota del mal y la vindicacion final del pueblo de Dios. En Apocalipsis, los numeros, imagenes y escenas deben leerse con cuidado porque pertenecen a literatura apocaliptica.`,
       'Una lectura responsable evita convertir simbolos en un cronograma facil. Primero observa imagenes, repeticiones, contrastes y conexiones internas del pasaje. Luego se comparan las posturas historicas, como premilenialismo, amilenialismo o posmilenialismo, sin hacer que el sistema teologico decida antes que el texto.',
       'En sencillo: el milenio no debe estudiarse como curiosidad profetica aislada. Debe leerse como parte de la esperanza cristiana: Cristo reina, el mal tiene limite, el pueblo de Dios sera vindicado y la historia no termina en caos sino bajo el gobierno final de Dios.'
+    ],
+    apocalipsis: [
+      `Sobre ${target}, Apocalipsis debe leerse como profecia apocaliptica y pastoral escrita para comunidades bajo presion. Su lenguaje esta lleno de imagenes, ecos del Antiguo Testamento y contrastes entre el reino de Dios y los poderes que se oponen a el.`,
+      'La lectura historico-gramatical no debe elegir entre "simbolico" y "real" como si fueran opuestos. En Apocalipsis, los simbolos comunican realidades teologicas fuertes: juicio, perseverancia, idolatria imperial, victoria del Cordero y consumacion final.',
+      'En sencillo: Apocalipsis no fue dado para alimentar especulacion, sino para formar fidelidad. El lector debe preguntar que revela cada vision sobre Dios, Cristo, el mal, la iglesia y el final de la historia.'
+    ],
+    conversion: [
+      `Sobre ${target}, la conversion biblica incluye arrepentimiento y fe. No es solo emocion religiosa, cambio de opinion o mejora moral; es una respuesta integral al evangelio, donde la persona abandona su antigua lealtad y se vuelve a Dios.`,
+      'La lectura responsable debe distinguir el comienzo de la conversion y sus frutos. Puede haber un momento identificable de respuesta, pero la conversion verdadera produce una vida orientada hacia Cristo, obediencia y perseverancia.',
+      'En sencillo: convertirse no significa solamente "portarse mejor"; significa recibir el evangelio, volverse de la autonomia y seguir a Cristo como Señor.'
     ],
     espiritu: [
       `Sobre ${target}, la obra del Espiritu Santo no debe reducirse a emociones, experiencias aisladas o lenguaje religioso general. En el Nuevo Testamento, el Espiritu aparece ligado a regeneracion, santificacion, union con Cristo, poder para testificar, adopcion, dones y formacion de la iglesia.`,
@@ -2095,8 +2224,11 @@ function buildLibrarySynthesis(topic, target, matches) {
     ]
   };
 
+  const body = topicBodies[topic] ?? topicBodies.general;
+  const dynamicDetails = hasImportedSupport ? evidenceDrivenDetails(topic, target, matches, result) : [];
+
   return hasImportedSupport
-    ? (topicBodies[topic] ?? topicBodies.general)
+    ? [...body, ...dynamicDetails]
     : [
         ...(topicBodies[topic] ?? topicBodies.general),
         'No se encontro apoyo documental especifico en la biblioteca para esta busqueda, asi que la respuesta se mantiene en el analisis biblico general sin inventar fuentes.'
@@ -2143,7 +2275,7 @@ function buildSourceLibrarySection(matches, result, query) {
   const grouped = groupSourceMatches(matches);
   const target = result.title || query;
   const topic = inferSourceTopic(`${query} ${target}`, grouped);
-  const synthesis = buildLibrarySynthesis(topic, target, grouped);
+  const synthesis = buildLibrarySynthesis(topic, target, grouped, result);
 
   return {
     title: 'Biblioteca de fuentes',
