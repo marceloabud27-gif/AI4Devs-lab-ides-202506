@@ -2052,48 +2052,52 @@ function inferSourceTopic(query, matches = []) {
   return 'general';
 }
 
-function uniqueSourceNames(matches) {
-  return Array.from(new Set(matches.map((item) => `${item.title}${item.author ? `, ${item.author}` : ''}`))).slice(0, 5);
-}
-
 function buildLibrarySynthesis(topic, target, matches) {
-  const sourceNames = uniqueSourceNames(matches);
-  const sourceLine = sourceNames.length
-    ? `Base consultada: ${sourceNames.join('; ')}.`
-    : 'Base consultada: biblioteca interna de fuentes importadas.';
-
+  const hasImportedSupport = matches.length > 0;
   const topicBodies = {
     infierno: [
-      `Sobre ${target}, la respuesta debe partir del lenguaje biblico de juicio antes de saltar a debates modernos. La biblioteca apunta a tres ideas que conviene mantener juntas: castigo, exclusion de la comunion con Dios y seriedad moral del pecado. En terminos sencillos: el infierno no aparece como una imagen decorativa para asustar, sino como una manera de expresar que el mal humano no queda sin respuesta delante de un Dios justo.`,
-      'La lectura historico-gramatical debe preguntar que imagen usa cada texto: fuego, tinieblas, destruccion, castigo, separacion o verguenza. No todas las imagenes hacen exactamente el mismo trabajo literario, pero juntas comunican juicio real y definitivo. Por eso la aplicacion responsable no debe suavizar el texto ni exagerarlo mas alla de lo que el pasaje dice.'
+      `Sobre ${target}, la respuesta debe partir del lenguaje biblico de juicio antes de saltar a debates modernos. El tema del infierno aparece ligado a la santidad de Dios, la responsabilidad humana y la seriedad moral del pecado. En terminos sencillos: no es una imagen decorativa para asustar, sino una forma biblica de afirmar que el mal no queda sin respuesta delante de Dios.`,
+      'La lectura historico-gramatical debe observar que imagen usa cada texto: fuego, tinieblas, destruccion, castigo, separacion, verguenza o exclusion del reino. No todas esas imagenes funcionan exactamente igual, pero juntas comunican juicio real y definitivo. Por eso una explicacion fiel no debe suavizar el pasaje ni exagerarlo mas alla de lo que dice.',
+      'La conclusion responsable es esta: el infierno debe explicarse con sobriedad. El texto llama a tomar en serio el juicio divino, pero tambien obliga a leer cada pasaje en su genero y contexto. Si el pasaje esta en un evangelio, hay que atender a la predicacion de Jesus y al lenguaje del reino; si esta en una carta, hay que mirar el argumento pastoral; si esta en Apocalipsis, hay que respetar el simbolismo apocaliptico.'
     ],
     milenio: [
-      `Sobre ${target}, la biblioteca debe ayudar a distinguir el texto de Apocalipsis, el genero apocaliptico y las interpretaciones historicas posteriores. La pregunta central no es solo cuanto dura el milenio, sino que funcion cumple en el argumento: mostrar el reinado de Cristo, la derrota del mal y la vindicacion final del pueblo de Dios.`,
-      'Una lectura responsable evita convertir simbolos apocalipticos en cronograma facil. Primero observa imagenes, repeticiones y contrastes del pasaje; despues compara con el resto de la Escritura solo cuando hay conexiones textuales claras. Asi se puede explicar premilenialismo, amilenialismo o posmilenialismo sin forzar el texto.'
+      `Sobre ${target}, la pregunta central no es solo cuanto dura el milenio, sino que funcion cumple dentro del argumento biblico: mostrar el reinado de Cristo, la derrota del mal y la vindicacion final del pueblo de Dios. En Apocalipsis, los numeros, imagenes y escenas deben leerse con cuidado porque pertenecen a literatura apocaliptica.`,
+      'Una lectura responsable evita convertir simbolos en un cronograma facil. Primero observa imagenes, repeticiones, contrastes y conexiones internas del pasaje. Luego se comparan las posturas historicas, como premilenialismo, amilenialismo o posmilenialismo, sin hacer que el sistema teologico decida antes que el texto.',
+      'En sencillo: el milenio no debe estudiarse como curiosidad profetica aislada. Debe leerse como parte de la esperanza cristiana: Cristo reina, el mal tiene limite, el pueblo de Dios sera vindicado y la historia no termina en caos sino bajo el gobierno final de Dios.'
     ],
     espiritu: [
-      `Sobre ${target}, las fuentes ayudan a enfocar la obra del Espiritu Santo sin reducirla a emociones o experiencias aisladas. En el Nuevo Testamento, el Espiritu aparece ligado a regeneracion, santificacion, comunion con Cristo, poder para testificar y formacion de la iglesia.`,
-      'En sencillo: no se debe preguntar primero "que senti", sino que afirma el texto que Dios hace por medio de su Espiritu. La experiencia puede ser importante, pero debe interpretarse desde el pasaje, no al reves.'
+      `Sobre ${target}, la obra del Espiritu Santo no debe reducirse a emociones, experiencias aisladas o lenguaje religioso general. En el Nuevo Testamento, el Espiritu aparece ligado a regeneracion, santificacion, union con Cristo, poder para testificar, adopcion, dones y formacion de la iglesia.`,
+      'La pregunta principal no es primero "que senti", sino que afirma el texto que Dios hace por medio de su Espiritu. La experiencia puede ser importante, pero debe ser interpretada por el pasaje. Cuando el texto habla del Espiritu, conviene mirar verbos, sujetos y resultados: quien actua, sobre quien actua y para que.',
+      'En terminos sencillos: el Espiritu no aparece como una fuerza impersonal ni como una emocion momentanea. El texto biblico lo presenta como Dios obrando en su pueblo para dar vida, formar santidad, sostener la fe y dirigir a la comunidad hacia Cristo.'
     ],
     gracia: [
-      `Sobre ${target}, la biblioteca apunta a una idea central: la gracia es iniciativa de Dios, no premio al merito humano. Cuando el texto habla de salvacion, fe o justificacion, la lectura debe separar cuidadosamente causa, medio y resultado: Dios salva por gracia, la fe recibe, y la obediencia aparece como fruto.`,
-      'Esto evita dos errores: convertir la fe en una obra que compra el favor de Dios, o convertir la gracia en permiso para vivir sin transformacion. La exegesis debe mostrar como el pasaje mantiene esa tension.'
+      `Sobre ${target}, la gracia debe entenderse como iniciativa de Dios, no como premio al merito humano. Cuando el texto habla de salvacion, fe, justificacion o redencion, la lectura debe distinguir causa, medio y resultado: Dios salva por gracia, la fe recibe, y la obediencia aparece como fruto.`,
+      'Esto evita dos errores frecuentes: convertir la fe en una obra que compra el favor de Dios, o convertir la gracia en permiso para vivir sin transformacion. La exegesis debe mostrar como el pasaje mantiene la tension entre don gratuito y vida renovada.',
+      'En sencillo: gracia significa que Dios actua a favor de quien no puede presentarse con derechos propios. Por eso la respuesta humana no es orgullo, sino confianza, gratitud y obediencia nacida de la obra de Dios.'
     ],
     iglesia: [
-      `Sobre ${target}, las fuentes ayudan a leer la iglesia como comunidad visible, concreta y discipulada, no como idea abstracta. Los textos sobre iglesia suelen tocar identidad, unidad, santidad, liderazgo, mision y cuidado mutuo.`,
-      'En terminos claros: una buena interpretacion pregunta que tipo de pueblo esta formando Dios y como el pasaje ordena la vida comunitaria. La aplicacion no debe quedarse en lo individual si el texto habla a una comunidad.'
+      `Sobre ${target}, la iglesia debe leerse como una comunidad visible, concreta y discipulada, no como una idea abstracta. Los textos sobre iglesia suelen tocar identidad, unidad, santidad, liderazgo, mision, disciplina, cuidado mutuo y testimonio publico.`,
+      'Una buena interpretacion pregunta que tipo de pueblo esta formando Dios y como el pasaje ordena la vida comunitaria. Si el texto fue dirigido a una comunidad, la aplicacion no debe reducirse a lo individual. Hay que preguntar como cambia la adoracion, la convivencia, el servicio y la mision.',
+      'En sencillo: la iglesia no es solo un lugar al que se asiste; es un pueblo formado por el evangelio. Por eso los textos sobre iglesia deben llevar a comunion real, responsabilidad compartida y fidelidad practica.'
     ],
     pacto: [
-      `Sobre ${target}, la biblioteca de teologia biblica ayuda a ubicar el tema dentro de la historia redentora: promesa, pacto, cumplimiento, pueblo de Dios y esperanza final. La pregunta no es solo que significa una palabra, sino donde esta ubicada dentro del desarrollo de la revelacion biblica.`,
-      'La lectura responsable evita saltos rapidos. Primero se interpreta el pasaje en su libro; luego se observa como ese tema avanza dentro de la Biblia completa.'
+      `Sobre ${target}, el tema debe ubicarse dentro de la historia redentora: promesa, pacto, cumplimiento, pueblo de Dios y esperanza final. La pregunta no es solo que significa una palabra, sino donde esta ubicada dentro del desarrollo de la revelacion biblica.`,
+      'La lectura responsable evita saltos rapidos. Primero se interpreta el pasaje dentro de su libro; luego se observa como ese tema avanza en la Biblia completa. Asi se respeta la diferencia entre Antiguo y Nuevo Testamento sin separar artificialmente la historia de Dios.',
+      'En sencillo: pacto significa que Dios se relaciona con su pueblo por promesa, compromiso y fidelidad. Cada pasaje debe leerse preguntando que revela sobre Dios, que exige del pueblo y como se conecta con el avance de la redencion.'
     ],
     general: [
-      `Sobre ${target}, la biblioteca interna sirve para ampliar el analisis sin desplazar el texto biblico. La respuesta debe comenzar por el pasaje: su contexto, genero, estructura, palabras clave y proposito. Luego las fuentes ayudan a precisar doctrina, historia y aplicacion.`,
-      'En sencillo: los libros importados no mandan sobre el texto; ayudan a leerlo con mas cuidado. Si una fuente ilumina el tema, se usa; si no tiene relacion directa, no debe meterse como relleno.'
+      `Sobre ${target}, la respuesta debe comenzar por el texto: contexto, genero, estructura, palabras clave, proposito del autor y lugar del pasaje dentro del libro. Despues se puede ampliar con teologia biblica, historia, doctrina y aplicacion, pero sin desplazar el sentido original.`,
+      'Una explicacion responsable distingue observacion, interpretacion y aplicacion. Primero se mira que dice el texto; luego que significa en su contexto; finalmente como debe entenderse hoy. Ese orden evita imponer ideas modernas o doctrinas externas sobre el pasaje.',
+      'En sencillo: la meta no es sonar complicado, sino leer con fidelidad. Si el texto afirma algo claro, se explica con claridad. Si el texto tiene tension o dificultad, se reconoce sin resolverla a la fuerza.'
     ]
   };
 
-  return [...(topicBodies[topic] ?? topicBodies.general), sourceLine];
+  return hasImportedSupport
+    ? (topicBodies[topic] ?? topicBodies.general)
+    : [
+        ...(topicBodies[topic] ?? topicBodies.general),
+        'No se encontro apoyo documental especifico en la biblioteca para esta busqueda, asi que la respuesta se mantiene en el analisis biblico general sin inventar fuentes.'
+      ];
 }
 
 function buildSourceSearchQuery(result, query) {
@@ -2137,20 +2141,10 @@ function buildSourceLibrarySection(matches, result, query) {
   const target = result.title || query;
   const topic = inferSourceTopic(`${query} ${target}`, grouped);
   const synthesis = buildLibrarySynthesis(topic, target, grouped);
-  const lines = grouped.map((match) => {
-    const author = match.author ? `, ${match.author}` : '';
-    return `- ${match.title}${author}: ${sourceContribution(match, query)}`;
-  });
 
   return {
     title: 'Biblioteca de fuentes',
-    body: [
-      `Respuesta redactada desde la biblioteca interna para ${target}:`,
-      ...synthesis,
-      'Fuentes usadas como apoyo:',
-      ...lines,
-      'Criterio: no se copian parrafos de los libros; se usan como base de consulta para redactar una sintesis clara, historica y pastoralmente responsable.'
-    ].join('\n')
+    body: synthesis.join('\n')
   };
 }
 
