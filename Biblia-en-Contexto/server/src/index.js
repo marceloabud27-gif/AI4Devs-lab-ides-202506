@@ -911,12 +911,96 @@ function chapterDepthProfile(book, chapter) {
       caution: 'No separar Isaías 53 de Isaías 40-55 ni resolver de inmediato todas las preguntas sobre identidad del siervo sin seguir el argumento del libro.',
       synthesis: 'La conclusión cruda es que la restauración de muchos aparece ligada al sufrimiento vicario del siervo y a la vindicación final de Dios.'
     },
+    'hebreos 1': {
+      unit: 'Hebreos 1:1-4 Dios habla definitivamente en el Hijo; 1:5-14 cadena de citas que muestra superioridad del Hijo sobre los ángeles.',
+      keyTerms: 'Hijo, postreros días, resplandor, sustancia, purificación, ángeles, trono, heredar.',
+      intertext: 'Salmo 2, 2 Samuel 7, Deuteronomio 32, Salmo 104, Salmo 45 y Salmo 110 sostienen la identidad real y superior del Hijo.',
+      caution: 'No leer Hebreos 1 como especulación abstracta sobre ángeles. El argumento establece desde el inicio que la revelación final de Dios viene por el Hijo.',
+      synthesis: 'La conclusión cruda es que el Hijo no es un mensajero más: comparte autoridad real, revela a Dios y sostiene todo, por eso su palabra exige atención superior.'
+    },
+    'hebreos 2': {
+      unit: 'Hebreos 2:1-4 advertencia contra descuidar la salvación; 2:5-18 humillación, sufrimiento y solidaridad del Hijo con sus hermanos.',
+      keyTerms: 'descuidar, salvación, mundo venidero, Hijo del Hombre, muerte, hermanos, misericordioso, sumo sacerdote.',
+      intertext: 'Salmo 8 organiza la reflexión sobre humanidad y dominio. La encarnación se entiende como solidaridad real para vencer muerte y ayudar a los tentados.',
+      caution: 'No separar la grandeza del Hijo de su sufrimiento. Hebreos afirma superioridad precisamente mostrando que el Hijo se hizo hermano y sufrió.',
+      synthesis: 'La conclusión cruda es que el Hijo exaltado participó de carne y sangre para destruir el poder de la muerte y convertirse en sumo sacerdote misericordioso.'
+    },
+    'hebreos 3': {
+      unit: 'Hebreos 3:1-6 Jesús superior a Moisés como Hijo sobre la casa; 3:7-19 advertencia desde la generación del desierto.',
+      keyTerms: 'apóstol, sumo sacerdote, Moisés, casa, hoy, endurecer, incredulidad, reposo.',
+      intertext: 'Números 12 y Salmo 95 son claves. La historia del desierto funciona como advertencia viva para la comunidad.',
+      caution: 'No leer la comparación con Moisés como desprecio a Moisés. Hebreos honra a Moisés, pero afirma que Jesús tiene autoridad superior como Hijo.',
+      synthesis: 'La conclusión cruda es que la comunidad debe escuchar hoy al Hijo y evitar la incredulidad que impidió a la generación del desierto entrar en el reposo.'
+    },
+    'hebreos 4': {
+      unit: 'Hebreos 4:1-11 promesa de reposo aún abierta; 4:12-13 palabra viva que discierne; 4:14-16 Jesús, gran sumo sacerdote, acceso al trono de gracia.',
+      keyTerms: 'reposo, promesa, hoy, palabra de Dios, discernir, sumo sacerdote, misericordia, gracia.',
+      intertext: 'Génesis 2, Salmo 95 y la entrada a Canaán se combinan para mostrar que el reposo de Dios sigue teniendo cumplimiento abierto.',
+      caution: 'No reducir el reposo a descanso emocional. En Hebreos es participación final en el propósito de Dios, recibida por fe perseverante.',
+      synthesis: 'La conclusión cruda es que el reposo prometido exige perseverancia, porque la palabra expone el corazón y el sumo sacerdote abre acceso a misericordia.'
+    },
+    'hebreos 5': {
+      unit: 'Hebreos 5:1-10 sumo sacerdote tomado de entre hombres y Cristo sacerdote según Melquisedec; 5:11-14 reprensión por inmadurez.',
+      keyTerms: 'sumo sacerdote, compasión, llamado, Melquisedec, obediencia, padecimientos, madurez, leche.',
+      intertext: 'Salmo 2 y Salmo 110 sostienen la filiación y sacerdocio de Cristo. Melquisedec prepara el argumento de Hebreos 7.',
+      caution: 'No leer "aprendió obediencia" como si Cristo hubiera sido desobediente. El texto habla de obediencia probada en sufrimiento real.',
+      synthesis: 'La conclusión cruda es que Cristo es sacerdote legítimo y compasivo, pero la comunidad necesita madurar para entender la profundidad de ese sacerdocio.'
+    },
+    'hebreos 6': {
+      unit: 'Hebreos 6:1-8 llamado a avanzar y advertencia severa; 6:9-20 seguridad de la promesa jurada a Abraham y esperanza como ancla.',
+      keyTerms: 'madurez, arrepentimiento, imposible, fruto, promesa, juramento, Abraham, esperanza, ancla.',
+      intertext: 'Génesis 22 sostiene el juramento a Abraham. La imagen de ancla lleva la esperanza hacia el interior del velo, conectando con sacerdocio y santuario.',
+      caution: 'No suavizar la advertencia ni usarla para desesperar a creyentes sensibles. El capítulo combina advertencia real y ánimo fuerte en la fidelidad de Dios.',
+      synthesis: 'La conclusión cruda es que la perseverancia importa seriamente, pero la esperanza descansa en la promesa jurada de Dios y en el sacerdote que entró por nosotros.'
+    },
+    'hebreos 7': {
+      unit: 'Hebreos 7:1-10 Melquisedec y Abraham; 7:11-19 cambio de sacerdocio y ley; 7:20-28 sacerdocio eterno y perfecto de Cristo.',
+      keyTerms: 'Melquisedec, Abraham, diezmos, Leví, sacerdocio, juramento, pacto, interceder, perfecto.',
+      intertext: 'Génesis 14 y Salmo 110 son la base. El argumento muestra un sacerdocio anterior y superior al levítico.',
+      caution: 'No tratar a Melquisedec como curiosidad misteriosa. Hebreos lo usa para explicar la legitimidad y superioridad del sacerdocio de Cristo.',
+      synthesis: 'La conclusión cruda es que Cristo es sacerdote eterno, no por genealogía levítica, sino por juramento divino y vida indestructible.'
+    },
+    'hebreos 8': {
+      unit: 'Hebreos 8:1-6 sacerdote celestial y mejor ministerio; 8:7-13 cita de Jeremías sobre nuevo pacto.',
+      keyTerms: 'santuario, tabernáculo verdadero, mediador, mejor pacto, nuevo pacto, corazón, perdón.',
+      intertext: 'Jeremías 31:31-34 es central. El nuevo pacto promete ley interior, conocimiento de Dios y perdón definitivo.',
+      caution: 'No leer "antiguo" como desprecio simplista del Antiguo Testamento. Hebreos argumenta desde las propias Escrituras que el nuevo pacto era prometido.',
+      synthesis: 'La conclusión cruda es que el ministerio de Cristo inaugura el pacto prometido: interior, eficaz y fundado en perdón real.'
+    },
+    'hebreos 9': {
+      unit: 'Hebreos 9:1-10 santuario terrenal y acceso limitado; 9:11-28 Cristo entra con su propia sangre y obtiene redención eterna.',
+      keyTerms: 'tabernáculo, lugar santísimo, sangre, conciencia, redención eterna, mediador, una vez, juicio.',
+      intertext: 'Levítico 16 y el Día de Expiación son el trasfondo principal. El sistema levítico apunta a una purificación más profunda realizada por Cristo.',
+      caution: 'No leer la sangre como símbolo vacío. En Hebreos expresa vida ofrecida, purificación, pacto y acceso a Dios.',
+      synthesis: 'La conclusión cruda es que Cristo supera el acceso limitado del santuario antiguo al ofrecerse una vez y abrir redención eficaz para la conciencia.'
+    },
+    'hebreos 10': {
+      unit: 'Hebreos 10:1-18 insuficiencia de sacrificios repetidos y ofrenda única de Cristo; 10:19-25 acceso y perseverancia comunitaria; 10:26-39 advertencia y llamado a no retroceder.',
+      keyTerms: 'sombra, sacrificio, cuerpo, santificar, una vez, velo, congregarse, advertencia, perseverar.',
+      intertext: 'Salmo 40 y Jeremías 31 sostienen la obediencia del Hijo y el nuevo pacto. El lenguaje del velo conecta sacrificio y acceso.',
+      caution: 'No leer "no dejando de congregarnos" como frase aislada. Está dentro de una llamada a perseverar juntos por el acceso abierto por Cristo.',
+      synthesis: 'La conclusión cruda es que la ofrenda única de Cristo abre acceso real a Dios y exige perseverancia comunitaria, no retroceso.'
+    },
     'hebreos 11': {
       unit: 'Hebreos 11 recorre testigos de fe desde Abel hasta los profetas, mostrando confianza perseverante antes de recibir plenamente lo prometido.',
       keyTerms: 'fe, esperanza, promesa, testimonio, peregrinos, patria, obediencia.',
       intertext: 'El capítulo relee Génesis, Éxodo, Josué, Jueces y la historia de Israel como cadena de fidelidad bajo promesa.',
       caution: 'No leer Hebreos 11 como galería de héroes autónomos. El punto es perseverar mirando la promesa y, en Hebreos 12, a Jesús.',
       synthesis: 'La conclusión cruda es que la fe bíblica no es optimismo; es perseverancia obediente ante promesas aún no consumadas.'
+    },
+    'hebreos 12': {
+      unit: 'Hebreos 12:1-3 correr mirando a Jesús; 12:4-17 disciplina y santidad; 12:18-29 Sion celestial, nuevo pacto y Dios consumidor.',
+      keyTerms: 'testigos, carrera, Jesús, disciplina, santidad, Esaú, Sion, mediador, reino inconmovible.',
+      intertext: 'Proverbios 3 informa la disciplina. Esaú funciona como advertencia. Sinaí y Sion contrastan acceso temeroso y acceso del nuevo pacto.',
+      caution: 'No leer disciplina como castigo cruel. Hebreos la entiende como formación filial para perseverar y participar de la santidad.',
+      synthesis: 'La conclusión cruda es que la comunidad debe correr con perseverancia mirando a Jesús, porque ha recibido un reino inconmovible y una responsabilidad mayor.'
+    },
+    'hebreos 13': {
+      unit: 'Hebreos 13:1-6 amor, hospitalidad, presos, matrimonio y contentamiento; 13:7-17 liderazgo, sacrificio de alabanza y salida fuera del campamento; 13:18-25 oración y cierre.',
+      keyTerms: 'amor fraternal, hospitalidad, presos, contentamiento, líderes, altar, campamento, alabanza, pacto eterno.',
+      intertext: 'El llamado a salir fuera del campamento retoma el sistema sacrificial y lo aplica a la identificación con el rechazo de Jesús.',
+      caution: 'No leer Hebreos 13 como apéndice moral desconectado. Es la forma práctica de perseverar bajo el sacerdocio y pacto expuestos en el libro.',
+      synthesis: 'La conclusión cruda es que la teología de Hebreos termina en comunidad concreta: amor, fidelidad, hospitalidad, alabanza y disposición a cargar el reproche de Cristo.'
     },
     'apocalipsis 1': {
       unit: 'Apocalipsis 1 presenta prólogo, bendición, saludo a las iglesias, visión del Cristo glorificado y comisión a Juan.',
