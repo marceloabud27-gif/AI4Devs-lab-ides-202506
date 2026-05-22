@@ -687,12 +687,201 @@ function chapterDepthProfile(book, chapter) {
       caution: 'No leer Juan 21 como apéndice sin importancia. Cierra temas de misión, restauración, liderazgo y testimonio confiable.',
       synthesis: 'La conclusión cruda es que el Resucitado restaura al discípulo fallido, lo llama a pastorear y centra toda vocación en seguir a Jesús.'
     },
+    'mateo 1': {
+      unit: 'Mateo 1:1-17 genealogía de Jesús desde Abraham y David; 1:18-25 nacimiento de Jesús, José, concepción virginal y nombre Emanuel.',
+      keyTerms: 'Jesucristo, hijo de David, hijo de Abraham, genealogía, José, Espíritu Santo, Jesús, Emanuel.',
+      intertext: 'Génesis, Rut, Samuel y Reyes sostienen la línea Abraham-David-exilio-Cristo. Isaías 7:14 aparece en la cita sobre Emanuel.',
+      caution: 'No leer la genealogía como relleno introductorio. Mateo la usa para ubicar a Jesús dentro de la historia de Israel, promesa, monarquía y exilio.',
+      synthesis: 'La conclusión cruda es que Jesús aparece como cumplimiento de la historia de Israel: hijo de Abraham, hijo de David y presencia de Dios con su pueblo.'
+    },
+    'mateo 2': {
+      unit: 'Mateo 2:1-12 magos, Herodes y Belén; 2:13-15 huida a Egipto; 2:16-18 matanza de niños; 2:19-23 retorno y residencia en Nazaret.',
+      keyTerms: 'magos, rey de los judíos, Herodes, Belén, estrella, Egipto, cumplimiento, Nazaret.',
+      intertext: 'Miqueas 5:2, Oseas 11:1, Jeremías 31:15 y ecos del éxodo moldean el capítulo. Jesús recapitula la historia de Israel.',
+      caution: 'No convertir los magos en detalle decorativo. Mateo contrasta búsqueda gentil, amenaza política y cumplimiento de Escritura.',
+      synthesis: 'La conclusión cruda es que el nacimiento del Mesías provoca adoración y oposición: desde el inicio, Jesús está dentro de promesa, exilio, amenaza y restauración.'
+    },
+    'mateo 3': {
+      unit: 'Mateo 3:1-12 ministerio de Juan el Bautista; 3:13-17 bautismo de Jesús y voz celestial.',
+      keyTerms: 'arrepentimiento, reino de los cielos, desierto, bautismo, fruto, hacha, Espíritu, Hijo amado.',
+      intertext: 'Isaías 40 está detrás de la voz en el desierto. El bautismo de Jesús concentra lenguaje de hijo, siervo y Espíritu.',
+      caution: 'No leer el bautismo de Jesús como confesión de pecado. Mateo lo presenta como identificación con Israel y comienzo público de su misión.',
+      synthesis: 'La conclusión cruda es que el reino anunciado exige arrepentimiento real, y Jesús entra en escena como Hijo aprobado por Dios y portador del Espíritu.'
+    },
+    'mateo 4': {
+      unit: 'Mateo 4:1-11 tentación en el desierto; 4:12-17 inicio en Galilea; 4:18-22 llamado de discípulos; 4:23-25 enseñanza, predicación y sanidades.',
+      keyTerms: 'desierto, tentar, escrito está, reino, Galilea, arrepentíos, discípulos, sanar.',
+      intertext: 'Deuteronomio sostiene las respuestas de Jesús al tentador. Isaías 9 ilumina la luz en Galilea. La escena del desierto recuerda la prueba de Israel.',
+      caution: 'No leer las tentaciones como simples ejemplos morales. Mateo muestra al Hijo fiel donde Israel falló.',
+      synthesis: 'La conclusión cruda es que Jesús inaugura el reino como Hijo obediente, llama discípulos y muestra autoridad en palabra y sanidad.'
+    },
     'mateo 5': {
       unit: 'Mateo 5:1-12 bienaventuranzas; 5:13-16 identidad pública de los discípulos; 5:17-20 Jesús y la Torá; 5:21-48 seis contrastes que profundizan la justicia del reino.',
       keyTerms: 'reino de los cielos, justicia, cumplimiento, ley, profetas, corazón, enemigo, perfecto.',
       intertext: 'La montaña evoca a Moisés y la Torá, pero Mateo presenta a Jesús como maestro autorizado que interpreta la voluntad de Dios.',
       caution: 'No leer el Sermón del Monte como simple lista ética universal. Es instrucción del reino dirigida a discípulos dentro de la historia de Israel.',
       synthesis: 'La conclusión cruda es que Jesús no rebaja la justicia de la Torá; expone una justicia más profunda que llega al corazón, las relaciones y la lealtad total a Dios.'
+    },
+    'mateo 6': {
+      unit: 'Mateo 6:1-18 limosna, oración y ayuno sin ostentación; 6:19-34 tesoros, ojo, dos señores y confianza en el Padre.',
+      keyTerms: 'justicia, secreto, Padre, oración, reino, pan, perdón, tesoro, Mamón, ansiedad.',
+      intertext: 'La oración del Padre Nuestro concentra lenguaje de reino, pan diario, perdón y liberación. La crítica a la ostentación dialoga con prácticas judías de piedad.',
+      caution: 'No leer Mateo 6 como rechazo de prácticas religiosas. Jesús critica hacerlas para obtener honor humano.',
+      synthesis: 'La conclusión cruda es que la justicia del reino se practica delante del Padre, no para teatro religioso; por eso ordena deseo, dinero y ansiedad.'
+    },
+    'mateo 7': {
+      unit: 'Mateo 7:1-12 juicio, discernimiento, oración y regla de oro; 7:13-29 dos caminos, falsos profetas, verdadero discípulo y casa sobre roca.',
+      keyTerms: 'juzgar, pedir, puerta estrecha, frutos, voluntad del Padre, roca, autoridad.',
+      intertext: 'Los dos caminos recuerdan Deuteronomio y sabiduría bíblica. La casa sobre roca cierra el sermón con obediencia práctica.',
+      caution: 'No usar "no juzguéis" para cancelar todo discernimiento. El mismo capítulo exige evaluar frutos y falsos profetas.',
+      synthesis: 'La conclusión cruda es que escuchar a Jesús sin obedecerlo es autoengaño; la entrada al reino se prueba en discernimiento y práctica.'
+    },
+    'mateo 8': {
+      unit: 'Mateo 8:1-17 sanidades del leproso, siervo del centurión y suegra de Pedro; 8:18-22 costo del discipulado; 8:23-34 autoridad sobre tormenta y demonios.',
+      keyTerms: 'limpio, fe, centurión, sanar, seguir, Hijo del Hombre, viento, demonios.',
+      intertext: 'Isaías 53:4 es citado para interpretar las sanidades. El centurión anticipa entrada de gentiles al banquete del reino.',
+      caution: 'No leer los milagros como espectáculo aislado. Mateo los organiza para mostrar autoridad mesiánica y costo de seguir a Jesús.',
+      synthesis: 'La conclusión cruda es que Jesús tiene autoridad sobre impureza, enfermedad, naturaleza y demonios, pero esa autoridad demanda seguimiento real.'
+    },
+    'mateo 9': {
+      unit: 'Mateo 9:1-8 paralítico y perdón; 9:9-17 llamado de Mateo y controversias; 9:18-34 sanidades; 9:35-38 compasión y mies.',
+      keyTerms: 'perdonar, Hijo del Hombre, misericordia, pecadores, ayuno, fe, compasión, mies.',
+      intertext: 'Oseas 6:6 aparece en "misericordia quiero". La imagen de ovejas sin pastor remite a críticas proféticas contra líderes de Israel.',
+      caution: 'No separar perdón y sanidad como si Mateo eligiera uno. El capítulo muestra autoridad integral y misericordia hacia excluidos.',
+      synthesis: 'La conclusión cruda es que Jesús perdona, llama pecadores y restaura vidas, revelando una misión de misericordia frente a religiosidad defensiva.'
+    },
+    'mateo 10': {
+      unit: 'Mateo 10:1-15 envío de los Doce a Israel; 10:16-25 persecución; 10:26-33 confesión pública; 10:34-42 costo y recompensa.',
+      keyTerms: 'Doce, ovejas perdidas, reino, paz, persecución, confesar, cruz, recibir.',
+      intertext: 'Los Doce evocan las doce tribus de Israel. La misión se concentra primero en Israel y anticipa oposición similar a la de los profetas.',
+      caution: 'No universalizar cada instrucción sin notar el momento de la misión. Mateo 10 tiene contexto específico dentro de la misión a Israel.',
+      synthesis: 'La conclusión cruda es que la misión del reino combina autoridad, vulnerabilidad y conflicto; seguir a Jesús exige lealtad superior aun frente a familia y poder.'
+    },
+    'mateo 11': {
+      unit: 'Mateo 11:1-19 pregunta de Juan y testimonio sobre él; 11:20-24 ayes contra ciudades; 11:25-30 revelación a pequeños y descanso en Jesús.',
+      keyTerms: 'Juan, obras del Cristo, escandalizarse, Elías, ay, revelación, descanso, yugo.',
+      intertext: 'Isaías informa la respuesta de Jesús a Juan: ciegos ven, cojos andan, pobres reciben buenas nuevas. Malaquías está detrás del mensajero.',
+      caution: 'No leer "venid a mí" separado del llamado al yugo. El descanso de Jesús no elimina discipulado; redefine el señorío como manso y fiel.',
+      synthesis: 'La conclusión cruda es que Jesús confirma su identidad por obras mesiánicas, confronta incredulidad y ofrece descanso bajo su autoridad.'
+    },
+    'mateo 12': {
+      unit: 'Mateo 12:1-14 controversias de sábado; 12:15-21 siervo escogido; 12:22-37 Beelzebú y blasfemia; 12:38-50 señal de Jonás y verdadera familia.',
+      keyTerms: 'sábado, misericordia, Señor del sábado, siervo, Espíritu, reino, señal de Jonás, familia.',
+      intertext: 'Oseas 6:6 vuelve a aparecer. Isaías 42 interpreta el ministerio del siervo. Jonás funciona como señal de juicio y resurrección.',
+      caution: 'No leer la blasfemia contra el Espíritu fuera del conflicto del capítulo. Se refiere a atribuir la obra del Espíritu a poder demoníaco en rechazo deliberado.',
+      synthesis: 'La conclusión cruda es que Jesús redefine sábado, familia y señal alrededor de su autoridad, mientras la oposición religiosa endurece su rechazo.'
+    },
+    'mateo 13': {
+      unit: 'Mateo 13:1-23 sembrador; 13:24-43 trigo, cizaña y explicación; 13:44-52 tesoro, perla, red y escriba; 13:53-58 rechazo en Nazaret.',
+      keyTerms: 'parábola, reino, sembrador, palabra, misterio, cizaña, tesoro, perla, red.',
+      intertext: 'Isaías 6 explica oír sin entender. Las parábolas revelan y ocultan según la respuesta al reino.',
+      caution: 'No leer las parábolas como cuentos morales simples. En Mateo 13 explican la recepción mezclada del reino y el juicio final.',
+      synthesis: 'La conclusión cruda es que el reino llega de forma humilde y discutida, pero su valor es supremo y su juicio final separará respuestas verdaderas y falsas.'
+    },
+    'mateo 14': {
+      unit: 'Mateo 14:1-12 muerte de Juan; 14:13-21 alimentación de los cinco mil; 14:22-33 Jesús camina sobre el mar; 14:34-36 sanidades.',
+      keyTerms: 'Herodes, Juan, compasión, pan, multitud, mar, fe, Hijo de Dios.',
+      intertext: 'El alimento en lugar desierto evoca provisión del éxodo. Caminar sobre el mar usa lenguaje de dominio divino sobre aguas.',
+      caution: 'No separar la compasión de Jesús de la amenaza política contra Juan. El capítulo contrasta banquete de muerte de Herodes con provisión de vida de Jesús.',
+      synthesis: 'La conclusión cruda es que el reino de Jesús se muestra en compasión y autoridad divina, frente al poder violento y temeroso de Herodes.'
+    },
+    'mateo 15': {
+      unit: 'Mateo 15:1-20 tradición, pureza y corazón; 15:21-28 mujer cananea; 15:29-39 sanidades y alimentación de cuatro mil.',
+      keyTerms: 'tradición, mandamiento, corazón, contaminar, cananea, migajas, compasión, pan.',
+      intertext: 'Isaías 29:13 critica culto de labios sin corazón. La mujer cananea anticipa misericordia extendida más allá de Israel.',
+      caution: 'No leer la pureza como simple higiene. Mateo trata autoridad de tradición frente a mandamiento y el problema profundo del corazón.',
+      synthesis: 'La conclusión cruda es que Jesús desplaza la pureza superficial hacia el corazón y muestra que la misericordia del reino alcanza fronteras gentiles.'
+    },
+    'mateo 16': {
+      unit: 'Mateo 16:1-12 señal, levadura de fariseos y saduceos; 16:13-20 confesión de Pedro; 16:21-28 primer anuncio de pasión y llamado a tomar la cruz.',
+      keyTerms: 'señal, levadura, Cristo, Hijo del Dios viviente, iglesia, llaves, cruz, seguir.',
+      intertext: 'La confesión mesiánica se entiende contra expectativas davídicas. La cruz corrige una esperanza mesiánica sin sufrimiento.',
+      caution: 'No separar la confesión de Pedro del anuncio de la cruz. Mateo une identidad mesiánica y sufrimiento necesario.',
+      synthesis: 'La conclusión cruda es que reconocer a Jesús como Mesías exige abandonar triunfalismo: el camino del Cristo y de sus discípulos pasa por la cruz.'
+    },
+    'mateo 17': {
+      unit: 'Mateo 17:1-13 transfiguración; 17:14-21 niño endemoniado; 17:22-23 segundo anuncio de muerte; 17:24-27 impuesto del templo.',
+      keyTerms: 'transfiguración, Moisés, Elías, Hijo amado, fe, montaña, muerte, templo.',
+      intertext: 'Moisés y Elías representan Ley y Profetas. La voz celestial retoma el bautismo y manda escuchar al Hijo.',
+      caution: 'No leer la transfiguración como experiencia aislada de gloria. Está entre anuncios de sufrimiento y confirma a Jesús como Hijo que debe ser escuchado.',
+      synthesis: 'La conclusión cruda es que la gloria de Jesús no cancela la pasión; confirma que el Hijo amado cumple Ley y Profetas camino a la cruz.'
+    },
+    'mateo 18': {
+      unit: 'Mateo 18:1-14 pequeños, humildad y oveja perdida; 18:15-20 disciplina comunitaria; 18:21-35 perdón y siervo inmisericorde.',
+      keyTerms: 'pequeños, humildad, tropiezo, oveja perdida, hermano, iglesia, perdón, deuda.',
+      intertext: 'La oveja perdida conecta con imágenes pastorales de Israel. La deuda impagable expresa misericordia recibida que debe transformarse en perdón.',
+      caution: 'No usar Mateo 18 solo como procedimiento disciplinario. El capítulo completo trata cuidado de pequeños, restauración y perdón.',
+      synthesis: 'La conclusión cruda es que la comunidad del reino debe proteger al vulnerable, buscar al perdido, corregir con humildad y perdonar desde la misericordia recibida.'
+    },
+    'mateo 19': {
+      unit: 'Mateo 19:1-12 matrimonio, divorcio y celibato; 19:13-15 niños; 19:16-30 joven rico, riquezas y recompensa.',
+      keyTerms: 'matrimonio, divorcio, principio, niños, vida eterna, rico, tesoro, seguir.',
+      intertext: 'Génesis 1-2 sostiene la enseñanza sobre matrimonio. El Decálogo aparece en el diálogo con el joven rico.',
+      caution: 'No leer el joven rico como simple llamado a caridad. El problema es lealtad: riqueza compite con seguir a Jesús.',
+      synthesis: 'La conclusión cruda es que Jesús lleva matrimonio, niños y riqueza al orden del reino: el discipulado reordena vínculos, estatus y seguridad.'
+    },
+    'mateo 20': {
+      unit: 'Mateo 20:1-16 obreros de la viña; 20:17-19 tercer anuncio de pasión; 20:20-28 grandeza como servicio; 20:29-34 sanidad de ciegos.',
+      keyTerms: 'viña, jornal, primeros, últimos, beber la copa, servir, rescate, ciegos.',
+      intertext: 'La viña es imagen común de Israel. El Hijo del Hombre que sirve y da su vida en rescate dialoga con Daniel 7 e Isaías 53.',
+      caution: 'No leer la parábola como economía laboral moderna. Trata generosidad del reino y choque con criterios de mérito.',
+      synthesis: 'La conclusión cruda es que el reino invierte jerarquías: Dios es generoso, y la grandeza de Jesús se muestra en servicio y entrega.'
+    },
+    'mateo 21': {
+      unit: 'Mateo 21:1-11 entrada en Jerusalén; 21:12-17 templo; 21:18-22 higuera; 21:23-46 autoridad, dos hijos y labradores malvados.',
+      keyTerms: 'rey, humilde, Hosanna, templo, higuera, autoridad, viña, piedra angular.',
+      intertext: 'Zacarías 9, Salmo 118, Isaías 56 y Jeremías 7 se cruzan en entrada, templo y juicio profético.',
+      caution: 'No leer la entrada como simple celebración popular. Mateo la une con juicio del templo y controversia de autoridad.',
+      synthesis: 'La conclusión cruda es que Jesús entra como rey humilde y juez profético: confronta un sistema religioso sin fruto y reclama autoridad sobre el templo.'
+    },
+    'mateo 22': {
+      unit: 'Mateo 22:1-14 banquete de bodas; 22:15-22 tributo al César; 22:23-33 resurrección; 22:34-40 gran mandamiento; 22:41-46 hijo y Señor de David.',
+      keyTerms: 'banquete, invitados, César, resurrección, mandamiento, amor, David, Señor.',
+      intertext: 'El banquete evoca esperanza profética. Éxodo 3 apoya la resurrección. Deuteronomio 6 y Levítico 19 resumen amor a Dios y prójimo. Salmo 110 redefine al Mesías davídico.',
+      caution: 'No aislar "dad al César" como teoría política completa. En el capítulo es una trampa respondida por Jesús dentro de una serie de controversias.',
+      synthesis: 'La conclusión cruda es que Jesús responde a trampas religiosas y políticas mostrando que el reino exige invitación aceptada, amor total y una visión más alta del Mesías.'
+    },
+    'mateo 23': {
+      unit: 'Mateo 23:1-12 crítica a ostentación religiosa; 23:13-36 siete ayes contra escribas y fariseos; 23:37-39 lamento sobre Jerusalén.',
+      keyTerms: 'hipócritas, escribas, fariseos, ay, justicia, misericordia, fidelidad, Jerusalén.',
+      intertext: 'El lenguaje de ayes pertenece a tradición profética. El lamento sobre Jerusalén recuerda rechazo de profetas enviados por Dios.',
+      caution: 'No usar Mateo 23 para desprecio antijudío. Es crítica profética interna contra líderes concretos y contra hipocresía religiosa.',
+      synthesis: 'La conclusión cruda es que Jesús denuncia una religión que preserva apariencia pero devora justicia, misericordia y fidelidad.'
+    },
+    'mateo 24': {
+      unit: 'Mateo 24:1-14 principio de dolores; 24:15-28 crisis y abominación; 24:29-35 venida del Hijo del Hombre; 24:36-51 vigilancia.',
+      keyTerms: 'templo, dolores, abominación, tribulación, Hijo del Hombre, generación, velar.',
+      intertext: 'Daniel informa la abominación y el Hijo del Hombre. Lenguaje profético de juicio cósmico describe caída de poderes y vindicación.',
+      caution: 'No leer Mateo 24 como calendario moderno simplista. Hay que distinguir destrucción de Jerusalén, lenguaje apocalíptico y esperanza final.',
+      synthesis: 'La conclusión cruda es que Jesús anuncia juicio sobre el orden del templo y llama a vigilancia fiel en medio de crisis, engaño y espera.'
+    },
+    'mateo 25': {
+      unit: 'Mateo 25:1-13 diez vírgenes; 25:14-30 talentos; 25:31-46 juicio de las naciones.',
+      keyTerms: 'reino, prudentes, velar, talentos, siervo fiel, Hijo del Hombre, ovejas, cabritos.',
+      intertext: 'El Hijo del Hombre de Daniel 7 está detrás del juez entronizado. Las imágenes de siervos y vigilancia continúan Mateo 24.',
+      caution: 'No leer Mateo 25 como salvación por activismo. El capítulo trata preparación, fidelidad y evidencia concreta de pertenencia al reino.',
+      synthesis: 'La conclusión cruda es que la espera del reino debe producir vigilancia, fidelidad responsable y misericordia visible hacia los pequeños.'
+    },
+    'mateo 26': {
+      unit: 'Mateo 26:1-16 complot y unción; 26:17-30 Pascua y cena; 26:31-46 Getsemaní; 26:47-75 arresto, juicio y negaciones.',
+      keyTerms: 'Pascua, pacto, sangre, Getsemaní, copa, traición, Hijo del Hombre, negación.',
+      intertext: 'Éxodo 12, Zacarías 13:7 y Daniel 7 son claves. La cena reinterpreta Pascua y pacto alrededor de la muerte de Jesús.',
+      caution: 'No leer la pasión como accidente político. Mateo muestra cumplimiento, entrega voluntaria y tensión entre debilidad humana y obediencia del Hijo.',
+      synthesis: 'La conclusión cruda es que Jesús entra en la muerte como siervo obediente: su sangre funda pacto mientras discípulos fallan y poderes religiosos lo condenan.'
+    },
+    'mateo 27': {
+      unit: 'Mateo 27:1-10 muerte de Judas; 27:11-26 juicio ante Pilato; 27:27-44 burla y crucifixión; 27:45-56 muerte; 27:57-66 sepultura y guardia.',
+      keyTerms: 'Pilato, rey de los judíos, Barrabás, cruz, templo, Hijo de Dios, velo, sepulcro.',
+      intertext: 'Salmo 22, Jeremías/Zacarías y lenguaje del templo iluminan burla, sufrimiento, precio de sangre y velo rasgado.',
+      caution: 'No usar Mateo 27 para culpar colectivamente a un pueblo. El texto narra responsabilidades históricas concretas dentro de líderes, multitud, Roma y discípulos.',
+      synthesis: 'La conclusión cruda es que el rey rechazado muere en aparente vergüenza, pero señales cósmicas y del templo indican juicio, acceso abierto y verdadera identidad del Hijo de Dios.'
+    },
+    'mateo 28': {
+      unit: 'Mateo 28:1-10 tumba vacía y anuncio a las mujeres; 28:11-15 reporte de guardias; 28:16-20 gran comisión.',
+      keyTerms: 'resurrección, ángel, temor, gozo, Galilea, autoridad, discípulos, naciones, bautizar, enseñar.',
+      intertext: 'Daniel 7 está detrás de la autoridad universal del Hijo del Hombre. La misión a las naciones cumple el arco de Abraham y la promesa de bendición.',
+      caution: 'No reducir la gran comisión a estrategia institucional. Está fundada en la autoridad del Resucitado y exige formar discípulos obedientes.',
+      synthesis: 'La conclusión cruda es que Mateo termina con Jesús vivo, investido de autoridad universal y presente con su comunidad mientras esta discipula a las naciones.'
     },
     'genesis 1': {
       unit: 'Génesis 1:1-2:3 presenta creación ordenada en seis días y reposo del séptimo, con repeticiones literarias: Dios dice, separa, nombra, ve que es bueno y bendice.',
