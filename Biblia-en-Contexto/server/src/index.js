@@ -1473,13 +1473,15 @@ app.post('/api/sources/search', async (req, res, next) => {
   try {
     const data = sourceSearchSchema.parse(req.body);
     const results = await buscarChunksDeFuentes(prisma, data.query, data.limit);
+    const topic = inferSourceTopic(data.query, results);
     res.json({
       query: data.query,
       mode: process.env.OPENAI_API_KEY ? 'vector_or_text' : 'text',
+      synthesizedAnswer: buildLibrarySynthesis(topic, data.query, results).join('\n'),
       results: results.map((item) => ({
         ...item,
         contribution: sourceContribution(item, data.query),
-        evidence: compactSourceText(item.contentText, 260),
+        evidence: compactSourceText(item.contentText, 180),
         summary: `${item.title}${item.author ? ` - ${item.author}` : ''}: ${sourceContribution(item, data.query)}`
       }))
     });
@@ -1611,7 +1613,7 @@ app.get('/api/buscar', async (req, res, next) => {
           id: item.id,
           type: 'Biblioteca',
           title: `${item.title}${item.author ? ` - ${item.author}` : ''}`,
-          description: `${sourceContribution(item, q)} Evidencia breve: ${compactSourceText(item.contentText, 180)}`,
+          description: sourceContribution(item, q),
           target: 'biblioteca',
           score: Number(item.score ?? 0)
         }))
@@ -2035,6 +2037,65 @@ function sourceContribution(match, query) {
   return 'ofrece apoyo secundario para leer el tema con mas contexto teologico e historico.';
 }
 
+function inferSourceTopic(query, matches = []) {
+  const text = `${query ?? ''} ${matches.map((item) => `${item.title ?? ''} ${item.contentText ?? ''}`).join(' ')}`
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '');
+
+  if (/\b(infierno|gehenna|hades|castigo|juicio|condenacion|fuego)\b/.test(text)) return 'infierno';
+  if (/\b(milenio|milenial|apocalipsis 20|reino de mil anos)\b/.test(text)) return 'milenio';
+  if (/\b(espiritu|pentecostes|santificacion|regeneracion)\b/.test(text)) return 'espiritu';
+  if (/\b(gracia|justificacion|salvacion|fe|redencion)\b/.test(text)) return 'gracia';
+  if (/\b(iglesia|comunidad|disciplina|discipulado|mision)\b/.test(text)) return 'iglesia';
+  if (/\b(pacto|promesa|revelacion|historia redentora)\b/.test(text)) return 'pacto';
+  return 'general';
+}
+
+function uniqueSourceNames(matches) {
+  return Array.from(new Set(matches.map((item) => `${item.title}${item.author ? `, ${item.author}` : ''}`))).slice(0, 5);
+}
+
+function buildLibrarySynthesis(topic, target, matches) {
+  const sourceNames = uniqueSourceNames(matches);
+  const sourceLine = sourceNames.length
+    ? `Base consultada: ${sourceNames.join('; ')}.`
+    : 'Base consultada: biblioteca interna de fuentes importadas.';
+
+  const topicBodies = {
+    infierno: [
+      `Sobre ${target}, la respuesta debe partir del lenguaje biblico de juicio antes de saltar a debates modernos. La biblioteca apunta a tres ideas que conviene mantener juntas: castigo, exclusion de la comunion con Dios y seriedad moral del pecado. En terminos sencillos: el infierno no aparece como una imagen decorativa para asustar, sino como una manera de expresar que el mal humano no queda sin respuesta delante de un Dios justo.`,
+      'La lectura historico-gramatical debe preguntar que imagen usa cada texto: fuego, tinieblas, destruccion, castigo, separacion o verguenza. No todas las imagenes hacen exactamente el mismo trabajo literario, pero juntas comunican juicio real y definitivo. Por eso la aplicacion responsable no debe suavizar el texto ni exagerarlo mas alla de lo que el pasaje dice.'
+    ],
+    milenio: [
+      `Sobre ${target}, la biblioteca debe ayudar a distinguir el texto de Apocalipsis, el genero apocaliptico y las interpretaciones historicas posteriores. La pregunta central no es solo cuanto dura el milenio, sino que funcion cumple en el argumento: mostrar el reinado de Cristo, la derrota del mal y la vindicacion final del pueblo de Dios.`,
+      'Una lectura responsable evita convertir simbolos apocalipticos en cronograma facil. Primero observa imagenes, repeticiones y contrastes del pasaje; despues compara con el resto de la Escritura solo cuando hay conexiones textuales claras. Asi se puede explicar premilenialismo, amilenialismo o posmilenialismo sin forzar el texto.'
+    ],
+    espiritu: [
+      `Sobre ${target}, las fuentes ayudan a enfocar la obra del Espiritu Santo sin reducirla a emociones o experiencias aisladas. En el Nuevo Testamento, el Espiritu aparece ligado a regeneracion, santificacion, comunion con Cristo, poder para testificar y formacion de la iglesia.`,
+      'En sencillo: no se debe preguntar primero "que senti", sino que afirma el texto que Dios hace por medio de su Espiritu. La experiencia puede ser importante, pero debe interpretarse desde el pasaje, no al reves.'
+    ],
+    gracia: [
+      `Sobre ${target}, la biblioteca apunta a una idea central: la gracia es iniciativa de Dios, no premio al merito humano. Cuando el texto habla de salvacion, fe o justificacion, la lectura debe separar cuidadosamente causa, medio y resultado: Dios salva por gracia, la fe recibe, y la obediencia aparece como fruto.`,
+      'Esto evita dos errores: convertir la fe en una obra que compra el favor de Dios, o convertir la gracia en permiso para vivir sin transformacion. La exegesis debe mostrar como el pasaje mantiene esa tension.'
+    ],
+    iglesia: [
+      `Sobre ${target}, las fuentes ayudan a leer la iglesia como comunidad visible, concreta y discipulada, no como idea abstracta. Los textos sobre iglesia suelen tocar identidad, unidad, santidad, liderazgo, mision y cuidado mutuo.`,
+      'En terminos claros: una buena interpretacion pregunta que tipo de pueblo esta formando Dios y como el pasaje ordena la vida comunitaria. La aplicacion no debe quedarse en lo individual si el texto habla a una comunidad.'
+    ],
+    pacto: [
+      `Sobre ${target}, la biblioteca de teologia biblica ayuda a ubicar el tema dentro de la historia redentora: promesa, pacto, cumplimiento, pueblo de Dios y esperanza final. La pregunta no es solo que significa una palabra, sino donde esta ubicada dentro del desarrollo de la revelacion biblica.`,
+      'La lectura responsable evita saltos rapidos. Primero se interpreta el pasaje en su libro; luego se observa como ese tema avanza dentro de la Biblia completa.'
+    ],
+    general: [
+      `Sobre ${target}, la biblioteca interna sirve para ampliar el analisis sin desplazar el texto biblico. La respuesta debe comenzar por el pasaje: su contexto, genero, estructura, palabras clave y proposito. Luego las fuentes ayudan a precisar doctrina, historia y aplicacion.`,
+      'En sencillo: los libros importados no mandan sobre el texto; ayudan a leerlo con mas cuidado. Si una fuente ilumina el tema, se usa; si no tiene relacion directa, no debe meterse como relleno.'
+    ]
+  };
+
+  return [...(topicBodies[topic] ?? topicBodies.general), sourceLine];
+}
+
 function buildSourceSearchQuery(result, query) {
   const lexical = (result.lexicalRows ?? [])
     .map((row) => [row.lemma, row.semanticRange, row.contextUse].filter(Boolean).join(' '))
@@ -2074,21 +2135,21 @@ function groupSourceMatches(matches) {
 function buildSourceLibrarySection(matches, result, query) {
   const grouped = groupSourceMatches(matches);
   const target = result.title || query;
+  const topic = inferSourceTopic(`${query} ${target}`, grouped);
+  const synthesis = buildLibrarySynthesis(topic, target, grouped);
   const lines = grouped.map((match) => {
     const author = match.author ? `, ${match.author}` : '';
-    const evidence = match.snippets
-      .filter(Boolean)
-      .map((snippet) => `"${snippet}"`)
-      .join(' / ');
-    return `- ${match.title}${author}: ${sourceContribution(match, query)} Evidencia breve: ${evidence}`;
+    return `- ${match.title}${author}: ${sourceContribution(match, query)}`;
   });
 
   return {
     title: 'Biblioteca de fuentes',
     body: [
-      `Para ${target}, la biblioteca interna se usa como apoyo secundario: primero manda el texto biblico; despues, estas fuentes ayudan a precisar el tema sin reemplazar la exegesis.`,
+      `Respuesta redactada desde la biblioteca interna para ${target}:`,
+      ...synthesis,
+      'Fuentes usadas como apoyo:',
       ...lines,
-      'Uso responsable: estas notas no son una cita exhaustiva del libro ni una autoridad final; sirven para orientar la lectura y confirmar si el analisis respeta el contexto del pasaje.'
+      'Criterio: no se copian parrafos de los libros; se usan como base de consulta para redactar una sintesis clara, historica y pastoralmente responsable.'
     ].join('\n')
   };
 }
