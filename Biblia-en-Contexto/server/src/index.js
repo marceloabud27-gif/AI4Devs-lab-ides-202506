@@ -2354,7 +2354,43 @@ Redacta una respuesta experta y detallada con este orden:
 4. Desarrollo teologico responsable, sin forzar dogmas externos.
 5. Sintesis final clara.
 
+Condicion final obligatoria:
+- Termina siempre con un apartado titulado "Sintesis final".
+- Ese apartado debe cerrar la respuesta en 3 a 5 frases completas.
+- No termines con dos puntos, una enumeracion abierta, una frase incompleta ni una promesa de continuar.
+
 No incluyas lista de fuentes, no expliques el mecanismo interno y no digas "segun la biblioteca".`;
+}
+
+function looksTruncatedAnswer(text, finishReason) {
+  const clean = String(text ?? '').trim();
+  if (!clean) return true;
+  if (finishReason === 'MAX_TOKENS') return true;
+  if (clean.length < 120) return true;
+  if (!/sintesis final/i.test(clean.normalize('NFD').replace(/[\u0300-\u036f]/g, ''))) return true;
+  return /(:|-|,|;|\by\b|\bo\b)$/i.test(clean);
+}
+
+function localClosingSummary(result, query) {
+  const title = result.title || query;
+  const explanation = compactSourceText(result.explanation ?? '', 260);
+  const firstSection = compactSourceText(result.sections?.[0]?.body ?? '', 260);
+
+  return [
+    'Sintesis final',
+    `En resumen, ${title} debe leerse primero dentro de su propio contexto y no como una frase aislada.`,
+    explanation ? `La idea principal es esta: ${explanation}` : 'La idea principal debe salir del texto, su argumento y su lugar dentro del libro biblico.',
+    firstSection ? `El contexto inmediato orienta la lectura: ${firstSection}` : 'Una interpretacion responsable observa el genero, las palabras clave y el proposito del autor antes de hacer aplicacion.',
+    'Por eso la conclusion debe mantenerse sobria: explicar lo que el pasaje afirma, reconocer sus tensiones y evitar imponer respuestas que el texto no desarrolla.'
+  ].join('\n');
+}
+
+function ensureCompleteExpertAnswer(text, finishReason, result, query) {
+  if (!text) return null;
+  if (!looksTruncatedAnswer(text, finishReason)) return text.trim();
+
+  const clean = text.trim().replace(/[\s:;,-]+$/, '.');
+  return `${clean}\n\n${localClosingSummary(result, query)}`;
 }
 
 async function generateGeminiExpertAnswer({ result, query, depth, sourceMatches }) {
@@ -2378,7 +2414,7 @@ async function generateGeminiExpertAnswer({ result, query, depth, sourceMatches 
         generationConfig: {
           temperature: 0.35,
           topP: 0.9,
-          maxOutputTokens: 1800
+          maxOutputTokens: 3600
         }
       })
     });
@@ -2390,8 +2426,10 @@ async function generateGeminiExpertAnswer({ result, query, depth, sourceMatches 
       .filter(Boolean)
       .join('\n')
       .trim();
+    const finishReason = payload.candidates?.[0]?.finishReason;
+    const completedText = ensureCompleteExpertAnswer(text, finishReason, result, query);
 
-    return text && text.length > 120 ? text : null;
+    return completedText && completedText.length > 120 ? completedText : null;
   } catch {
     return null;
   } finally {
