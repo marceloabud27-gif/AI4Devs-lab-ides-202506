@@ -1476,7 +1476,12 @@ app.post('/api/sources/search', async (req, res, next) => {
     res.json({
       query: data.query,
       mode: process.env.OPENAI_API_KEY ? 'vector_or_text' : 'text',
-      results
+      results: results.map((item) => ({
+        ...item,
+        contribution: sourceContribution(item, data.query),
+        evidence: compactSourceText(item.contentText, 260),
+        summary: `${item.title}${item.author ? ` - ${item.author}` : ''}: ${sourceContribution(item, data.query)}`
+      }))
     });
   } catch (error) {
     next(error);
@@ -1606,7 +1611,7 @@ app.get('/api/buscar', async (req, res, next) => {
           id: item.id,
           type: 'Biblioteca',
           title: `${item.title}${item.author ? ` - ${item.author}` : ''}`,
-          description: item.contentText.slice(0, 260),
+          description: `${sourceContribution(item, q)} Evidencia breve: ${compactSourceText(item.contentText, 180)}`,
           target: 'biblioteca',
           score: Number(item.score ?? 0)
         }))
@@ -1988,25 +1993,118 @@ function enrichAnalysis(result, depth) {
   };
 }
 
+function compactSourceText(text, maxLength = 220) {
+  const clean = String(text ?? '')
+    .replace(/\s+/g, ' ')
+    .replace(/\b(inierno|inernal|inernales)\b/gi, (match) => {
+      if (/inierno/i.test(match)) return 'infierno';
+      if (/inernal/i.test(match)) return 'infernal';
+      return 'infernales';
+    })
+    .trim();
+
+  if (clean.length <= maxLength) return clean;
+  const cut = clean.slice(0, maxLength);
+  const sentenceEnd = Math.max(cut.lastIndexOf('.'), cut.lastIndexOf(';'), cut.lastIndexOf(','));
+  return `${cut.slice(0, sentenceEnd > 120 ? sentenceEnd : maxLength).trim()}...`;
+}
+
+function sourceContribution(match, query) {
+  const title = `${match.title ?? ''}`.toLowerCase();
+  const queryText = `${query ?? ''}`.toLowerCase();
+
+  if (title.includes('gracia') || queryText.includes('gracia')) {
+    return 'ayuda a explicar gracia, fe y salvacion sin presentar la respuesta humana como merito.';
+  }
+  if (title.includes('biblical theology') || title.includes('teologia biblica') || title.includes('theology')) {
+    return 'ubica el tema dentro del desarrollo de la revelacion, el pacto y la historia redentora.';
+  }
+  if (title.includes('infierno') || queryText.includes('infierno') || queryText.includes('juicio')) {
+    return 'aporta material sobre juicio, castigo, responsabilidad humana y lenguaje biblico sobre condenacion.';
+  }
+  if (title.includes('holy spirit') || title.includes('espiritu') || queryText.includes('espiritu')) {
+    return 'enfoca la obra del Espiritu Santo, la santificacion y la presencia activa de Dios en el creyente.';
+  }
+  if (title.includes('believe')) {
+    return 'resume doctrinas cristianas basicas y sirve como apoyo introductorio para ordenar conceptos.';
+  }
+  if (title.includes('church') || title.includes('iglesia') || queryText.includes('iglesia')) {
+    return 'conecta el texto con iglesia local, comunidad, discipulado y vida cristiana concreta.';
+  }
+
+  return 'ofrece apoyo secundario para leer el tema con mas contexto teologico e historico.';
+}
+
+function buildSourceSearchQuery(result, query) {
+  const lexical = (result.lexicalRows ?? [])
+    .map((row) => [row.lemma, row.semanticRange, row.contextUse].filter(Boolean).join(' '))
+    .join(' ');
+  const sections = (result.sections ?? [])
+    .slice(0, 4)
+    .map((section) => `${section.title} ${section.body}`)
+    .join(' ');
+
+  return [query, result.title, result.explanation, lexical, sections]
+    .filter(Boolean)
+    .join(' ')
+    .slice(0, 1000);
+}
+
+function groupSourceMatches(matches) {
+  const grouped = new Map();
+
+  for (const match of matches) {
+    const key = `${match.title ?? match.fileName ?? 'Fuente'}:${match.author ?? ''}`;
+    const existing = grouped.get(key);
+    if (!existing) {
+      grouped.set(key, { ...match, snippets: [compactSourceText(match.contentText, 190)] });
+      continue;
+    }
+    if (existing.snippets.length < 2) {
+      existing.snippets.push(compactSourceText(match.contentText, 160));
+    }
+    existing.score = Math.max(Number(existing.score ?? 0), Number(match.score ?? 0));
+  }
+
+  return Array.from(grouped.values())
+    .sort((a, b) => Number(b.score ?? 0) - Number(a.score ?? 0))
+    .slice(0, 4);
+}
+
+function buildSourceLibrarySection(matches, result, query) {
+  const grouped = groupSourceMatches(matches);
+  const target = result.title || query;
+  const lines = grouped.map((match) => {
+    const author = match.author ? `, ${match.author}` : '';
+    const evidence = match.snippets
+      .filter(Boolean)
+      .map((snippet) => `"${snippet}"`)
+      .join(' / ');
+    return `- ${match.title}${author}: ${sourceContribution(match, query)} Evidencia breve: ${evidence}`;
+  });
+
+  return {
+    title: 'Biblioteca de fuentes',
+    body: [
+      `Para ${target}, la biblioteca interna se usa como apoyo secundario: primero manda el texto biblico; despues, estas fuentes ayudan a precisar el tema sin reemplazar la exegesis.`,
+      ...lines,
+      'Uso responsable: estas notas no son una cita exhaustiva del libro ni una autoridad final; sirven para orientar la lectura y confirmar si el analisis respeta el contexto del pasaje.'
+    ].join('\n')
+  };
+}
+
 async function enrichAnalysisWithSources(result, depth, query) {
   const enriched = enrichAnalysis(result, depth);
-  const sourceMatches = await buscarChunksDeFuentes(prisma, query, 3).catch(() => []);
+  const sourceQuery = buildSourceSearchQuery(result, query);
+  const sourceMatches = await buscarChunksDeFuentes(prisma, sourceQuery, 8).catch(() => []);
   if (!sourceMatches.length) return enriched;
-
-  const sourceSummary = sourceMatches.map((item) => {
-    const author = item.author ? `, ${item.author}` : '';
-    return `${item.title}${author}: ${item.contentText.slice(0, 360).replace(/\s+/g, ' ')}${item.contentText.length > 360 ? '...' : ''}`;
-  }).join(' ');
 
   return {
     ...enriched,
     sourceMatches,
     sections: [
       ...(enriched.sections ?? []),
-      {
-        title: 'Biblioteca de fuentes',
-        body: `La biblioteca interna encontró material relacionado con esta búsqueda. Úsalo como apoyo, no como reemplazo del texto bíblico: ${sourceSummary}`
-      }
+      buildSourceLibrarySection(sourceMatches, enriched, query)
     ]
   };
 }
