@@ -20,6 +20,9 @@ const bibleProviderUrl = process.env.BIBLE_PROVIDER_URL;
 const bibleProviderKey = process.env.BIBLE_PROVIDER_KEY;
 const lexiconProviderUrl = process.env.LEXICON_PROVIDER_URL;
 const lexiconProviderKey = process.env.LEXICON_PROVIDER_KEY;
+const geminiApiKey = process.env.GEMINI_API_KEY;
+const geminiModel = process.env.GEMINI_MODEL ?? 'gemini-2.5-flash';
+const geminiApiUrl = process.env.GEMINI_API_URL ?? 'https://generativelanguage.googleapis.com/v1beta';
 const allowedOrigins = new Set([
   clientUrl,
   'http://localhost:5173',
@@ -2148,19 +2151,151 @@ function buildSourceLibrarySection(matches, result, query) {
   };
 }
 
+function compactForPrompt(text, maxLength = 900) {
+  return compactSourceText(text, maxLength).replace(/"/g, "'");
+}
+
+function buildGeminiContext(result, sourceMatches) {
+  const verses = (result.verses ?? [])
+    .slice(0, 80)
+    .map((verse) => `${verse.reference}: ${verse.clearText ?? verse.text}`)
+    .join('\n');
+  const localSections = (result.sections ?? [])
+    .slice(0, 8)
+    .map((section) => `${section.title}: ${compactForPrompt(section.body, 700)}`)
+    .join('\n\n');
+  const lexical = (result.lexicalRows ?? [])
+    .slice(0, 8)
+    .map((row) => `${row.lemma ?? row.term}: ${row.semantics ?? row.semanticRange ?? ''}. Uso: ${row.contextualUse ?? row.contextUse ?? ''}`)
+    .join('\n');
+  const sources = groupSourceMatches(sourceMatches)
+    .map((source) => {
+      const author = source.author ? `, ${source.author}` : '';
+      const snippets = source.snippets?.length ? source.snippets : [compactSourceText(source.contentText, 500)];
+      return `${source.title}${author}: ${snippets.map((snippet) => compactForPrompt(snippet, 360)).join(' ')}`;
+    })
+    .join('\n\n');
+
+  return {
+    verses: verses || 'No hay texto biblico local recuperado para esta consulta.',
+    localSections: localSections || 'No hay analisis local previo disponible.',
+    lexical: lexical || 'No hay tabla lexica local disponible.',
+    sources: sources || 'No hay apoyo especifico recuperado de la biblioteca importada.'
+  };
+}
+
+function geminiPrompt({ result, query, depth, sourceMatches }) {
+  const context = buildGeminiContext(result, sourceMatches);
+  return `Actua como historiador critico, teologo y erudito en exegesis historico-gramatical, con tono academico, objetivo y facil de entender.
+
+Reglas obligatorias:
+- Responde siempre en espanol claro.
+- No hagas armonizacion dogmatica forzada ni saltes a doctrinas modernas sin mostrar primero el texto y su contexto.
+- Usa el texto biblico recuperado como base principal.
+- Usa la biblioteca de fuentes solo como apoyo de consulta, sin copiar parrafos largos ni mencionar que estas usando fragmentos.
+- No inventes datos. Si algo no esta claro, dilo con sobriedad.
+- Explica con terminos sencillos aunque el metodo sea serio.
+- Si la consulta es un tema, responde el tema biblicamente. Si es un pasaje, explica el pasaje en su libro. Si es una palabra, explica su uso y sentido contextual.
+- Evita relleno, frases genericas y conclusiones apresuradas.
+
+Nivel pedido por el usuario: ${depth}.
+Consulta del usuario: ${query}
+Titulo detectado: ${result.title}
+Tipo detectado: ${result.mode}
+
+Texto biblico local:
+${context.verses}
+
+Analisis local previo:
+${context.localSections}
+
+Datos lexicos locales:
+${context.lexical}
+
+Biblioteca importada relevante:
+${context.sources}
+
+Redacta una respuesta experta y detallada con este orden:
+1. Idea central en una frase.
+2. Explicacion del texto o tema en su contexto historico y literario.
+3. Palabras o ideas clave explicadas en sencillo.
+4. Desarrollo teologico responsable, sin forzar dogmas externos.
+5. Sintesis final clara.
+
+No incluyas lista de fuentes, no expliques el mecanismo interno y no digas "segun la biblioteca".`;
+}
+
+async function generateGeminiExpertAnswer({ result, query, depth, sourceMatches }) {
+  if (!geminiApiKey) return null;
+
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), 25000);
+
+  try {
+    const response = await fetch(`${geminiApiUrl}/models/${geminiModel}:generateContent?key=${geminiApiKey}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      signal: controller.signal,
+      body: JSON.stringify({
+        contents: [
+          {
+            role: 'user',
+            parts: [{ text: geminiPrompt({ result, query, depth, sourceMatches }) }]
+          }
+        ],
+        generationConfig: {
+          temperature: 0.35,
+          topP: 0.9,
+          maxOutputTokens: 1800
+        }
+      })
+    });
+
+    if (!response.ok) return null;
+    const payload = await response.json();
+    const text = payload.candidates?.[0]?.content?.parts
+      ?.map((part) => part.text)
+      .filter(Boolean)
+      .join('\n')
+      .trim();
+
+    return text && text.length > 120 ? text : null;
+  } catch {
+    return null;
+  } finally {
+    clearTimeout(timeout);
+  }
+}
+
 async function enrichAnalysisWithSources(result, depth, query) {
   const enriched = enrichAnalysis(result, depth);
   const sourceQuery = buildSourceSearchQuery(result, query);
   const sourceMatches = await buscarChunksDeFuentes(prisma, sourceQuery, 8).catch(() => []);
-  if (!sourceMatches.length) return enriched;
+  const geminiAnswer = await generateGeminiExpertAnswer({
+    result: enriched,
+    query,
+    depth,
+    sourceMatches
+  });
+
+  if (!sourceMatches.length && !geminiAnswer) return enriched;
+
+  const sections = [...(enriched.sections ?? [])];
+  if (geminiAnswer) {
+    sections.push({
+      title: 'Respuesta experta',
+      body: geminiAnswer
+    });
+  } else if (sourceMatches.length) {
+    sections.push(buildSourceLibrarySection(sourceMatches, enriched, query));
+  }
 
   return {
     ...enriched,
     sourceMatches,
-    sections: [
-      ...(enriched.sections ?? []),
-      buildSourceLibrarySection(sourceMatches, enriched, query)
-    ]
+    aiProvider: geminiAnswer ? 'gemini' : 'local',
+    aiReady: Boolean(geminiApiKey),
+    sections
   };
 }
 

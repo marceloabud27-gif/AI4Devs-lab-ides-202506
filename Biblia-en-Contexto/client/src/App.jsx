@@ -1827,7 +1827,7 @@ export default function App() {
                 {result.sections.map((section) => (
                   <article className="rounded-lg border border-[#dbe3d8] bg-[#fbfcfa] p-5" key={section.title} id={sectionId(section.title)}>
                     <h3 className="mb-2 text-lg font-black text-ink">{section.title}</h3>
-                    <p className="leading-8 text-muted">{section.body}</p>
+                    <p className="whitespace-pre-line leading-8 text-muted">{section.body}</p>
                   </article>
                 ))}
               </div>
