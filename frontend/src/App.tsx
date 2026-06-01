@@ -164,6 +164,11 @@ function App() {
     }, {});
   }, [candidates, steps]);
 
+  function getNextStep(currentStep: InterviewStep) {
+    const currentIndex = steps.findIndex((step) => step.id === currentStep.id);
+    return steps[currentIndex + 1] || steps[currentIndex - 1];
+  }
+
   async function moveCandidate(candidateId: string, targetStep: InterviewStep) {
     const candidate = candidates.find((item) => item.boardId === candidateId);
 
@@ -171,7 +176,7 @@ function App() {
       return;
     }
 
-    const previousCandidates = candidates;
+    const previousStep = candidate.currentInterviewStep;
 
     setCandidates((currentCandidates) =>
       currentCandidates.map((item) =>
@@ -200,7 +205,14 @@ function App() {
 
       setError('');
     } catch {
-      setCandidates(previousCandidates);
+      setCandidates((currentCandidates) =>
+        currentCandidates.map((item) =>
+          item.boardId === candidateId &&
+          String(item.currentInterviewStep) === String(targetStep.id)
+            ? { ...item, currentInterviewStep: previousStep }
+            : item,
+        ),
+      );
       setError('No se pudo actualizar la etapa del candidato. Intentalo de nuevo.');
     }
   }
@@ -245,6 +257,7 @@ function App() {
               <article
                 className="kanban-column"
                 key={step.id}
+                aria-label={`Fase ${step.name}`}
                 onDragOver={(event) => event.preventDefault()}
                 onDrop={(event) => handleDrop(event, step)}
               >
@@ -262,18 +275,46 @@ function App() {
                         className="candidate-card"
                         draggable
                         key={candidate.boardId}
+                        role="button"
+                        tabIndex={0}
+                        aria-grabbed={draggedCandidateId === candidate.boardId}
+                        aria-label={`${candidate.fullName}, puntuacion media ${candidate.averageScore.toFixed(1)}`}
                         onDragStart={(event) => {
                           setDraggedCandidateId(candidate.boardId);
                           event.dataTransfer.effectAllowed = 'move';
                           event.dataTransfer.setData('text/plain', candidate.boardId);
                         }}
                         onDragEnd={() => setDraggedCandidateId(null)}
+                        onKeyDown={(event) => {
+                          const nextStep = getNextStep(step);
+
+                          if ((event.key === 'Enter' || event.key === ' ') && nextStep) {
+                            event.preventDefault();
+                            moveCandidate(candidate.boardId, nextStep);
+                          }
+                        }}
                       >
                         <h3>{candidate.fullName}</h3>
                         <p>
                           <span>Puntuacion media</span>
                           <strong>{candidate.averageScore.toFixed(1)}</strong>
                         </p>
+                        <div className="move-actions" aria-label={`Mover a ${candidate.fullName}`}>
+                          {steps
+                            .filter((targetStep) => targetStep.id !== step.id)
+                            .map((targetStep) => (
+                              <button
+                                type="button"
+                                key={targetStep.id}
+                                onClick={(event) => {
+                                  event.stopPropagation();
+                                  moveCandidate(candidate.boardId, targetStep);
+                                }}
+                              >
+                                Mover a {targetStep.name}
+                              </button>
+                            ))}
+                        </div>
                       </div>
                     ))
                   )}

@@ -164,6 +164,34 @@
   text-align: center;
 }
 
+.move-actions {
+  border-top: 1px solid #eef2f7;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 14px;
+  padding-top: 12px;
+}
+
+.move-actions button {
+  background: #f6f8fb;
+  border: 1px solid #cfd8e6;
+  border-radius: 8px;
+  color: #25314a;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.2;
+  padding: 8px 10px;
+}
+
+.move-actions button:hover,
+.move-actions button:focus-visible {
+  background: #ffffff;
+  border-color: #8ea0b8;
+  outline: none;
+}
+
 .empty-column {
   border: 1px dashed #bdc8d8;
   border-radius: 8px;
