@@ -2041,19 +2041,29 @@ function sourceContribution(match, query) {
 }
 
 function inferSourceTopic(query, matches = []) {
-  const text = `${query ?? ''} ${matches.map((item) => `${item.title ?? ''} ${item.contentText ?? ''}`).join(' ')}`
-    .toLowerCase()
-    .normalize('NFD')
-    .replace(/[\u0300-\u036f]/g, '');
+  const queryText = plainForAnalysis(query);
+  const matchText = plainForAnalysis(matches.map((item) => `${item.title ?? ''} ${item.contentText ?? ''}`).join(' '));
 
-  if (/\b(infierno|gehenna|hades|castigo|juicio|condenacion|fuego)\b/.test(text)) return 'infierno';
-  if (/\b(milenio|milenial|apocalipsis 20|reino de mil anos)\b/.test(text)) return 'milenio';
-  if (/\b(apocalipsis|escatologia|gog|magog|bestia|lago de fuego|nueva jerusalen)\b/.test(text)) return 'apocalipsis';
-  if (/\b(conversion|arrepentimiento|nuevo nacimiento|nacer de nuevo|discipulado)\b/.test(text)) return 'conversion';
-  if (/\b(espiritu|pentecostes|santificacion|regeneracion)\b/.test(text)) return 'espiritu';
-  if (/\b(gracia|justificacion|salvacion|fe|redencion)\b/.test(text)) return 'gracia';
-  if (/\b(iglesia|comunidad|disciplina|discipulado|mision)\b/.test(text)) return 'iglesia';
-  if (/\b(pacto|promesa|revelacion|historia redentora)\b/.test(text)) return 'pacto';
+  const topicFromText = (text) => {
+    if (/\b(infierno|gehenna|hades|castigo|juicio|condenacion|lago de fuego)\b/.test(text)) return 'infierno';
+    if (/\b(milenio|milenial|apocalipsis 20|reino de mil anos)\b/.test(text)) return 'milenio';
+    if (/\b(apocalipsis|escatologia|gog|magog|bestia|nueva jerusalen)\b/.test(text)) return 'apocalipsis';
+    if (/\b(conversion|arrepentimiento|nuevo nacimiento|nacer de nuevo|discipulado)\b/.test(text)) return 'conversion';
+    if (/\b(espiritu|pentecostes|santificacion|regeneracion)\b/.test(text)) return 'espiritu';
+    if (/\b(gracia|justificacion|salvacion|fe|redencion)\b/.test(text)) return 'gracia';
+    if (/\b(iglesia|comunidad|disciplina|discipulado|mision)\b/.test(text)) return 'iglesia';
+    if (/\b(pacto|promesa|revelacion|historia redentora)\b/.test(text)) return 'pacto';
+    return 'general';
+  };
+
+  const queryTopic = topicFromText(queryText);
+  if (queryTopic !== 'general') return queryTopic;
+
+  // A verse reference should not inherit a topic from a noisy source chunk.
+  if (/\b[1-3]?\s?[a-z]+\s+\d{1,3}:\d{1,3}\b/.test(queryText)) return 'general';
+
+  const matchTopic = topicFromText(matchText);
+  if (matchTopic !== 'general') return matchTopic;
   return 'general';
 }
 
@@ -2239,15 +2249,28 @@ function buildSourceSearchQuery(result, query) {
   const lexical = (result.lexicalRows ?? [])
     .map((row) => [row.lemma, row.semanticRange, row.contextUse].filter(Boolean).join(' '))
     .join(' ');
-  const sections = (result.sections ?? [])
-    .slice(0, 4)
-    .map((section) => `${section.title} ${section.body}`)
+  const verses = (result.verses ?? [])
+    .slice(0, 6)
+    .map((verse) => `${verse.reference}: ${verse.clearText ?? verse.text}`)
     .join(' ');
 
-  return [query, result.title, result.explanation, lexical, sections]
+  if (result.mode === 'passage') {
+    return [query, result.title, verses, lexical]
+      .filter(Boolean)
+      .join(' ')
+      .slice(0, 420);
+  }
+
+  const focusedSections = (result.sections ?? [])
+    .filter((section) => /contexto|lexico|sintaxis|intertextualidad|sintesis|genero/i.test(section.title ?? ''))
+    .slice(0, 4)
+    .map((section) => `${section.title} ${compactSourceText(section.body, 260)}`)
+    .join(' ');
+
+  return [query, result.title, verses, lexical, compactSourceText(result.explanation, 260), focusedSections]
     .filter(Boolean)
     .join(' ')
-    .slice(0, 1000);
+    .slice(0, 650);
 }
 
 function groupSourceMatches(matches) {
@@ -2275,7 +2298,28 @@ function buildSourceLibrarySection(matches, result, query) {
   const grouped = groupSourceMatches(matches);
   const target = result.title || query;
   const topic = inferSourceTopic(`${query} ${target}`, grouped);
-  const synthesis = buildLibrarySynthesis(topic, target, grouped, result);
+  const evidenceSentences = sourceSentences(
+    grouped,
+    `${query} ${target} ${(result.lexicalRows ?? []).map((row) => row.lemma ?? row.term ?? '').join(' ')}`,
+    4
+  );
+  const sourceLines = grouped.map((source) => {
+    const author = source.author ? `, ${source.author}` : '';
+    const snippet = source.snippets?.[0] ?? compactSourceText(source.contentText, 180);
+    return `- ${source.title}${author}: ${snippet}`;
+  });
+  const synthesis = topic === 'general'
+    ? [
+        `La biblioteca importada ofrece apoyo secundario para ${target}. La lectura principal sigue siendo el pasaje, su contexto y su argumento dentro del libro biblico.`,
+        evidenceSentences.length
+          ? ['Lineas utiles recuperadas:', ...evidenceSentences.map((sentence) => `- ${sentence}`)].join('\n')
+          : 'No hay una linea documental suficientemente directa como para convertir la biblioteca en argumento principal.',
+        sourceLines.length ? ['Fuentes recuperadas:', ...sourceLines].join('\n') : ''
+      ].filter(Boolean)
+    : [
+        ...buildLibrarySynthesis(topic, target, grouped, result),
+        sourceLines.length ? ['Fuentes recuperadas:', ...sourceLines].join('\n') : ''
+      ].filter(Boolean);
 
   return {
     title: 'Biblioteca de fuentes',
