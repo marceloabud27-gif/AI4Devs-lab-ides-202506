@@ -43,6 +43,65 @@ const GENERIC_SOURCE_TERMS = new Set([
   'versiculo',
   'verso'
 ]);
+const BIBLICAL_BOOK_TERMS = new Set([
+  'genesis',
+  'exodo',
+  'levitico',
+  'numeros',
+  'deuteronomio',
+  'josue',
+  'jueces',
+  'rut',
+  'samuel',
+  'reyes',
+  'cronicas',
+  'esdras',
+  'nehemias',
+  'ester',
+  'job',
+  'salmos',
+  'salmo',
+  'proverbios',
+  'eclesiastes',
+  'cantares',
+  'isaias',
+  'jeremias',
+  'lamentaciones',
+  'ezequiel',
+  'daniel',
+  'oseas',
+  'joel',
+  'amos',
+  'abdias',
+  'jonas',
+  'miqueas',
+  'nahum',
+  'habacuc',
+  'sofonias',
+  'hageo',
+  'zacarias',
+  'malaquias',
+  'mateo',
+  'marcos',
+  'lucas',
+  'juan',
+  'hechos',
+  'romanos',
+  'corintios',
+  'galatas',
+  'efesios',
+  'filipenses',
+  'colosenses',
+  'tesalonicenses',
+  'timoteo',
+  'tito',
+  'filemon',
+  'hebreos',
+  'santiago',
+  'pedro',
+  'judas',
+  'apocalipsis'
+]);
 
 function normalizeWhitespace(text) {
   return text
@@ -283,11 +342,24 @@ function hasCoreTermAnchor(row, coreTerms) {
   return coreTerms.some((term) => tokens.has(term));
 }
 
+function queryRequiredBook(coreTerms) {
+  return coreTerms.find((term) => BIBLICAL_BOOK_TERMS.has(term)) ?? null;
+}
+
+function hasBookAnchor(row, book) {
+  if (!book) return true;
+  const haystack = normalizeSearchText(`${row.title ?? row.sourceBook?.title ?? ''} ${row.contentText ?? ''}`);
+  const tokens = new Set(haystack.split(/[^\p{L}\p{N}:-]+/u));
+  return tokens.has(book);
+}
+
 function rerankSourceRows(rows, terms, query) {
   const queryReference = passageReferenceSignals(query);
   const coreTerms = queryCoreTerms(query).slice(0, 3);
+  const requiredBook = queryReference?.book ?? queryRequiredBook(coreTerms);
   const scoredRows = rows
     .filter((row) => !isWeakSourceChunk(row.contentText))
+    .filter((row) => hasBookAnchor(row, requiredBook))
     .filter((row) => queryReference || hasCoreTermAnchor(row, coreTerms))
     .map((row) => {
       const lexicalScore = scoreSourceChunk(row, terms, query);
